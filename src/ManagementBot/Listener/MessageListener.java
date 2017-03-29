@@ -1,5 +1,6 @@
 package ManagementBot.Listener;
 
+import ManagementBot.Content.Content;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -11,6 +12,11 @@ public class MessageListener extends ListenerAdapter{
 	public void onMessageReceived(MessageReceivedEvent event) {
 		Message message = event.getMessage();
 		MessageChannel channel = message.getChannel();
+		String msg = message.getContent();
+
+		if (msg.equalsIgnoreCase("!stats")) {
+			channel.sendMessage(Content.getStats()).queue();
+		}
 		
 		
 		//TODO

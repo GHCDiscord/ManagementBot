@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-/**
- * Created by Schule on 29.03.2017.
- */
 public class Content {
     public static String getStats() {
         try {

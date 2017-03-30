@@ -1,5 +1,10 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -20,4 +25,13 @@ public class Content {
         }
         return "";
     }
+
+    public static void addRole(Member member, Guild guild, Role role) {
+        try {
+            guild.getController().addRolesToMember(member, role).queue();
+        } catch (PermissionException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

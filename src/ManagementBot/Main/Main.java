@@ -1,5 +1,6 @@
 package ManagementBot.Main;
 
+import ManagementBot.Listener.JoinListener;
 import ManagementBot.Listener.MessageListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -13,7 +14,7 @@ import javax.security.auth.login.LoginException;
 public class Main {
     public static void main(String[] args) {
         try {
-            JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener()).setToken("TOKEN HIER").setGame(new GameImpl("Hackerz", "", Game.GameType.DEFAULT)).buildBlocking();
+            JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener(), new JoinListener()).setToken("TOKEN HIER").setGame(new GameImpl("Hackerz", "", Game.GameType.DEFAULT)).buildBlocking();
         } catch (LoginException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

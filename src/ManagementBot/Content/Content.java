@@ -18,7 +18,28 @@ import java.util.Date;
 
 public class Content {
 
-    private static final int deleteTimeVerify = 600;
+    //Versionsnumer
+    public static final int VersionNumer = 2;
+    //Version
+    public static final String Version = "Development 1.1.02";
+
+    private static final String helpMessageIntro = "**GHC Bot**\n" +
+            "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
+
+    private static final String helpMessageCommans = "*!stats*: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
+            /*+ "*!topguilds*: Zeigt die besten 20 Gilden an"; */;
+
+    private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
+            "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
+            "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
+
+    public static void sendhelpMessage(User user) {
+        user.openPrivateChannel().queue(DM -> {
+            DM.sendMessage(helpMessageIntro).queue();
+            DM.sendMessage(new EmbedBuilder().setDescription(helpMessageCommans).build()).queue();
+            DM.sendMessage(helpMessageVerified).queue();
+        });
+    }
 
     public static Message getStats() {
         try {
@@ -27,10 +48,10 @@ public class Content {
             JSONObject jsonObject = new JSONObject(s).getJSONObject("game");
             MessageEmbed messageEmbed = new EmbedBuilder()
                     .setTitle("Statistiken")
-                    .addField("Blacklist-Einträge:", jsonObject.getInt("blacklists") + "", true)
-                    .addField("Fehlgeschlagene Bot-Attaken:", jsonObject.getInt("bot_attacks_failed") +  "", true)
+                    .addField("Blacklist-Einträge", jsonObject.getInt("blacklists") + "", true)
+                    .addField("Fehlgeschlagene Bot-Attaken", jsonObject.getInt("bot_attacks_failed") +  "", true)
                     .addField("Verbindungen", jsonObject.getInt("connections_to_target") + "", true)
-                    .addField("Erfolgreich geknackte Passwörter:", jsonObject.getInt("successful_cracked_passwords") + "", true)
+                    .addField("Erfolgreich geknackte Passwörter", jsonObject.getInt("successful_cracked_passwords") + "", true)
                     .addField("Gestohlene Miner", jsonObject.getInt("total_miners_stolen") + "", true)
                     .addField("Gestohlene Wallets", jsonObject.getInt("total_wallets_stolen") + "", true)
                     .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200")
@@ -79,6 +100,8 @@ public class Content {
         }
         return  new MessageBuilder().build();
     }
+
+    private static final int deleteTimeVerify = 600;
 
     public static void verify(MessageReceivedEvent event) {
         if (event.getGuild() != null) {

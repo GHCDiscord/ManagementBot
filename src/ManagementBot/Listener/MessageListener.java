@@ -20,6 +20,8 @@ public class MessageListener extends ListenerAdapter{
 			Content.verify(event);
 		} else if (msg.equalsIgnoreCase("!topGuilds")) {
 			channel.sendMessage(Content.getTopGuilds()).queue();
+		} else if (msg.equalsIgnoreCase("!help")) {
+			Content.sendhelpMessage(event.getAuthor());
 		}
 		
 		//TODO

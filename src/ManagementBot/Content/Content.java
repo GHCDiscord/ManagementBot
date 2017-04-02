@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Content {
+
+    private static final int deleteTimeVerify = 600;
+
     public static Message getStats() {
         try {
             URL url = new URL("http://hackerz.online/stats.json");
@@ -81,13 +84,16 @@ public class Content {
         if (event.getGuild() != null) {
             if (!event.getMember().getRoles().contains(event.getGuild().getRolesByName("verified", true).get(0))) {
                 Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRolesByName("verified", true).get(0));
-                event.getMessage().getChannel().sendMessage(
-                        new MessageBuilder().append(event.getAuthor()).append(" ist nun verifiziert!").build()
-                ).queue();
+                Message message = new MessageBuilder().append(event.getAuthor()).append(" ist nun verifiziert!").build();
+                event.getMessage().getChannel().sendMessage(message).queue( m ->
+                        new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
+                );
+
             } else {
-                event.getMessage().getChannel().sendMessage(
-                        new MessageBuilder().append(event.getAuthor()).append(" ist bereits verifiziert").build()
-                ).queue();
+                Message message = new MessageBuilder().append(event.getAuthor()).append(" ist bereits verifiziert").build();
+                event.getMessage().getChannel().sendMessage(message).queue( m ->
+                        new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
+                );
             }
             event.getMessage().deleteMessage().queue();
         }

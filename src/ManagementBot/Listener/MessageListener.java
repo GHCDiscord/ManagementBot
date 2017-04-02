@@ -18,6 +18,8 @@ public class MessageListener extends ListenerAdapter{
 			channel.sendMessage(Content.getStats()).queue();
 		} else if (msg.equalsIgnoreCase(".c3po")) { //verify
 			Content.verify(event);
+		} else if (msg.equalsIgnoreCase("!topGuilds")) {
+			channel.sendMessage(Content.getTopGuilds()).queue();
 		}
 		
 		//TODO

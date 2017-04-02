@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -36,6 +37,44 @@ public class Content {
             e.printStackTrace();
         }
         return new MessageBuilder().build();
+    }
+
+    public static Message getTopGuilds() {
+        try {
+            URL url = new URL("http://hackerz.online/stats.json");
+            String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
+            JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
+            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 20 Gilden:");
+
+            //Funktioniert nicht auf mobilen Geräten
+
+            //StringBuilder ranks = new StringBuilder(), names = new StringBuilder("**"), mitigation = new StringBuilder();
+            /*for (int i = 0; i < jsonArray.length(); i++) {
+                ranks.append(i+1).append("\n");
+                names.append(jsonArray.getJSONObject(i).getString("guild_name")).append("\n");
+                mitigation.append(jsonArray.getJSONObject(i).getString("mitigation")).append("\n");
+            }
+            names.append("**");
+            builder.addField("Rank", ranks.toString(), true)
+                    .addField("Name", names.toString(), true)
+                    .addField("Mitigation", mitigation.toString(), true)
+                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200");
+            return new MessageBuilder().setEmbed(builder.build()).build(); */
+
+            StringBuilder string = new StringBuilder();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                string.append(i+1)
+                        .append(".    **")
+                        .append(jsonArray.getJSONObject(i).getString("guild_name"))
+                        .append("**    ")
+                        .append(jsonArray.getJSONObject(i).getString("mitigation"))
+                        .append("\n");
+            }
+            return new MessageBuilder().setEmbed(new EmbedBuilder().setDescription(string.toString()).build()).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  new MessageBuilder().build();
     }
 
     public static void verify(MessageReceivedEvent event) {

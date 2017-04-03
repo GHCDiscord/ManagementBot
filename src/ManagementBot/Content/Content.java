@@ -14,21 +14,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Content {
 
     //Versionsnumer
     public static final int VersionNumer = 2;
     //Version
-    public static final String Version = "Development 1.1.02";
+    public static final String Version = "Development 1.1.04";
 
     private static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
 
-    private static final String helpMessageCommans = "*!stats*: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
-            + "*!topguilds*: Zeigt die besten 20 Gilden an";
+    private static final String helpMessageCommans = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
+            + "**!topguilds**: Zeigt die besten 10 Gilden an";
 
     private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
@@ -154,6 +154,47 @@ public class Content {
                 .append(event.getGuild().getTextChannelsByName("regeln", true).get(0))
                 .append("\nViel Spaß bei der GHC | German Hackers Community")
                 .build();
+    }
+    public static void rules(MessageReceivedEvent event) {
+        List<Role> roles = event.getMember().getRoles();
+        event.getMessage().deleteMessage().queue();
+        if (roles.containsAll(event.getGuild().getRolesByName("GHC-Staff", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Admin", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Moderator", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Hackers-Staff", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Coding", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Sponsor", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Ex-Staff", true))
+                ) {
+            List<User> mentionedUsers = event.getMessage().getMentionedUsers();
+            MessageBuilder builder = new MessageBuilder();
+            mentionedUsers.forEach(builder::append);
+            builder.append(" lies dir bitte die ")
+                    .append(event.getGuild().getTextChannelsByName("regeln", true).get(0))
+                    .append(" genau durch!");
+            event.getTextChannel().sendMessage(builder.build()).queue();
+        }
+    }
+
+    private static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
+
+    public static void tutorial(MessageReceivedEvent event) {
+        List<Role> roles = event.getMember().getRoles();
+        event.getMessage().deleteMessage().queue();
+        if (roles.containsAll(event.getGuild().getRolesByName("GHC-Staff", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Admin", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Moderator", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Hackers-Staff", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Coding", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Sponsor", true))
+                || roles.containsAll(event.getGuild().getRolesByName("Ex-Staff", true))
+                ) {
+            List<User> mentionedUsers = event.getMessage().getMentionedUsers();
+            MessageBuilder builder = new MessageBuilder();
+            mentionedUsers.forEach(builder::append);
+            builder.append("\n").append(faq);
+            event.getTextChannel().sendMessage(builder.build()).queue();
+        }
     }
 
 }

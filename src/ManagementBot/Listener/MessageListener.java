@@ -13,6 +13,7 @@ public class MessageListener extends ListenerAdapter{
 		Message message = event.getMessage();
 		MessageChannel channel = message.getChannel();
 		String msg = message.getContent();
+		String[] command = msg.split(" ");
 
 		if (msg.equalsIgnoreCase("!stats")) {
 			channel.sendMessage(Content.getStats()).queue();
@@ -22,6 +23,10 @@ public class MessageListener extends ListenerAdapter{
 			channel.sendMessage(Content.getTopGuilds()).queue();
 		} else if (msg.equalsIgnoreCase("!help")) {
 			Content.sendhelpMessage(event.getAuthor());
+		} else if (command[0].equalsIgnoreCase("!regeln") || command[0].equalsIgnoreCase("!rules")) {
+			Content.rules(event);
+		} else if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
+			Content.tutorial(event);
 		}
 		
 		//TODO

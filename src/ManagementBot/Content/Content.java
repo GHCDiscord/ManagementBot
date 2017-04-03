@@ -27,17 +27,33 @@ public class Content {
     private static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
 
-    private static final String helpMessageCommans = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
+    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
             + "**!topguilds**: Zeigt die besten 10 Gilden an";
+    private static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
+            "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*";
 
     private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
-    public static void sendhelpMessage(User user) {
+    public static void sendhelpMessage(User user, Member member) {
+        if (!member.getUser().equals(user)) {
+            throw new IllegalArgumentException("User and Member have to be the same User!");
+        }
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
-            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageCommans).build()).queue();
+            List<Role> roles = member.getRoles();
+            String send = helpMessageUserCommands;
+            if (roles.containsAll(member.getGuild().getRolesByName("GHC-Staff", true))
+                    || roles.containsAll(member.getGuild().getRolesByName("Admin", true))
+                    || roles.containsAll(member.getGuild().getRolesByName("Moderator", true))
+                    || roles.containsAll(member.getGuild().getRolesByName("Hackers-Staff", true))
+                    || roles.containsAll(member.getGuild().getRolesByName("Coding", true))
+                    || roles.containsAll(member.getGuild().getRolesByName("Sponsor", true))
+                    || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true))
+                    )
+                         send += helpMessageModCommands;
+            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(send).build()).queue();
             DM.sendMessage(helpMessageVerified).queue();
         });
     }

@@ -22,7 +22,7 @@ public class MessageListener extends ListenerAdapter{
 		} else if (msg.equalsIgnoreCase("!topGuilds")) {
 			channel.sendMessage(Content.getTopGuilds()).queue();
 		} else if (msg.equalsIgnoreCase("!help")) {
-			Content.sendhelpMessage(event.getAuthor());
+			Content.sendhelpMessage(event.getAuthor(), event.getMember());
 		} else if (command[0].equalsIgnoreCase("!regeln") || command[0].equalsIgnoreCase("!rules")) {
 			Content.rules(event);
 		} else if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {

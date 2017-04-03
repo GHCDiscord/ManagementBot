@@ -158,7 +158,12 @@ public class Content {
                         new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
                 );
             }
-            event.getMessage().deleteMessage().queue();
+            try {
+                event.getMessage().deleteMessage().queue();
+            } catch (PermissionException e) {
+                if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
+                    e.printStackTrace();
+            }
         }
     }
 
@@ -178,7 +183,12 @@ public class Content {
                 .build();
     }
     public static void rules(MessageReceivedEvent event) {
-        event.getMessage().deleteMessage().queue();
+        try {
+            event.getMessage().deleteMessage().queue();
+        } catch (PermissionException e) {
+            if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
+                e.printStackTrace();
+        }
         if (isModerator(event.getMember())) {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();
@@ -193,7 +203,12 @@ public class Content {
     private static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
 
     public static void tutorial(MessageReceivedEvent event) {
-        event.getMessage().deleteMessage().queue();
+        try {
+            event.getMessage().deleteMessage().queue();
+        } catch (PermissionException e) {
+            if (event.getChannel().getType() != ChannelType.PRIVATE) //Private Nachrichten können nicht gelöscht werden
+                e.printStackTrace();
+        }
         if (isModerator(event.getMember())) {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();

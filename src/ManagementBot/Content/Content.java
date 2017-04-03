@@ -28,7 +28,7 @@ public class Content {
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
 
     private static final String helpMessageCommans = "*!stats*: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
-            /*+ "*!topguilds*: Zeigt die besten 20 Gilden an"; */;
+            + "*!topguilds*: Zeigt die besten 20 Gilden an";
 
     private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
@@ -37,7 +37,7 @@ public class Content {
     public static void sendhelpMessage(User user) {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
-            DM.sendMessage(new EmbedBuilder().setDescription(helpMessageCommans).build()).queue();
+            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageCommans).build()).queue();
             DM.sendMessage(helpMessageVerified).queue();
         });
     }

@@ -37,23 +37,29 @@ public class Content {
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
     public static void sendhelpMessage(User user, Member member) {
-        if (!member.getUser().equals(user)) {
+        if (user == null)
+            return;
+        if (member != null && !member.getUser().equals(user)) {
             throw new IllegalArgumentException("User and Member have to be the same User!");
         }
+        if (isModerator(member))
+            sendModeratorHelpMessage(user);
+        else
+            sendNormalHelpMessage(user);
+    }
+
+    private static void sendNormalHelpMessage(User user) {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
-            List<Role> roles = member.getRoles();
-            String send = helpMessageUserCommands;
-            if (roles.containsAll(member.getGuild().getRolesByName("GHC-Staff", true))
-                    || roles.containsAll(member.getGuild().getRolesByName("Admin", true))
-                    || roles.containsAll(member.getGuild().getRolesByName("Moderator", true))
-                    || roles.containsAll(member.getGuild().getRolesByName("Hackers-Staff", true))
-                    || roles.containsAll(member.getGuild().getRolesByName("Coding", true))
-                    || roles.containsAll(member.getGuild().getRolesByName("Sponsor", true))
-                    || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true))
-                    )
-                         send += helpMessageModCommands;
-            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(send).build()).queue();
+            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands).build()).queue();
+            DM.sendMessage(helpMessageVerified).queue();
+        });
+    }
+
+    private static void sendModeratorHelpMessage(User user ) {
+        user.openPrivateChannel().queue(DM -> {
+            DM.sendMessage(helpMessageIntro).queue();
+            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageModCommands).build()).queue();
             DM.sendMessage(helpMessageVerified).queue();
         });
     }
@@ -172,16 +178,8 @@ public class Content {
                 .build();
     }
     public static void rules(MessageReceivedEvent event) {
-        List<Role> roles = event.getMember().getRoles();
         event.getMessage().deleteMessage().queue();
-        if (roles.containsAll(event.getGuild().getRolesByName("GHC-Staff", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Admin", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Moderator", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Hackers-Staff", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Coding", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Sponsor", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Ex-Staff", true))
-                ) {
+        if (isModerator(event.getMember())) {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);
@@ -195,22 +193,27 @@ public class Content {
     private static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
 
     public static void tutorial(MessageReceivedEvent event) {
-        List<Role> roles = event.getMember().getRoles();
         event.getMessage().deleteMessage().queue();
-        if (roles.containsAll(event.getGuild().getRolesByName("GHC-Staff", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Admin", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Moderator", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Hackers-Staff", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Coding", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Sponsor", true))
-                || roles.containsAll(event.getGuild().getRolesByName("Ex-Staff", true))
-                ) {
+        if (isModerator(event.getMember())) {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);
             builder.append("\n").append(faq);
             event.getTextChannel().sendMessage(builder.build()).queue();
         }
+    }
+
+    private static boolean isModerator(Member member) {
+        if (member == null)
+            return false;
+        List<Role> roles = member.getRoles();
+        return roles.containsAll(member.getGuild().getRolesByName("GHC-Staff", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Admin", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Moderator", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Hackers-Staff", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Coding", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Sponsor", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true));
     }
 
 }

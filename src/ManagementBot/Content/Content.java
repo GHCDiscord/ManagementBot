@@ -22,7 +22,7 @@ public class Content {
     //Versionsnumer
     public static final int VersionNumer = 2;
     //Version
-    public static final String Version = "Development 1.1.04";
+    public static final String Version = "Stable 2";
 
     private static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";

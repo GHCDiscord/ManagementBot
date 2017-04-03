@@ -7,13 +7,13 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 
-public class JoinListener extends ListenerAdapter{
+public class JoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        TextChannel gerneral = event.getGuild().getTextChannelsByName("justcodingthings", true).get(0);
-        gerneral.sendMessage(Content.getJoinMessage(event)).queue();
-        Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRolesByName("Neuling", true).get(0));
+        TextChannel general = event.getGuild().getTextChannelsByName("general", true).get(0);
+        //general.sendMessage(Content.getJoinMessage(event)).queue();
+        //Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRolesByName("Neuling", true).get(0));
 
     }
 }

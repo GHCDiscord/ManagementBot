@@ -2,9 +2,6 @@ package ManagementBot.Content;
 
 import net.dv8tion.jda.core.entities.Message;
 
-/**
- * Created by Schule on 02.04.2017.
- */
 public class DeleteMessageThread implements Runnable{
     int duration;
     Message message;

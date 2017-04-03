@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -46,21 +47,38 @@ public class Content {
             URL url = new URL("http://hackerz.online/stats.json");
             String s = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
             JSONObject jsonObject = new JSONObject(s).getJSONObject("game");
-            MessageEmbed messageEmbed = new EmbedBuilder()
+            /*MessageEmbed messageEmbed = new EmbedBuilder()
                     .setTitle("Statistiken")
-                    .addField("Blacklist-Einträge", jsonObject.getInt("blacklists") + "", true)
-                    .addField("Fehlgeschlagene Bot-Attaken", jsonObject.getInt("bot_attacks_failed") +  "", true)
-                    .addField("Verbindungen", jsonObject.getInt("connections_to_target") + "", true)
-                    .addField("Erfolgreich geknackte Passwörter", jsonObject.getInt("successful_cracked_passwords") + "", true)
-                    .addField("Gestohlene Miner", jsonObject.getInt("total_miners_stolen") + "", true)
-                    .addField("Gestohlene Wallets", jsonObject.getInt("total_wallets_stolen") + "", true)
+                    .addField("", "**Blacklist-Einträge**" +  jsonObject.getInt("blacklists") + "", false)
+                    .addField("" , "**Fehlgeschlagene Bot-Attaken**"+ jsonObject.getInt("bot_attacks_failed") +  "", false)
+                    .addField("" ,"**Erfolgreiche Bot-Attaken**"+ jsonObject.getInt("bot_attacks_success") + "", true)
+                    .addField("" ,"**Verbindungen**"+ jsonObject.getInt("connections_to_target") + "", false)
+                    .addField("" ,"**Erfolgreich geknackte Passwörter**"+ jsonObject.getInt("successful_cracked_passwords") + "", true)
+                    .addField("", "**Gestohlene Miner**"+ jsonObject.getInt("total_miners_stolen") + "", false)
+                    .addField("", "**Gestohlene Wallets**"+ jsonObject.getInt("total_wallets_stolen") + "", true)
                     .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200")
                     .build();
-            return new MessageBuilder().setEmbed(messageEmbed).build();
+            return new MessageBuilder().setEmbed(messageEmbed).build(); */
+            String strg = new StringBuilder()
+                    .append("**Blacklist-Einträge:** ").append(jsonObject.getInt("blacklists"))
+                    .append("\n**Fehlgeschlagene Bot-Attaken:** ").append(jsonObject.getInt("bot_attacks_failed"))
+                    .append("\n**Erfolgreiche Bot-Attaken:** ").append(jsonObject.getInt("bot_attacks_success"))
+                    .append("\n**Verbindungen:** ").append(jsonObject.getInt("connections_to_target"))
+                    .append("\n**Erfolgreich geknackte Passwörter:** ").append(jsonObject.getInt("successful_cracked_passwords"))
+                    .append("\n**Gestohlene Miner:** ").append(jsonObject.getInt("total_miners_stolen"))
+                    .append("\n**Gestohlene Wallets:** ").append(jsonObject.getInt("total_miners_stolen"))
+                    .toString();
+            return new MessageBuilder().setEmbed(new EmbedBuilder().setTitle("Statistiken").setColor(getRandomColor())
+                    .setDescription(strg)
+                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).build();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return new MessageBuilder().build();
+    }
+
+    private static Color getRandomColor()  {
+        return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
     public static Message getTopGuilds() {
@@ -68,7 +86,7 @@ public class Content {
             URL url = new URL("http://hackerz.online/stats.json");
             String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
             JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
-            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 20 Gilden:");
+            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:").setColor(getRandomColor());
 
             //Funktioniert nicht auf mobilen Geräten
 
@@ -86,15 +104,15 @@ public class Content {
             return new MessageBuilder().setEmbed(builder.build()).build(); */
 
             StringBuilder string = new StringBuilder();
-            for (int i = 0; i < jsonArray.length(); i++) {
+            for (int i = 0; (i < jsonArray.length() && i < 10); i++) {
                 string.append(i+1)
-                        .append(".    **")
+                        .append(". **")
                         .append(jsonArray.getJSONObject(i).getString("guild_name"))
-                        .append("**    ")
+                        .append(" **")
                         .append(jsonArray.getJSONObject(i).getString("mitigation"))
                         .append("\n");
             }
-            return new MessageBuilder().setEmbed(new EmbedBuilder().setDescription(string.toString()).build()).build();
+            return new MessageBuilder().setEmbed( builder.setDescription(string.toString()).build()).build();
         } catch (IOException e) {
             e.printStackTrace();
         }

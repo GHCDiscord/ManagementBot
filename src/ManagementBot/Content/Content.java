@@ -25,150 +25,56 @@ public class Content {
     //Version
     public static final String Version = "Stable 2";
 
-    private static final String helpMessageIntro = "**GHC Bot**\n" +
+    static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
 
-    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
+    static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
             + "**!topguilds**: Zeigt die besten 10 Gilden an";
-    private static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
+    static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
             "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*";
 
-    private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
+    static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
-    public static void sendhelpMessage(User user, Member member) {
-        if (user == null)
-            return;
-        if (member != null && !member.getUser().equals(user)) {
-            throw new IllegalArgumentException("User and Member have to be the same User!");
+    static final int deleteTimeVerify = 600;
+
+    public static void startCommand(MessageReceivedEvent event) {
+        getCommand(event).onMessageReceived(event);
+    }
+
+    private static Command getCommand(MessageReceivedEvent event) {
+        String msg = event.getMessage().getContent();
+        String[] command = msg.split(" ");
+
+        if (msg.equalsIgnoreCase("!stats")) {
+            return new Stats();
+        } else if (msg.equalsIgnoreCase(".c3po")) { //verify
+            return new Verify();
+        } else if (msg.equalsIgnoreCase("!topGuilds")) {
+            return new TopGuilds();
+        } else if (msg.equalsIgnoreCase("!help")) {
+            return new Help();
+        } else if (command[0].equalsIgnoreCase("!regeln") || command[0].equalsIgnoreCase("!rules")) {
+            return new Rules();
+        } else if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
+            return new Tutorial();
+        } else if (command[0].equalsIgnoreCase("!addip") && command.length > 3) {
+            return new AddIP();
         }
-        if (isModerator(member))
-            sendModeratorHelpMessage(user);
-        else
-            sendNormalHelpMessage(user);
+        return new Command() {
+            @Override
+            void onMessageReceived(MessageReceivedEvent event) {
+
+            }
+        };
     }
 
-    private static void sendNormalHelpMessage(User user) {
-        user.openPrivateChannel().queue(DM -> {
-            DM.sendMessage(helpMessageIntro).queue();
-            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands).build()).queue();
-            DM.sendMessage(helpMessageVerified).queue();
-        });
-    }
-
-    private static void sendModeratorHelpMessage(User user ) {
-        user.openPrivateChannel().queue(DM -> {
-            DM.sendMessage(helpMessageIntro).queue();
-            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageModCommands).build()).queue();
-            DM.sendMessage(helpMessageVerified).queue();
-        });
-    }
-
-    public static Message getStats() {
-        try {
-            URL url = new URL("http://hackerz.online/stats.json");
-            String s = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
-            JSONObject jsonObject = new JSONObject(s).getJSONObject("game");
-            /*MessageEmbed messageEmbed = new EmbedBuilder()
-                    .setTitle("Statistiken")
-                    .addField("", "**Blacklist-Einträge**" +  jsonObject.getInt("blacklists") + "", false)
-                    .addField("" , "**Fehlgeschlagene Bot-Attaken**"+ jsonObject.getInt("bot_attacks_failed") +  "", false)
-                    .addField("" ,"**Erfolgreiche Bot-Attaken**"+ jsonObject.getInt("bot_attacks_success") + "", true)
-                    .addField("" ,"**Verbindungen**"+ jsonObject.getInt("connections_to_target") + "", false)
-                    .addField("" ,"**Erfolgreich geknackte Passwörter**"+ jsonObject.getInt("successful_cracked_passwords") + "", true)
-                    .addField("", "**Gestohlene Miner**"+ jsonObject.getInt("total_miners_stolen") + "", false)
-                    .addField("", "**Gestohlene Wallets**"+ jsonObject.getInt("total_wallets_stolen") + "", true)
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200")
-                    .build();
-            return new MessageBuilder().setEmbed(messageEmbed).build(); */
-            String strg = new StringBuilder()
-                    .append("**Blacklist-Einträge:** ").append(jsonObject.getInt("blacklists"))
-                    .append("\n**Fehlgeschlagene Bot-Attaken:** ").append(jsonObject.getInt("bot_attacks_failed"))
-                    .append("\n**Erfolgreiche Bot-Attaken:** ").append(jsonObject.getInt("bot_attacks_success"))
-                    .append("\n**Verbindungen:** ").append(jsonObject.getInt("connections_to_target"))
-                    .append("\n**Erfolgreich geknackte Passwörter:** ").append(jsonObject.getInt("successful_cracked_passwords"))
-                    .append("\n**Gestohlene Miner:** ").append(jsonObject.getInt("total_miners_stolen"))
-                    .append("\n**Gestohlene Wallets:** ").append(jsonObject.getInt("total_miners_stolen"))
-                    .toString();
-            return new MessageBuilder().setEmbed(new EmbedBuilder().setTitle("Statistiken").setColor(getRandomColor())
-                    .setDescription(strg)
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new MessageBuilder().build();
-    }
-
-    private static Color getRandomColor()  {
+    public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
-    public static Message getTopGuilds() {
-        try {
-            URL url = new URL("http://hackerz.online/stats.json");
-            String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
-            JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
-            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:").setColor(getRandomColor());
-
-            //Funktioniert nicht auf mobilen Geräten
-
-            //StringBuilder ranks = new StringBuilder(), names = new StringBuilder("**"), mitigation = new StringBuilder();
-            /*for (int i = 0; i < jsonArray.length(); i++) {
-                ranks.append(i+1).append("\n");
-                names.append(jsonArray.getJSONObject(i).getString("guild_name")).append("\n");
-                mitigation.append(jsonArray.getJSONObject(i).getString("mitigation")).append("\n");
-            }
-            names.append("**");
-            builder.addField("Rank", ranks.toString(), true)
-                    .addField("Name", names.toString(), true)
-                    .addField("Mitigation", mitigation.toString(), true)
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200");
-            return new MessageBuilder().setEmbed(builder.build()).build(); */
-
-            StringBuilder string = new StringBuilder();
-            for (int i = 0; (i < jsonArray.length() && i < 10); i++) {
-                string.append(i+1)
-                        .append(". **")
-                        .append(jsonArray.getJSONObject(i).getString("guild_name"))
-                        .append(" **")
-                        .append(jsonArray.getJSONObject(i).getString("mitigation"))
-                        .append("\n");
-            }
-            return new MessageBuilder().setEmbed( builder.setDescription(string.toString()).build()).build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return  new MessageBuilder().build();
-    }
-
-    private static final int deleteTimeVerify = 600;
-
-    public static void verify(MessageReceivedEvent event) {
-        if (event.getGuild() != null) {
-            if (!event.getMember().getRoles().contains(event.getGuild().getRolesByName("verified", true).get(0))) {
-                Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRolesByName("verified", true).get(0));
-                Message message = new MessageBuilder().append(event.getAuthor()).append(" ist nun verifiziert!").build();
-                event.getMessage().getChannel().sendMessage(message).queue( m ->
-                        new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
-                );
-
-            } else {
-                Message message = new MessageBuilder().append(event.getAuthor()).append(" ist bereits verifiziert").build();
-                event.getMessage().getChannel().sendMessage(message).queue( m ->
-                        new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
-                );
-            }
-            try {
-                event.getMessage().deleteMessage().queue();
-            } catch (PermissionException e) {
-                if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
-                    e.printStackTrace();
-            }
-        }
-    }
-
-    public static void addRole(Member member, Guild guild, Role role) {
+    static void addRole(Member member, Guild guild, Role role) {
         try {
             guild.getController().addRolesToMember(member, role).queue();
         } catch (PermissionException e) {
@@ -183,43 +89,8 @@ public class Content {
                 .append("\nViel Spaß bei der GHC | German Hackers Community")
                 .build();
     }
-    public static void rules(MessageReceivedEvent event) {
-        try {
-            event.getMessage().deleteMessage().queue();
-        } catch (PermissionException e) {
-            if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
-                e.printStackTrace();
-        }
-        if (isModerator(event.getMember())) {
-            List<User> mentionedUsers = event.getMessage().getMentionedUsers();
-            MessageBuilder builder = new MessageBuilder();
-            mentionedUsers.forEach(builder::append);
-            builder.append(" lies dir bitte die ")
-                    .append(event.getGuild().getTextChannelsByName("regeln", true).get(0))
-                    .append(" genau durch!");
-            event.getTextChannel().sendMessage(builder.build()).queue();
-        }
-    }
 
-    private static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
-
-    public static void tutorial(MessageReceivedEvent event) {
-        try {
-            event.getMessage().deleteMessage().queue();
-        } catch (PermissionException e) {
-            if (event.getChannel().getType() != ChannelType.PRIVATE) //Private Nachrichten können nicht gelöscht werden
-                e.printStackTrace();
-        }
-        if (isModerator(event.getMember())) {
-            List<User> mentionedUsers = event.getMessage().getMentionedUsers();
-            MessageBuilder builder = new MessageBuilder();
-            mentionedUsers.forEach(builder::append);
-            builder.append("\n").append(faq);
-            event.getTextChannel().sendMessage(builder.build()).queue();
-        }
-    }
-
-    private static boolean isModerator(Member member) {
+    static boolean isModerator(Member member) {
         if (member == null)
             return false;
         List<Role> roles = member.getRoles();
@@ -232,37 +103,7 @@ public class Content {
                 || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true));
     }
 
-
-    public static void addIP(String[] command) {
-        String IP = command[1];
-        if (checkIP(IP)) {
-            IPEntry entry = new IPEntry(IP);
-            for (int i = 2; i < command.length - 1; i++) {
-                try {
-                    if (command[i].equalsIgnoreCase("-n")) {
-                        entry.setName(command[++i]);
-                    } else if (command[i].equalsIgnoreCase("-m")) {
-                        entry.setMiners(Integer.parseInt(command[++i]));
-                    } else if (command[i].equalsIgnoreCase("-r")) {
-                        entry.setRepopulation(Integer.parseInt(command[++i]));
-                    } else {
-                        String[] desc = Arrays.copyOfRange(command, i, command.length);
-                        String description = "";
-                        for (String s : desc) {
-                            description += s;
-                        }
-                        entry.setDescription(description);
-                        break;
-                    }
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        //TODO Add IP to Database
-    }
-
-    private static boolean checkIP(String s) {
+    static boolean checkIP(String s) {
         String[] numbers = s.split("\\.");
         if (numbers.length != 4)
             return false;

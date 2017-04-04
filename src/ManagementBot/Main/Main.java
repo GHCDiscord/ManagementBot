@@ -15,11 +15,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener(), new JoinListener()).setToken("TOKEN HIER").setGame(new GameImpl("Hackerz", "", Game.GameType.DEFAULT)).buildBlocking();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (RateLimitedException e) {
+        } catch (LoginException | InterruptedException | RateLimitedException e) {
             e.printStackTrace();
         }
     }

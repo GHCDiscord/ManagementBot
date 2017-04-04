@@ -39,7 +39,7 @@ public class Stats extends Command{
                     .append("\n**Verbindungen:** ").append(jsonObject.getInt("connections_to_target"))
                     .append("\n**Erfolgreich geknackte Passwörter:** ").append(jsonObject.getInt("successful_cracked_passwords"))
                     .append("\n**Gestohlene Miner:** ").append(jsonObject.getInt("total_miners_stolen"))
-                    .append("\n**Gestohlene Wallets:** ").append(jsonObject.getInt("total_miners_stolen"))
+                    .append("\n**Gestohlene Wallets:** ").append(jsonObject.getInt("total_wallets_stolen"))
                     .toString();
             event.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken").setColor(getRandomColor())
                     .setDescription(strg)

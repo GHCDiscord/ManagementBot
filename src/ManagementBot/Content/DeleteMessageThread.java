@@ -1,6 +1,8 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class DeleteMessageThread implements Runnable{
     int duration;
@@ -22,7 +24,11 @@ public class DeleteMessageThread implements Runnable{
             }
         } catch (InterruptedException e) {
         }finally {
-            message.deleteMessage().queue();
+            try {
+                message.deleteMessage().queue();
+            }catch (PermissionException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -39,6 +39,8 @@ public class Content {
 
     static final int deleteTimeVerify = 600;
 
+    static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
+
     public static void startCommand(MessageReceivedEvent event) {
         getCommand(event).onMessageReceived(event);
     }

@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -231,4 +232,47 @@ public class Content {
                 || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true));
     }
 
+
+    public static void addIP(String[] command) {
+        String IP = command[1];
+        if (checkIP(IP)) {
+            IPEntry entry = new IPEntry(IP);
+            for (int i = 2; i < command.length - 1; i++) {
+                try {
+                    if (command[i].equalsIgnoreCase("-n")) {
+                        entry.setName(command[++i]);
+                    } else if (command[i].equalsIgnoreCase("-m")) {
+                        entry.setMiners(Integer.parseInt(command[++i]));
+                    } else if (command[i].equalsIgnoreCase("-r")) {
+                        entry.setRepopulation(Integer.parseInt(command[++i]));
+                    } else {
+                        String[] desc = Arrays.copyOfRange(command, i, command.length);
+                        String description = "";
+                        for (String s : desc) {
+                            description += s;
+                        }
+                        entry.setDescription(description);
+                        break;
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //TODO Add IP to Database
+    }
+
+    private static boolean checkIP(String s) {
+        String[] numbers = s.split("\\.");
+        if (numbers.length != 4)
+            return false;
+        try {
+            for (String strg : numbers) {
+                Integer.parseInt(strg);
+            }
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

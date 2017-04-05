@@ -1,5 +1,6 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -8,15 +9,17 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
 
+import static ManagementBot.Content.Content.getRandomColor;
+
 
 public class AddIPWithQuestions extends AddIP {
 
-    IPEntry entry;
+    private IPEntry entry;
     ArrayList<Message> messages;
     User user;
 
     private enum Status {
-        start, IP, name, miner, repupulation, accept, accepted, unknown
+        start, IP, name, miner, repupulation, guild, accept, accepted, unknown
     }
     private Status status;
 
@@ -45,6 +48,7 @@ public class AddIPWithQuestions extends AddIP {
                     channel.sendMessage("Bitte nenne den Namen: ").queue(m -> messages.add(m));
                 } else {
                     status = Status.unknown;
+                    onMessageReceived(event);
                 }
                 break;
             case name:
@@ -65,8 +69,17 @@ public class AddIPWithQuestions extends AddIP {
                     entry.setRepopulation(Integer.parseInt(msg));
                 } catch (NumberFormatException e) {
                 }
+                status = Status.guild;
+                channel.sendMessage("Schreibe nun die Informationen zur Gilde des Spielers. Wenn du nicht weißt wie, schreibe !help").queue(m -> messages.add(m));
+                break;
+            case guild:
+                if (msg.equalsIgnoreCase("!help")) {
+                    channel.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription("**-g** startet die Erstellung einer Gilde\n**-gn** Gibt den Namen der Gilde an (nur ein Wort erlaubt)\n**-gk** Gibt den Key der Gilde an").build()).queue(m -> messages.add(m));
+                    break;
+                } else if (msg.startsWith("-g"))
+                    setGuild(1, msg.split(" "), entry);
+                channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\n Repopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuild()).queue(m -> messages.add(m));
                 status = Status.accept;
-                channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\n Repopulation: " + entry.getRepopulation()).queue(m -> messages.add(m));
                 break;
             case accept:
                 if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y"))
@@ -87,7 +100,6 @@ public class AddIPWithQuestions extends AddIP {
                 channel.sendMessage("abgebrochen").queue(m -> messages.add(m));
                 messages.forEach(m -> new Thread(new DeleteMessageThread(0, m)).start());
                 Content.deleteUser(user, this);
-
                 break;
         }
     }

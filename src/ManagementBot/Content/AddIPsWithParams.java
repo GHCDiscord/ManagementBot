@@ -19,7 +19,10 @@ public class AddIPsWithParams extends AddIP {
                         entry.setMiners(Integer.parseInt(command[++i]));
                     } else if (command[i].equalsIgnoreCase("-r")) {
                         entry.setRepopulation(Integer.parseInt(command[++i]));
-                    } else {
+                    } else if (command[i].equalsIgnoreCase("-g")) {
+                        setGuild(i, command, entry);
+                    }
+                    else {
                         String[] desc = Arrays.copyOfRange(command, i, command.length);
                         StringBuilder description = new StringBuilder();
                         for (String s : desc) {

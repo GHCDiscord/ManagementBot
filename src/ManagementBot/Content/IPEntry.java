@@ -11,6 +11,7 @@ public final class IPEntry implements Serializable {
     private int repopulation;
     private String description;
     private User addedBy;
+    private Guild guild;
 
     public IPEntry(String IP) {
         this(IP, "");
@@ -22,6 +23,7 @@ public final class IPEntry implements Serializable {
         this.repopulation = 0;
         this.description = "";
         this.addedBy = null;
+        this.guild = null;
     }
 
     public int getMiners() {
@@ -48,6 +50,10 @@ public final class IPEntry implements Serializable {
         return addedBy;
     }
 
+    public Guild getGuild() {
+        return guild;
+    }
+
     void setDescription(String description) {
         this.description = description;
     }
@@ -66,5 +72,9 @@ public final class IPEntry implements Serializable {
 
     void setUser(User addedBy) {
         this.addedBy = addedBy;
+    }
+
+    public void setGuild(Guild guild) {
+        this.guild = guild;
     }
 }

@@ -12,13 +12,11 @@ import static ManagementBot.Content.Content.isModerator;
 
 public class Rules extends Command {
     @Override
-    void onMessageReceived(MessageReceivedEvent event) {
-        try {
-            event.getMessage().deleteMessage().queue();
-        } catch (PermissionException e) {
-            if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
-                e.printStackTrace();
-        }
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (event.getGuild() != null)
+            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+
+
         if (isModerator(event.getMember())) {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();

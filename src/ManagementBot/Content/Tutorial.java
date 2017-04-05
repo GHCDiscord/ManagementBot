@@ -13,7 +13,7 @@ import static ManagementBot.Content.Content.isModerator;
 
 public class Tutorial extends Command {
     @Override
-    void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event) {
         try {
             event.getMessage().deleteMessage().queue();
         } catch (PermissionException e) {

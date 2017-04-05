@@ -18,25 +18,24 @@ public class Help extends Command {
 
         if (user == null)
             return;
-        if (member != null && !member.getUser().equals(user)) {
+        if (member != null && !member.getUser().equals(user))
             throw new IllegalArgumentException("User and Member have to be the same User!");
-        }
+
         event.getTextChannel().sendMessage(
                 new MessageBuilder().append(user).append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()
         ).queue( m -> {
             if (event.getGuild() != null)
                 new Thread(new DeleteMessageThread(60, m)).start();
         });
+
         if (isModerator(member))
             sendModeratorHelpMessage(user);
         else
             sendNormalHelpMessage(user);
-        try {
-            event.getMessage().deleteMessage().queue();
-        } catch (PermissionException e) {
-            if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
-                e.printStackTrace();
-        }
+
+        if (event.getGuild() != null)
+           new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+
     }
 
     private static void sendNormalHelpMessage(User user) {

@@ -15,7 +15,7 @@ import static ManagementBot.Content.Content.getRandomColor;
 
 public class TopGuilds extends Command {
     @Override
-    void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event) {
         try {
             URL url = new URL("http://hackerz.online/stats.json");
             String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();

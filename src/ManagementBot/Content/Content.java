@@ -14,8 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 public class Content {
@@ -41,36 +40,7 @@ public class Content {
 
     static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
 
-    public static void startCommand(MessageReceivedEvent event) {
-        getCommand(event).onMessageReceived(event);
-    }
-
-    private static Command getCommand(MessageReceivedEvent event) {
-        String msg = event.getMessage().getContent();
-        String[] command = msg.split(" ");
-
-        if (msg.equalsIgnoreCase("!stats")) {
-            return new Stats();
-        } else if (msg.equalsIgnoreCase(".c3po")) { //verify
-            return new Verify();
-        } else if (msg.equalsIgnoreCase("!topGuilds")) {
-            return new TopGuilds();
-        } else if (msg.equalsIgnoreCase("!help")) {
-            return new Help();
-        } else if (command[0].equalsIgnoreCase("!regeln") || command[0].equalsIgnoreCase("!rules")) {
-            return new Rules();
-        } else if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
-            return new Tutorial();
-        } else if (command[0].equalsIgnoreCase("!addip") && command.length > 3) {
-            return new AddIP();
-        }
-        return new Command() {
-            @Override
-            void onMessageReceived(MessageReceivedEvent event) {
-
-            }
-        };
-    }
+    private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
 
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
@@ -105,17 +75,14 @@ public class Content {
                 || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true));
     }
 
-    static boolean checkIP(String s) {
-        String[] numbers = s.split("\\.");
-        if (numbers.length != 4)
-            return false;
-        try {
-            for (String strg : numbers) {
-                Integer.parseInt(strg);
-            }
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    public static Map<User, Command> getUserAddIPWithQuestionsMap() {
+        return userAddIPWithQuestionsMap;
+    }
+    public static void addUser (User user, AddIPWithQuestions command) {
+      userAddIPWithQuestionsMap.put(user, command);
+    }
+
+    public static void deleteUser (User user, AddIPWithQuestions command) {
+        userAddIPWithQuestionsMap.remove(user, command);
     }
 }

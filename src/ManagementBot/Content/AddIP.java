@@ -4,37 +4,23 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 
-import static ManagementBot.Content.Content.checkIP;
+abstract class AddIP extends Command {
 
-public class AddIP extends Command{
-    @Override
-    void onMessageReceived(MessageReceivedEvent event) {
-        String[] command = event.getMessage().getContent().split(" ");
-        String IP = command[1];
-        if (checkIP(IP)) {
-            IPEntry entry = new IPEntry(IP);
-            for (int i = 2; i < command.length - 1; i++) {
-                try {
-                    if (command[i].equalsIgnoreCase("-n")) {
-                        entry.setName(command[++i]);
-                    } else if (command[i].equalsIgnoreCase("-m")) {
-                        entry.setMiners(Integer.parseInt(command[++i]));
-                    } else if (command[i].equalsIgnoreCase("-r")) {
-                        entry.setRepopulation(Integer.parseInt(command[++i]));
-                    } else {
-                        String[] desc = Arrays.copyOfRange(command, i, command.length);
-                        String description = "";
-                        for (String s : desc) {
-                            description += s;
-                        }
-                        entry.setDescription(description);
-                        break;
-                    }
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
+    static boolean checkIP(String s) {
+        String[] numbers = s.split("\\.");
+        if (numbers.length != 4)
+            return false;
+        try {
+            for (String strg : numbers) {
+                Integer.parseInt(strg);
             }
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
-        //TODO Add IP to Database
+    }
+
+    protected static void addIPtoDB(IPEntry entry) {
+        //TODO
     }
 }

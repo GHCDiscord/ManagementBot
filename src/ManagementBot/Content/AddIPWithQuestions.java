@@ -1,6 +1,7 @@
 package ManagementBot.Content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -9,7 +10,6 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.ArrayList;
 
 import static ManagementBot.Content.Content.getRandomColor;
-import static ManagementBot.Content.Content.helpMessageAddIPGuilds;
 
 
 public class AddIPWithQuestions extends AddIP {
@@ -74,7 +74,7 @@ public class AddIPWithQuestions extends AddIP {
                 break;
             case guild:
                 if (msg.equalsIgnoreCase("!help")) {
-                    channel.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageAddIPGuilds).build()).queue(m -> messages.add(m));
+                    channel.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription("**-g** startet die Erstellung einer Gilde\n**-gn** Gibt den Namen der Gilde an (nur ein Wort erlaubt)\n**-gk** Gibt den Key der Gilde an").build()).queue(m -> messages.add(m));
                     break;
                 } else if (msg.startsWith("-g"))
                     setGuild(1, msg.split(" "), entry);
@@ -90,19 +90,16 @@ public class AddIPWithQuestions extends AddIP {
             case accepted:
                 entry.setUser(user);
                 addIPtoDB(entry);
-                if (event.getGuild() != null && messages != null) {
-                    for (Message m : messages) {
-                        new Thread(new DeleteMessageThread(1, m)).start();
-                    }
+                if (event.getGuild() != null) {
+                    messages.forEach(m -> new Thread(new DeleteMessageThread(1, m)).start());
                     //event.getGuild().getTextChannelsByName("hackers-ip", true).get(0).sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugefügt").build());
                 }
-                messages = null;
-                Content.deleteUserAddIPWithQuestions(user, this);
+                Content.deleteUser(user, this);
                 break;
             case unknown:
-                channel.sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
+                channel.sendMessage("abgebrochen").queue(m -> messages.add(m));
                 messages.forEach(m -> new Thread(new DeleteMessageThread(0, m)).start());
-                Content.deleteUserAddIPWithQuestions(user, this);
+                Content.deleteUser(user, this);
                 break;
         }
     }

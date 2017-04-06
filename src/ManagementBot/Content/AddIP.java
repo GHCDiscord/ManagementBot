@@ -1,5 +1,9 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.util.Arrays;
+
 abstract class AddIP extends Command {
 
     static boolean checkIP(String s) {
@@ -17,18 +21,14 @@ abstract class AddIP extends Command {
     }
 
     protected static int setGuild(int i, String[] command, IPEntry entry) {
-        if (command[i].equalsIgnoreCase("-g")) {
-            Guild guild = new Guild();
-            for (i++; i < command.length; i++) {
-                if (command[i].equalsIgnoreCase("-gn"))
-                    guild.setName(command[++i]);
-                else if (command[i].equalsIgnoreCase("-gk"))
-                    guild.setKey(command[++i]);
-                else
-                    break;
-            }
-            entry.setGuild(guild);
-        }
+        Guild guild = new Guild(command[++i]);
+        if (command[++i].equalsIgnoreCase("-gn"))
+            guild.setName(command[++i]);
+        else if (command[i].equalsIgnoreCase("-gk"))
+            guild.setKey(command[++i]);
+        else
+            i--;
+        entry.setGuild(guild);
         return i;
     }
 

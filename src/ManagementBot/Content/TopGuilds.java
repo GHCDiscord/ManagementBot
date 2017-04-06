@@ -1,6 +1,7 @@
 package ManagementBot.Content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Date;
 
 import static ManagementBot.Content.Content.getRandomColor;
 
@@ -20,7 +20,7 @@ public class TopGuilds extends Command {
             URL url = new URL("http://hackerz.online/stats.json");
             String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
             JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
-            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:").setColor(getRandomColor()).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200");
+            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:").setColor(getRandomColor());
 
             //Funktioniert nicht auf mobilen Geräten
 

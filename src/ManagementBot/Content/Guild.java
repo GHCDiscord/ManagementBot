@@ -4,10 +4,6 @@ public class Guild {
     String name;
     String key;
 
-    Guild() {
-        this("", "");
-    }
-
     Guild(String key, String name) {
         this.key = key;
         this.name = name;

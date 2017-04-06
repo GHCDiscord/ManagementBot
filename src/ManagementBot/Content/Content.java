@@ -1,15 +1,22 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.awt.*;
-import java.util.HashMap;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class Content {
 
@@ -22,37 +29,19 @@ public class Content {
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
 
     static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
-            + "**!topguilds**: Zeigt die besten 10 Gilden an" +
-            "**!addIP**: Fügt eine IP der IP-Datenbank hizu. Für weitere Informationen schreibe *!help addIP";
+            + "**!topguilds**: Zeigt die besten 10 Gilden an";
     static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
-            "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
-            "**!gilde + @User** oder **!guild + @User**: Zeit einen Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*";
+            "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*";
 
     static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
-    static final String helMessageAddIPParams = "**!addIP IP** Als erstes muss eine *gültige* IP angegeben werden.\n" +
-            "Darauf können einige dieser Parameter folgen: \n" +
-            "**-n** Name des Hackers (nur ein Wort)\n" +
-            "**-m** Anzahl der Miner" +
-            "**-r** Repopulation des Hackers\n" +
-            "**-g** Gilde des Hackers Mehr Informationen mit *!help guild*\n" +
-            "Alle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\n" +
-            "Wenn keine Parameter angegeben werden, werden die nötigen Informationen durch den Bot abgefragt.";
-    static final String helpMessageAddIPGuilds = "**-g** startet die Erstellung einer Gilde\n" +
-            "**-gn** Gibt den Namen der Gilde an (nur ein Wort erlaubt)\n" +
-            "**-gk** Gibt den Key der Gilde an";
-
     static final int deleteTimeVerify = 600;
 
     static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
 
-    static final String guild = "Alle wichtigen Informationen zu Gilden und deren Funktionsweise findest du unter http://forum.hackerz.online/viewtopic.php?f=12&t=78";
-
     private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
-
-    private static Map<User, Command> userAddIPsWithParamsMap = new HashMap<>();
 
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
@@ -90,21 +79,11 @@ public class Content {
     public static Map<User, Command> getUserAddIPWithQuestionsMap() {
         return userAddIPWithQuestionsMap;
     }
-    public static void addUserAddIPWithQuestions (User user, AddIPWithQuestions command) {
+    public static void addUser (User user, AddIPWithQuestions command) {
       userAddIPWithQuestionsMap.put(user, command);
     }
 
-    public static void deleteUserAddIPWithQuestions (User user, AddIPWithQuestions command) {
+    public static void deleteUser (User user, AddIPWithQuestions command) {
         userAddIPWithQuestionsMap.remove(user, command);
-    }
-    public static void addUserAddIPWithParams(User user, AddIPsWithParams command) {
-        userAddIPsWithParamsMap.put(user, command);
-    }
-    public static void deleteUserAddIPWithParams (User user, AddIPsWithParams command) {
-        userAddIPsWithParamsMap.remove(user, command);
-    }
-
-    public static Map<User, Command> getUserAddIPsWithParamsMap() {
-        return userAddIPsWithParamsMap;
     }
 }

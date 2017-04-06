@@ -1,7 +1,7 @@
-package ManagementBot.Main;
+package de.ghc.managementbot.main;
 
-import ManagementBot.Listener.JoinListener;
-import ManagementBot.Listener.MessageListener;
+import de.ghc.managementbot.listener.JoinListener;
+import de.ghc.managementbot.listener.MessageListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;

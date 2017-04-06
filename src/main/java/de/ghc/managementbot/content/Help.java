@@ -1,14 +1,13 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.exceptions.PermissionException;
 
-import static ManagementBot.Content.Content.*;
+import static de.ghc.managementbot.content.Content.*;
+
 
 public class Help extends Command {
     @Override
@@ -23,7 +22,7 @@ public class Help extends Command {
 
         event.getTextChannel().sendMessage(
                 new MessageBuilder().append(user).append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()
-        ).queue( m -> {
+        ).queue(m -> {
             if (event.getGuild() != null)
                 new Thread(new DeleteMessageThread(60, m)).start();
         });
@@ -34,7 +33,7 @@ public class Help extends Command {
             sendNormalHelpMessage(user);
 
         if (event.getGuild() != null)
-           new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
 
     }
 
@@ -46,7 +45,7 @@ public class Help extends Command {
         });
     }
 
-    private static void sendModeratorHelpMessage(User user ) {
+    private static void sendModeratorHelpMessage(User user) {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
             DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageModCommands).build()).queue();

@@ -1,4 +1,4 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -21,8 +21,7 @@ public class AddIPsWithParams extends AddIP {
                         entry.setRepopulation(Integer.parseInt(command[++i]));
                     } else if (command[i].equalsIgnoreCase("-g")) {
                         setGuild(i, command, entry);
-                    }
-                    else {
+                    } else {
                         String[] desc = Arrays.copyOfRange(command, i, command.length);
                         StringBuilder description = new StringBuilder();
                         for (String s : desc) {
@@ -31,7 +30,7 @@ public class AddIPsWithParams extends AddIP {
                         entry.setDescription(description.toString());
                         break;
                     }
-                }catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

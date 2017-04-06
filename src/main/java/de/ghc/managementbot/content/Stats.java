@@ -1,7 +1,6 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 
@@ -11,9 +10,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Date;
 
-import static ManagementBot.Content.Content.getRandomColor;
+import static de.ghc.managementbot.content.Content.getRandomColor;
 
-public class Stats extends Command{
+public class Stats extends Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         try {
@@ -41,7 +40,7 @@ public class Stats extends Command{
                     .append("\n**Gestohlene Miner:** ").append(jsonObject.getInt("total_miners_stolen"))
                     .append("\n**Gestohlene Wallets:** ").append(jsonObject.getInt("total_wallets_stolen"))
                     .toString();
-            event.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken").setColor(getRandomColor())
+            event.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken", "").setColor(getRandomColor())
                     .setDescription(strg)
                     .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
         } catch (IOException e) {

@@ -1,29 +1,22 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Content {
 
     //Versionsnumer
-    public static final int VersionNumer = 2;
+    public static final int VERSION_NUMBER = 2;
     //Version
-    public static final String Version = "Stable 2";
+    public static final String VERSION = "Stable 2";
 
     static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
@@ -43,7 +36,7 @@ public class Content {
 
     private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
 
-    public static Color getRandomColor()  {
+    public static Color getRandomColor() {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
@@ -54,6 +47,7 @@ public class Content {
             e.printStackTrace();
         }
     }
+
     public static Message getJoinMessage(GuildMemberJoinEvent event) {
         return new MessageBuilder().append("Willkommen, ")
                 .append(event.getMember())
@@ -79,11 +73,12 @@ public class Content {
     public static Map<User, Command> getUserAddIPWithQuestionsMap() {
         return userAddIPWithQuestionsMap;
     }
-    public static void addUser (User user, AddIPWithQuestions command) {
-      userAddIPWithQuestionsMap.put(user, command);
+
+    public static void addUser(User user, AddIPWithQuestions command) {
+        userAddIPWithQuestionsMap.put(user, command);
     }
 
-    public static void deleteUser (User user, AddIPWithQuestions command) {
+    public static void deleteUser(User user, AddIPWithQuestions command) {
         userAddIPWithQuestionsMap.remove(user, command);
     }
 }

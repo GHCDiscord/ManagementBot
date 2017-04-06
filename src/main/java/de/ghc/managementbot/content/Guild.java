@@ -1,4 +1,4 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
 public class Guild {
     String name;

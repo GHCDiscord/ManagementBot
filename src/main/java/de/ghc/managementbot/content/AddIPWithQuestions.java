@@ -1,7 +1,6 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -9,18 +8,14 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
 
-import static ManagementBot.Content.Content.getRandomColor;
+import static de.ghc.managementbot.content.Content.getRandomColor;
 
 
 public class AddIPWithQuestions extends AddIP {
 
-    private IPEntry entry;
     ArrayList<Message> messages;
     User user;
-
-    private enum Status {
-        start, IP, name, miner, repupulation, guild, accept, accepted, unknown
-    }
+    private IPEntry entry;
     private Status status;
 
     public AddIPWithQuestions(User user) {
@@ -54,7 +49,7 @@ public class AddIPWithQuestions extends AddIP {
             case name:
                 entry.setName(msg);
                 status = Status.miner;
-                channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue( m -> messages.add(m));
+                channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(m -> messages.add(m));
                 break;
             case miner:
                 try {
@@ -102,5 +97,9 @@ public class AddIPWithQuestions extends AddIP {
                 Content.deleteUser(user, this);
                 break;
         }
+    }
+
+    private enum Status {
+        start, IP, name, miner, repupulation, guild, accept, accepted, unknown
     }
 }

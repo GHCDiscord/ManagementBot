@@ -1,8 +1,4 @@
-package ManagementBot.Content;
-
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-
-import java.util.Arrays;
+package de.ghc.managementbot.content;
 
 abstract class AddIP extends Command {
 

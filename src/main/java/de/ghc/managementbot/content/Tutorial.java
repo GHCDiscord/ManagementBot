@@ -1,4 +1,4 @@
-package ManagementBot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -8,14 +8,14 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import java.util.List;
 
-import static ManagementBot.Content.Content.faq;
-import static ManagementBot.Content.Content.isModerator;
+import static de.ghc.managementbot.content.Content.faq;
+import static de.ghc.managementbot.content.Content.isModerator;
 
 public class Tutorial extends Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         try {
-            event.getMessage().deleteMessage().queue();
+//            event.getMessage().deleteMessage().queue();
         } catch (PermissionException e) {
             if (event.getChannel().getType() != ChannelType.PRIVATE) //Private Nachrichten können nicht gelöscht werden
                 e.printStackTrace();

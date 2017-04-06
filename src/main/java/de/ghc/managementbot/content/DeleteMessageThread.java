@@ -1,5 +1,4 @@
-package ManagementBot.Content;
-
+package de.ghc.managementbot.content;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -25,7 +24,7 @@ public class DeleteMessageThread implements Runnable{
         } catch (InterruptedException e) {
         }finally {
             try {
-                message.deleteMessage().queue();
+//                message.deleteMessage().queue();
             }catch (PermissionException e) {
                 e.printStackTrace();
             }

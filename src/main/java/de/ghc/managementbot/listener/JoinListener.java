@@ -1,8 +1,5 @@
-package ManagementBot.Listener;
+package de.ghc.managementbot.listener;
 
-import ManagementBot.Content.Content;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 

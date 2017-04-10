@@ -33,7 +33,8 @@ public class AddIPsWithParams extends AddIP {
                         } else if (command[i].equalsIgnoreCase("-r")) {
                             entry.setRepopulation(Integer.parseInt(command[++i]));
                         } else if (command[i].equalsIgnoreCase("-g")) {
-                            i = setGuild(i, command, entry);
+                           if(command[++i].length() == 3)
+                            entry.setGuildTag(command[i]);
                         } else {
                             String[] desc = Arrays.copyOfRange(command, i, command.length);
                             StringBuilder description = new StringBuilder();
@@ -48,7 +49,7 @@ public class AddIPsWithParams extends AddIP {
                     }
                 }
                 done = true;
-                event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nRepopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuild()).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+                event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nRepopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuildTag()).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
             }
         } else {
             String msg = event.getMessage().getContent();

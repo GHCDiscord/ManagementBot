@@ -45,18 +45,13 @@ public class Help extends Command {
                 sendAddIPHelpMessage(user);
             else
                 mentionedUsers.forEach(Help::sendAddIPHelpMessage);
-        else if (command.length > 1 && (command[1].equalsIgnoreCase("guilds") || command[1].equalsIgnoreCase("gilde") || command[1].equalsIgnoreCase("guild"))) {
-            if (mentionedUsers.isEmpty())
-                sendGuildHelpMessage(user);
-            else
-                mentionedUsers.forEach(Help::sendGuildHelpMessage);
-        } else {
+         else {
             if (mentionedUsers.isEmpty()) {
                 if (isModerator(member))
                     sendModeratorHelpMessage(user);
                 else
                     sendNormalHelpMessage(user);
-            }
+            } else
             mentionedUsers.forEach(u -> {
                 if (event.getGuild() != null && isModerator(event.getGuild().getMember(u)))
                     sendModeratorHelpMessage(u);
@@ -89,11 +84,6 @@ public class Help extends Command {
     private static void sendAddIPHelpMessage(User user) {
         user.openPrivateChannel().queue(DM ->
                 DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helMessageAddIPParams).build()).queue()
-        );
-    }
-    private static void sendGuildHelpMessage(User user) {
-        user.openPrivateChannel().queue(DM ->
-            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageAddIPGuilds).build()).queue()
         );
     }
 }

@@ -1,15 +1,11 @@
 package ManagementBot.Content;
 
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
-
-import static ManagementBot.Content.Content.getRandomColor;
-import static ManagementBot.Content.Content.helpMessageAddIPGuilds;
 
 
 public class AddIPWithQuestions extends AddIP {
@@ -70,15 +66,12 @@ public class AddIPWithQuestions extends AddIP {
                 } catch (NumberFormatException e) {
                 }
                 status = Status.guild;
-                channel.sendMessage("Schreibe nun die Informationen zur Gilde des Spielers. Wenn du nicht weißt wie, schreibe !help").queue(m -> messages.add(m));
+                channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe null").queue(m -> messages.add(m));
                 break;
             case guild:
-                if (msg.equalsIgnoreCase("!help")) {
-                    channel.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageAddIPGuilds).build()).queue(m -> messages.add(m));
-                    break;
-                } else if (msg.startsWith("-g"))
-                    setGuild(1, msg.split(" "), entry);
-                channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\n Repopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuild()).queue(m -> messages.add(m));
+                if (msg.length() == 3)
+                    entry.setGuildTag(msg);
+                channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\n Repopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuildTag()).queue(m -> messages.add(m));
                 status = Status.accept;
                 break;
             case accept:

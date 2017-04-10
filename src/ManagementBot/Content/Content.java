@@ -37,12 +37,9 @@ public class Content {
             "**-n** Name des Hackers (nur ein Wort)\n" +
             "**-m** Anzahl der Miner" +
             "**-r** Repopulation des Hackers\n" +
-            "**-g** Gilde des Hackers Mehr Informationen mit *!help guild*\n" +
+            "**-g** Kürzel der Gilde des Hackers. (immer drei Zeichen) \n" +
             "Alle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\n" +
             "Wenn keine Parameter angegeben werden, werden die nötigen Informationen durch den Bot abgefragt.";
-    static final String helpMessageAddIPGuilds = "**-g** startet die Erstellung einer Gilde\n" +
-            "**-gn** Gibt den Namen der Gilde an (nur ein Wort erlaubt)\n" +
-            "**-gk** Gibt den Key der Gilde an";
 
     static final int deleteTimeVerify = 600;
 

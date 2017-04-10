@@ -1,7 +1,6 @@
 package ManagementBot.Content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
 
@@ -34,8 +33,8 @@ public class Stats extends Command{
             return new MessageBuilder().setEmbed(messageEmbed).build(); */
             String strg = new StringBuilder()
                     .append("**Blacklist-Einträge:** ").append(jsonObject.getInt("blacklists"))
-                    .append("\n**Fehlgeschlagene Bot-Attaken:** ").append(jsonObject.getInt("bot_attacks_failed"))
-                    .append("\n**Erfolgreiche Bot-Attaken:** ").append(jsonObject.getInt("bot_attacks_success"))
+                    .append("\n**Fehlgeschlagene Bot-Attacken:** ").append(jsonObject.getInt("bot_attacks_failed"))
+                    .append("\n**Erfolgreiche Bot-Attacken:** ").append(jsonObject.getInt("bot_attacks_success"))
                     .append("\n**Verbindungen:** ").append(jsonObject.getInt("connections_to_target"))
                     .append("\n**Erfolgreich geknackte Passwörter:** ").append(jsonObject.getInt("successful_cracked_passwords"))
                     .append("\n**Gestohlene Miner:** ").append(jsonObject.getInt("total_miners_stolen"))

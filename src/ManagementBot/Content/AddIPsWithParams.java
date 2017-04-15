@@ -5,6 +5,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 
+import static ManagementBot.Content.Content.isVerified;
+
 public class AddIPsWithParams extends AddIP {
 
     private User user;
@@ -22,7 +24,7 @@ public class AddIPsWithParams extends AddIP {
         String[] command = event.getMessage().getContent().split(" ");
         if (!done) {
             String IP = command[1];
-            if (checkIP(IP)) {
+            if (checkIP(IP) && isVerified(event.getMember())) {
                 entry = new IPEntry(IP);
                 for (int i = 2; i < command.length - 1; i++) {
                     try {

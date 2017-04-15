@@ -11,6 +11,32 @@ import java.util.List;
 import static ManagementBot.Content.Content.*;
 
 public class Help extends Command {
+
+    private static final String helpMessageIntro = "**GHC Bot**\n" +
+            "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
+
+    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
+            + "**!topguilds**: Zeigt die besten 10 Gilden an";
+
+    private static final String helpMessageVerifiedCommands =
+            "\n**!addIP**: Fügt eine IP der IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**";
+    private static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
+            "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
+            "**!gilde + @User** oder **!guild + @User**: Zeit einen Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*";
+
+    private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
+            "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
+            "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
+
+    private static final String helMessageAddIPParams = "**!addIP IP** Als erstes muss eine *gültige* IP angegeben werden.\n" +
+            "Darauf können einige dieser Parameter folgen: \n" +
+            "**-n** Name des Hackers (nur ein Wort)\n" +
+            "**-m** Anzahl der Miner\n" +
+            "**-r** Repopulation des Hackers\n" +
+            "**-g** Kürzel der Gilde des Hackers. (immer drei Zeichen) \n" +
+            "Alle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\n" +
+            "Wenn keine Parameter angegeben werden, werden die nötigen Informationen abgefragt.";
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         User user = event.getAuthor();
@@ -40,25 +66,30 @@ public class Help extends Command {
         }
 
 
-        if (command.length > 1 && command[1].equalsIgnoreCase("addIP"))
-            if (mentionedUsers.isEmpty())
-                sendAddIPHelpMessage(user);
-            else
-                mentionedUsers.forEach(Help::sendAddIPHelpMessage);
-         else {
+        if (command.length > 1 && command[1].equalsIgnoreCase("addIP")) {
+            if (isVerified(member)) {
+                if (mentionedUsers.isEmpty())
+                    sendAddIPHelpMessage(user);
+                else
+                    mentionedUsers.forEach(Help::sendAddIPHelpMessage);
+            }
+        } else {
             if (mentionedUsers.isEmpty()) {
                 if (isModerator(member))
                     sendModeratorHelpMessage(user);
-                else
+                else if (isVerified(member))
                     sendNormalHelpMessage(user);
-            } else
-            mentionedUsers.forEach(u -> {
-                if (event.getGuild() != null && isModerator(event.getGuild().getMember(u)))
-                    sendModeratorHelpMessage(u);
                 else
-                    sendNormalHelpMessage(u);
-            });
-
+                    sendNewHelpMessage(user);
+            } else
+                mentionedUsers.forEach(u -> {
+                    if (event.getGuild() != null && isModerator(event.getGuild().getMember(u)))
+                        sendModeratorHelpMessage(u);
+                    else if (event.getGuild() != null && isVerified(event.getGuild().getMember(u)))
+                        sendNormalHelpMessage(u);
+                    else
+                        sendNewHelpMessage(u);
+                });
         }
         if (event.getGuild() != null)
            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
@@ -66,7 +97,7 @@ public class Help extends Command {
 
     }
 
-    private static void sendNormalHelpMessage(User user) {
+    private static void sendNewHelpMessage(User user) {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
             DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands).build()).queue();
@@ -74,10 +105,18 @@ public class Help extends Command {
         });
     }
 
-    private static void sendModeratorHelpMessage(User user ) {
+    private static void sendNormalHelpMessage(User user) {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
-            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageModCommands).build()).queue();
+            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageVerifiedCommands).build()).queue();
+            DM.sendMessage(helpMessageVerified).queue();
+        });
+    }
+
+    private static void sendModeratorHelpMessage(User user) {
+        user.openPrivateChannel().queue(DM -> {
+            DM.sendMessage(helpMessageIntro).queue();
+            DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageVerifiedCommands + helpMessageModCommands).build()).queue();
             DM.sendMessage(helpMessageVerified).queue();
         });
     }

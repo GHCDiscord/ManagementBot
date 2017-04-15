@@ -6,5 +6,5 @@ abstract class Guide extends Command {
 
     protected static final String faq = " Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
 
-    protected static final String taktik = " Genaue Erklärungen zu verschiedenen Taktiken und Spielweise finest du unter ";
+    protected static final String taktik = " Genaue Erklärungen zu verschiedenen Taktiken und Spielweisen finest du unter *Doc arbeitet daran*";
 }

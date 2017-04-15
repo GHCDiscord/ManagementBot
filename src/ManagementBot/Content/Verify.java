@@ -1,15 +1,15 @@
 package ManagementBot.Content;
 
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import static ManagementBot.Content.Content.addRole;
-import static ManagementBot.Content.Content.deleteTimeVerify;
 
 public class Verify extends Command {
+
+    private static final int deleteTimeVerify = 600;
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getGuild() != null) {
@@ -26,12 +26,7 @@ public class Verify extends Command {
                         new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
                 );
             }
-            try {
-                event.getMessage().deleteMessage().queue();
-            } catch (PermissionException e) {
-                if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
-                    e.printStackTrace();
-            }
+            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
         }
     }
 }

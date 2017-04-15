@@ -4,7 +4,7 @@ import ManagementBot.Content.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class MessageListener extends ListenerAdapter{
+public class MessageListener extends ListenerAdapter {
 	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
@@ -54,9 +54,8 @@ public class MessageListener extends ListenerAdapter{
 			return com;
 		} else if (command[0].equalsIgnoreCase("!gilde") || command[0].equalsIgnoreCase("!guild")) {
 			return new GuildsGuide();
-		} else if(msg.equals("Hä?")) {
-			return new Command() {public void onMessageReceived(MessageReceivedEvent event) {event.getChannel().sendMessage("Das heißt: \"Wie bitte\" !!!").queue();}};
-		}
+		} /*else if (command[0].equalsIgnoreCase("!taktik"))
+			return new Taktik(); */
 		return new Command() {
 			@Override
 			public void onMessageReceived(MessageReceivedEvent event) {

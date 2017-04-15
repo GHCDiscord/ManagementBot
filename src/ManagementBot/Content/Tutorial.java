@@ -8,10 +8,10 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import java.util.List;
 
-import static ManagementBot.Content.Content.faq;
 import static ManagementBot.Content.Content.isModerator;
 
-public class Tutorial extends Command {
+public class Tutorial extends Guide {
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         try {

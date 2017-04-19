@@ -1,6 +1,6 @@
 package ManagementBot.Content;
 
-abstract class AddIP extends Command {
+abstract class AddIP extends Database {
 
     static boolean checkIP(String s) {
         String[] numbers = s.split("\\.");
@@ -14,9 +14,5 @@ abstract class AddIP extends Command {
         } catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    protected static void addIPtoDB(IPEntry entry) {
-        //TODO
     }
 }

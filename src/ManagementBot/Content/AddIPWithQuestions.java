@@ -1,5 +1,6 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -33,18 +34,20 @@ public class AddIPWithQuestions extends AddIP {
             messages.add(event.getMessage());
         String msg = event.getMessage().getContent();
         TextChannel channel = event.getTextChannel();
-
-        if (isVerified(event.getMember())) {
+        Member member = event.getMember();
+        if (member == null)
+            member = Content.getGHCMember(event.getAuthor());
+        if (isVerified(member)) {
             switch (status) {
                 case start:
-                    channel.sendMessage("Bitte nenne die IP: ").queue(m -> messages.add(m));
+                    channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);
                     status = Status.IP;
                     break;
                 case IP:
                     if (checkIP(msg)) {
                         entry = new IPEntry(msg);
                         status = Status.name;
-                        channel.sendMessage("Bitte nenne den Namen: ").queue(m -> messages.add(m));
+                        channel.sendMessage("Bitte nenne den Namen: ").queue(messages::add);
                     } else {
                         status = Status.unknown;
                         onMessageReceived(event);
@@ -53,7 +56,7 @@ public class AddIPWithQuestions extends AddIP {
                 case name:
                     entry.setName(msg);
                     status = Status.miner;
-                    channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(m -> messages.add(m));
+                    channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(messages::add);
                     break;
                 case miner:
                     try {
@@ -61,7 +64,7 @@ public class AddIPWithQuestions extends AddIP {
                     } catch (NumberFormatException e) {
                     }
                     status = Status.repupulation;
-                    channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(m -> messages.add(m));
+                    channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(messages::add);
                     break;
                 case repupulation:
                     try {
@@ -69,12 +72,12 @@ public class AddIPWithQuestions extends AddIP {
                     } catch (NumberFormatException e) {
                     }
                     status = Status.guild;
-                    channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe null").queue(m -> messages.add(m));
+                    channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe null").queue(messages::add);
                     break;
                 case guild:
                     if (msg.length() == 3)
                         entry.setGuildTag(msg);
-                    channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\n Repopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuildTag()).queue(m -> messages.add(m));
+                    channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nRepopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription()+ "\n schreibe 'Ja' zum bestätigen.").queue(messages::add);
                     status = Status.accept;
                     break;
                 case accept:
@@ -83,17 +86,21 @@ public class AddIPWithQuestions extends AddIP {
                     else
                         status = Status.unknown;
                     onMessageReceived(event);
+                    break;
                 case accepted:
+                    Content.deleteUserAddIPWithQuestions(user, this);
                     entry.setUser(user);
-                    addIPtoDB(entry);
+                    String result = addIPtoDB(entry);
                     if (event.getGuild() != null && messages != null) {
                         for (Message m : messages) {
-                            new Thread(new DeleteMessageThread(1, m)).start();
+                            new Thread(new DeleteMessageThread(0, m)).start();
                         }
-                        //event.getGuild().getTextChannelsByName("hackers-ip", true).get(0).sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugefügt").build());
+                        if (result.equals("1")) {
+                        //event.getGuild().getTextChannelsByName("hackers-ip", true).get(0).sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugefügt").build()).queue(m -> new Thread(new DeleteMessageThread(86400, m)));
+                        } else
+                            channel.sendMessage("Es ist ein Fehler aufgetreten:\n" + result).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                     }
                     messages = null;
-                    Content.deleteUserAddIPWithQuestions(user, this);
                     break;
                 case unknown:
                     channel.sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());

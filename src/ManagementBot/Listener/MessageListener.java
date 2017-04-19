@@ -17,6 +17,9 @@ public class MessageListener extends ListenerAdapter {
 					event.getChannel().getName(), event.getAuthor().getName(), msg);
 		}
 
+		if (Content.getGhc() == null && event.getGuild() != null && event.getGuild().getName().equals("German Hackers Community"))
+			Content.setGhc(event.getGuild());
+
 		startCommand(event);
 	}
 
@@ -56,6 +59,10 @@ public class MessageListener extends ListenerAdapter {
 			return new GuildsGuide();
 		} /*else if (command[0].equalsIgnoreCase("!taktik"))
 			return new Taktik(); */
+		else if (command[0].equalsIgnoreCase("!register") || command[0].equalsIgnoreCase("!addAccount"))
+			return new AddUser();
+		else if (command[0].equalsIgnoreCase("!refresh"))
+			return new RefreshUser();
 		return new Command() {
 			@Override
 			public void onMessageReceived(MessageReceivedEvent event) {

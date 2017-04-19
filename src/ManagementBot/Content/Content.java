@@ -22,6 +22,8 @@ public class Content {
 
     private static Map<User, Command> userAddIPsWithParamsMap = new HashMap<>();
 
+    private static Guild ghc;
+
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
@@ -52,6 +54,20 @@ public class Content {
             return false;
         List<Role> roles = member.getRoles();
         return roles.containsAll(member.getGuild().getRolesByName("Verified", true));
+    }
+    static Member getGHCMember(User user) {
+        if (ghc != null) {
+            return ghc.getMember(user);
+        }
+        return null;
+    }
+
+    public static void setGhc(Guild ghc) {
+        Content.ghc = ghc;
+    }
+
+    public static Guild getGhc() {
+        return ghc;
     }
 
     public static Map<User, Command> getUserAddIPWithQuestionsMap() {

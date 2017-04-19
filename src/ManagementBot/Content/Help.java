@@ -18,11 +18,12 @@ public class Help extends Command {
     private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
             + "**!topguilds**: Zeigt die besten 10 Gilden an";
 
-    private static final String helpMessageVerifiedCommands =
-            "\n**!addIP**: Fügt eine IP der IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**";
+    private static final String helpMessageVerifiedCommands = "\n**!addIP**: Fügt eine IP der IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**\n" +
+            "**!register + *[Nutzername in der DB]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank" +
+            "**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.";
     private static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
-            "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
-            "**!gilde + @User** oder **!guild + @User**: Zeit einen Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*";
+            "**!regeln + [@User]*** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
+            "**!gilde + [@User]*** oder **!guild + @User**: Zeit einen Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*";
 
     private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
@@ -41,6 +42,8 @@ public class Help extends Command {
     public void onMessageReceived(MessageReceivedEvent event) {
         User user = event.getAuthor();
         Member member = event.getMember();
+        if (member == null)
+            member = Content.getGHCMember(event.getAuthor());
         String[] command = event.getMessage().getContent().split(" ");
         List<User> mentionedUsers = event.getMessage().getMentionedUsers();
 

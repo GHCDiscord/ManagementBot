@@ -63,6 +63,10 @@ public class MessageListener extends ListenerAdapter {
 			return new AddUser();
 		else if (command[0].equalsIgnoreCase("!refresh"))
 			return new RefreshUser();
+		else if (command[0].equalsIgnoreCase("!stats") && command.length >= 2)
+			return new CountryStats();
+		else if (msg.equalsIgnoreCase("!topcountry"))
+			return new TopCountry();
 		return new Command() {
 			@Override
 			public void onMessageReceived(MessageReceivedEvent event) {

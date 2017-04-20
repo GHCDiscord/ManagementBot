@@ -15,25 +15,28 @@ public class Help extends Command {
     private static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
 
-    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
-            + "**!topguilds**: Zeigt die besten 10 Gilden an";
+    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n" +
+            "**!stats *Land***: Zeit live-Statistiken eine bestimmten Landes an\nMöglich ist entweder der Landescode (z.B. 'DE' für Deutschland, 'ES' für Spanien)\noder der Englische Name des Landes (z.B. Germany, Espain)"
+            + "\n**!topguilds**: Zeigt die besten 10 Gilden an\n" +
+            "**!topcountry**: Zeigt die besten 10 Länder an";
 
     private static final String helpMessageVerifiedCommands = "\n**!addIP**: Fügt eine IP der IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**\n" +
-            "**!register + *[Nutzername in der DB]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank" +
+            "**!register + *[Nutzername in der DB]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank\n" +
             "**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.";
-    private static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
-            "**!regeln + [@User]*** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
-            "**!gilde + [@User]*** oder **!guild + @User**: Zeit einen Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*";
+    private static final String helpMessageModCommands = "\n**!tut + *[@User]*** oder **!guide + *[@User]*  **: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
+            "**!regeln + *[@User]*** oder **!rules + *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
+            "**!gilde + *[@User]*** oder **!guild + *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*\n" +
+            "**!help + *[@User]***:: Sendet einem Nutzer diesen Text";
 
     private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
-            "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
+            "Solltest du noch nicht den Verified-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
     private static final String helMessageAddIPParams = "**!addIP IP** Als erstes muss eine *gültige* IP angegeben werden.\n" +
             "Darauf können einige dieser Parameter folgen: \n" +
             "**-n** Name des Hackers (nur ein Wort)\n" +
             "**-m** Anzahl der Miner\n" +
-            "**-r** Repopulation des Hackers\n" +
+            "**-r** Reputation des Hackers\n" +
             "**-g** Kürzel der Gilde des Hackers. (immer drei Zeichen) \n" +
             "Alle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\n" +
             "Wenn keine Parameter angegeben werden, werden die nötigen Informationen abgefragt.";
@@ -44,6 +47,7 @@ public class Help extends Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
+        boolean verified = isVerified(member);
         String[] command = event.getMessage().getContent().split(" ");
         List<User> mentionedUsers = event.getMessage().getMentionedUsers();
 
@@ -59,7 +63,7 @@ public class Help extends Command {
                 ).queue(m ->
                         new Thread(new DeleteMessageThread(60, m)).start()
                 );
-            } else {
+            } else if (verified) {
                 MessageBuilder builder = new MessageBuilder();
                 mentionedUsers.forEach(builder::append);
                 event.getTextChannel().sendMessage(builder.append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()).queue( m ->
@@ -70,7 +74,7 @@ public class Help extends Command {
 
 
         if (command.length > 1 && command[1].equalsIgnoreCase("addIP")) {
-            if (isVerified(member)) {
+            if (verified) {
                 if (mentionedUsers.isEmpty())
                     sendAddIPHelpMessage(user);
                 else
@@ -84,7 +88,7 @@ public class Help extends Command {
                     sendNormalHelpMessage(user);
                 else
                     sendNewHelpMessage(user);
-            } else
+            } else if (verified)
                 mentionedUsers.forEach(u -> {
                     if (event.getGuild() != null && isModerator(event.getGuild().getMember(u)))
                         sendModeratorHelpMessage(u);

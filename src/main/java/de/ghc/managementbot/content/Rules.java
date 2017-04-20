@@ -1,4 +1,4 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-import static ManagementBot.Content.Content.isModerator;
+import static de.ghc.managementbot.content.Content.isModerator;
 
 public class Rules implements Command {
     @Override

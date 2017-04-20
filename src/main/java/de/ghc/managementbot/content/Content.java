@@ -1,4 +1,4 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;

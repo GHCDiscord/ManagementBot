@@ -1,4 +1,4 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 abstract class AddIP extends Database {
 

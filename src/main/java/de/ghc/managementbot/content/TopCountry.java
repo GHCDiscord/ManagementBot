@@ -1,4 +1,4 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static ManagementBot.Content.Content.getRandomColor;
+import static de.ghc.managementbot.content.Content.getRandomColor;
 
 public class TopCountry extends Country implements Command {
     @Override

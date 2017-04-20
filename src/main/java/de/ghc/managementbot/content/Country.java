@@ -1,4 +1,4 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

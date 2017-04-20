@@ -1,10 +1,10 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import static ManagementBot.Content.Content.isVerified;
+import static de.ghc.managementbot.content.Content.isVerified;
 
 public class RefreshUser extends Database implements Command {
 

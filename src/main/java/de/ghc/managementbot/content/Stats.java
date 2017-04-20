@@ -1,4 +1,4 @@
-package de.ghc.managementbot.Content;
+package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Date;
 
-import static ManagementBot.Content.Content.getRandomColor;
+import static de.ghc.managementbot.content.Content.getRandomColor;
 
 public class Stats implements Command {
     @Override

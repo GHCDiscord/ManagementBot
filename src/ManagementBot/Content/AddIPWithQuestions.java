@@ -1,5 +1,6 @@
 package ManagementBot.Content;
 
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import static ManagementBot.Content.Content.isVerified;
 
 
-public class AddIPWithQuestions extends AddIP {
+public class AddIPWithQuestions extends AddIP implements Command{
 
     private IPEntry entry;
     ArrayList<Message> messages;
@@ -77,7 +78,7 @@ public class AddIPWithQuestions extends AddIP {
                 case guild:
                     if (msg.length() == 3)
                         entry.setGuildTag(msg);
-                    channel.sendMessage("Stimmen diese Daten?\n IP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nRepopulation: " + entry.getRepopulation() + "\nGuild: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription()+ "\n schreibe 'Ja' zum bestätigen.").queue(messages::add);
+                    channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum bestätigen.").queue(messages::add);
                     status = Status.accept;
                     break;
                 case accept:
@@ -91,13 +92,15 @@ public class AddIPWithQuestions extends AddIP {
                     Content.deleteUserAddIPWithQuestions(user, this);
                     entry.setUser(user);
                     String result = addIPtoDB(entry);
-                    if (event.getGuild() != null && messages != null) {
+                    if (messages != null) {
                         for (Message m : messages) {
                             new Thread(new DeleteMessageThread(0, m)).start();
                         }
                         if (result.equals("1")) {
-                        //event.getGuild().getTextChannelsByName("hackers-ip", true).get(0).sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugefügt").build()).queue(m -> new Thread(new DeleteMessageThread(86400, m)));
-                        } else
+                            event.getGuild().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugefügt").build()).queue();
+                        } else if (result.equals("ip already registered"))
+                            channel.sendMessage("Diese IP existiert bereits in der Datenbank. Updates können momentan noch nicht mit dem Bot durchgeführt werden. Bitte schreibe einem Kontributor, er wird sich dann darum kümmern.").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+                        else
                             channel.sendMessage("Es ist ein Fehler aufgetreten:\n" + result).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                     }
                     messages = null;

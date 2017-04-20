@@ -1,16 +1,14 @@
 package ManagementBot.Content;
 
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import java.util.List;
 
 import static ManagementBot.Content.Content.isModerator;
 
-public class Rules extends Command {
+public class Rules implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getGuild() != null)

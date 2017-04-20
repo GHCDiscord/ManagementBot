@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import static ManagementBot.Content.Content.isModerator;
 
-public class Taktik extends Guide {
+public class Taktik extends Guide implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (isModerator(event.getMember())) {

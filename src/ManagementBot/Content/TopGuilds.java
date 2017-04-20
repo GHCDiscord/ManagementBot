@@ -13,7 +13,7 @@ import java.util.Date;
 
 import static ManagementBot.Content.Content.getRandomColor;
 
-public class TopGuilds extends Command {
+public class TopGuilds implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         try {

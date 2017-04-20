@@ -1,6 +1,6 @@
 package ManagementBot.Content;
 
-abstract class Guide extends Command {
+abstract class Guide {
 
     protected static final String guild = " Alle wichtigen Informationen zu Gilden und deren Funktionsweise findest du unter http://forum.hackerz.online/viewtopic.php?f=12&t=78";
 

@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import static ManagementBot.Content.Content.addRole;
 
-public class Verify extends Command {
+public class Verify implements Command {
 
     private static final int deleteTimeVerify = 600;
 

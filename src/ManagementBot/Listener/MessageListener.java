@@ -10,15 +10,17 @@ public class MessageListener extends ListenerAdapter {
 	public void onMessageReceived(MessageReceivedEvent event) {
 		String msg = event.getMessage().getContent();
 		//output
-		if (event.getGuild() == null) {
+		/*if (event.getGuild() == null) {
 			System.out.printf("[Priv][%s] %s: %s\n", event.getChannel().getName(), event.getAuthor().getName(), msg);
 		} else {
 			System.out.printf("[%s][%s] %s: %s \n", event.getGuild().getName(),
 					event.getChannel().getName(), event.getAuthor().getName(), msg);
-		}
+		} */
 
-		if (Content.getGhc() == null && event.getGuild() != null && event.getGuild().getName().equals("German Hackers Community"))
+		if (Content.getGhc() == null && event.getGuild() != null && event.getGuild().getName().equals("German Hackers Community")) {
 			Content.setGhc(event.getGuild());
+			new Thread(new ServerStatsThread(Content.getGhc(), 2592000)).start();
+		}
 
 		startCommand(event);
 	}

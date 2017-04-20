@@ -11,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public abstract class Country extends Command {
+public abstract class Country {
 
     protected static synchronized JSONArray getCountryArray() {
         HttpClient client = HttpClients.createDefault();

@@ -10,7 +10,7 @@ import java.util.List;
 
 import static ManagementBot.Content.Content.isModerator;
 
-public class Tutorial extends Guide {
+public class Tutorial extends Guide implements Command {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

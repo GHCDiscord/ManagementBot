@@ -10,7 +10,7 @@ import java.util.List;
 
 import static ManagementBot.Content.Content.*;
 
-public class Help extends Command {
+public class Help implements Command {
 
     private static final String helpMessageIntro = "**GHC Bot**\n" +
             "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
@@ -21,7 +21,7 @@ public class Help extends Command {
             "**!topcountry**: Zeigt die besten 10 Länder an";
 
     private static final String helpMessageVerifiedCommands = "\n**!addIP**: Fügt eine IP der IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**\n" +
-            "**!register + *[Nutzername in der DB]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank\n" +
+            "**!register + *[Nutzername im Spiel]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank\n" +
             "**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.";
     private static final String helpMessageModCommands = "\n**!tut + *[@User]*** oder **!guide + *[@User]*  **: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
             "**!regeln + *[@User]*** oder **!rules + *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +

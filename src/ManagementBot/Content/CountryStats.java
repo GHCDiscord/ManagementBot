@@ -9,10 +9,11 @@ import java.util.Date;
 
 import static ManagementBot.Content.Content.getRandomColor;
 
-public class CountryStats extends Country {
+public class CountryStats extends Country implements Command {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        event.getChannel().sendTyping().queue();
         JSONArray array = getCountryArray();
         JSONObject country = getCountry(event.getMessage().getContent().substring(7));
         if (country != null) {

@@ -11,9 +11,10 @@ import java.util.TreeMap;
 
 import static ManagementBot.Content.Content.getRandomColor;
 
-public class TopCountry extends Country{
+public class TopCountry extends Country implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        event.getChannel().sendTyping().queue();
         JSONArray arr = getCountryArray();
         SortedMap<Integer, JSONObject> avHCMap = new TreeMap<>();
         for (int i = 0; i < arr.length(); i++) {

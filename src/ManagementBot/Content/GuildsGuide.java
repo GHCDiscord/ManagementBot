@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import static ManagementBot.Content.Content.isModerator;
 
-public class GuildsGuide extends Guide {
+public class GuildsGuide extends Guide implements Command {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

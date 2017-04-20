@@ -24,7 +24,7 @@ abstract class Database {
   private static final String refresh = url + "/api/refreshaccount.php";
   private static final String stats = url + "/api/stats.php";
 
-  private static final String token = "((0-XUcrlv3wIoXu5rATgCKckjeAguPgpyXyq)jTsvqMmegyWN";
+  private static final String token = "TOKEN";
 
   private static HttpClient client = HttpClients.createDefault();
 

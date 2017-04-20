@@ -1,9 +1,9 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.Content;
 
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import java.awt.*;
@@ -14,29 +14,17 @@ import java.util.Map;
 public class Content {
 
     //Versionsnumer
-    public static final int VERSION_NUMBER = 2;
+    public static final int versionNumer = 5;
     //Version
-    public static final String VERSION = "Stable 2";
-
-    static final String helpMessageIntro = "**GHC Bot**\n" +
-            "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
-
-    static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n"
-            + "**!topguilds**: Zeigt die besten 10 Gilden an";
-    static final String helpMessageModCommands = "\n**!tut + @User** oder **!guide + @User**: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
-            "**!regeln + @User** oder **!rules + @User**: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*";
-
-    static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
-            "Solltest du noch nicht den Verifeid-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
-            "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
-
-    static final int deleteTimeVerify = 600;
-
-    static final String faq = "Informationen und Erklärungen zum Spiel und seiner Funktionsweise findest du unter https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub";
+    public static final String version = "Development 2.3";
 
     private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
 
-    public static Color getRandomColor() {
+    private static Map<User, Command> userAddIPsWithParamsMap = new HashMap<>();
+
+    private static Guild ghc;
+
+    public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
@@ -46,15 +34,6 @@ public class Content {
         } catch (PermissionException e) {
             e.printStackTrace();
         }
-    }
-
-    public static Message getJoinMessage(GuildMemberJoinEvent event) {
-        return new MessageBuilder().append("Willkommen, ")
-                .append(event.getMember())
-                .append(". Bevor du uns Fragen vorlegst, wirf bitte unbedingt zunächst einen Blick in die ")
-                .append(event.getGuild().getTextChannelsByName("regeln", true).get(0))
-                .append("\nViel Spaß bei der GHC | German Hackers Community")
-                .build();
     }
 
     static boolean isModerator(Member member) {
@@ -70,15 +49,45 @@ public class Content {
                 || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true));
     }
 
+    static boolean isVerified(Member member) {
+        if (member == null)
+            return false;
+        List<Role> roles = member.getRoles();
+        return roles.containsAll(member.getGuild().getRolesByName("Verified", true));
+    }
+    static Member getGHCMember(User user) {
+        if (ghc != null) {
+            return ghc.getMember(user);
+        }
+        return null;
+    }
+
+    public static void setGhc(Guild ghc) {
+        Content.ghc = ghc;
+    }
+
+    public static Guild getGhc() {
+        return ghc;
+    }
+
     public static Map<User, Command> getUserAddIPWithQuestionsMap() {
         return userAddIPWithQuestionsMap;
     }
-
-    public static void addUser(User user, AddIPWithQuestions command) {
-        userAddIPWithQuestionsMap.put(user, command);
+    public static void addUserAddIPWithQuestions (User user, AddIPWithQuestions command) {
+      userAddIPWithQuestionsMap.put(user, command);
     }
 
-    public static void deleteUser(User user, AddIPWithQuestions command) {
+    public static void deleteUserAddIPWithQuestions (User user, AddIPWithQuestions command) {
         userAddIPWithQuestionsMap.remove(user, command);
+    }
+    public static void addUserAddIPWithParams(User user, AddIPsWithParams command) {
+        userAddIPsWithParamsMap.put(user, command);
+    }
+    public static void deleteUserAddIPWithParams (User user, AddIPsWithParams command) {
+        userAddIPsWithParamsMap.remove(user, command);
+    }
+
+    public static Map<User, Command> getUserAddIPsWithParamsMap() {
+        return userAddIPsWithParamsMap;
     }
 }

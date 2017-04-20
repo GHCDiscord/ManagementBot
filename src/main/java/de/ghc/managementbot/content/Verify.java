@@ -1,37 +1,32 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.Content;
 
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.exceptions.PermissionException;
 
-import static de.ghc.managementbot.content.Content.addRole;
-import static de.ghc.managementbot.content.Content.deleteTimeVerify;
+import static ManagementBot.Content.Content.addRole;
 
-public class Verify extends Command {
+public class Verify implements Command {
+
+    private static final int deleteTimeVerify = 600;
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getGuild() != null) {
             if (!event.getMember().getRoles().contains(event.getGuild().getRolesByName("verified", true).get(0))) {
                 addRole(event.getMember(), event.getGuild(), event.getGuild().getRolesByName("verified", true).get(0));
                 Message message = new MessageBuilder().append(event.getAuthor()).append(" ist nun verifiziert!").build();
-                event.getMessage().getChannel().sendMessage(message).queue(m ->
+                event.getMessage().getChannel().sendMessage(message).queue( m ->
                         new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
                 );
 
             } else {
                 Message message = new MessageBuilder().append(event.getAuthor()).append(" ist bereits verifiziert").build();
-                event.getMessage().getChannel().sendMessage(message).queue(m ->
+                event.getMessage().getChannel().sendMessage(message).queue( m ->
                         new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
                 );
             }
-            try {
-//                event.getMessage().deleteMessage().queue();
-            } catch (PermissionException e) {
-                if (event.getChannel().getType() != ChannelType.PRIVATE)  //Private Nachrichten können nicht gelöscht werden
-                    e.printStackTrace();
-            }
+            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
         }
     }
 }

@@ -1,4 +1,4 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.Content;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -9,17 +9,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Date;
 
-import static de.ghc.managementbot.content.Content.getRandomColor;
+import static ManagementBot.Content.Content.getRandomColor;
 
-public class TopGuilds extends Command {
+public class TopGuilds implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         try {
             URL url = new URL("http://hackerz.online/stats.json");
             String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
             JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
-            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:", "").setColor(getRandomColor());
+            EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:").setColor(getRandomColor()).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200");
 
             //Funktioniert nicht auf mobilen Geräten
 
@@ -38,7 +39,7 @@ public class TopGuilds extends Command {
 
             StringBuilder string = new StringBuilder();
             for (int i = 0; (i < jsonArray.length() && i < 10); i++) {
-                string.append(i + 1)
+                string.append(i+1)
                         .append(". **")
                         .append(jsonArray.getJSONObject(i).getString("guild_name"))
                         .append(" **")

@@ -1,4 +1,4 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.Content;
 
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
@@ -6,9 +6,9 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
-import static de.ghc.managementbot.content.Content.isModerator;
+import static ManagementBot.Content.Content.isModerator;
 
-public class Rules extends Command {
+public class Rules implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getGuild() != null)

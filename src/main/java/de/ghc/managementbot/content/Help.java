@@ -15,33 +15,33 @@ import static de.ghc.managementbot.content.Content.isVerified;
 public class Help implements Command {
 
     private static final String helpMessageIntro = "**GHC Bot**\n" +
-            "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verfügt über diese Befehle:";
+            "Dies ist der offizielle Bot der German Hackers Community (GHC). Er verf\u00FCgt \u00FCber diese Befehle:";
 
-    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden täglich zurückgesetzt.\n" +
-            "**!stats *Land***: Zeit live-Statistiken eine bestimmten Landes an\nMöglich ist entweder der Landescode (z.B. 'DE' für Deutschland, 'ES' für Spanien)\noder der Englische Name des Landes (z.B. Germany, Espain)"
+    private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden t\u00E4glich zur\u00FCckgesetzt.\n" +
+            "**!stats *Land***: Zeit live-Statistiken eine bestimmten Landes an\nM\u00F6glich ist entweder der Landescode (z.B. 'DE' f\u00FCr Deutschland, 'ES' f\u00FCr Spanien)\noder der Englische Name des Landes (z.B. Germany, Espain)"
             + "\n**!topguilds**: Zeigt die besten 10 Gilden an\n" +
-            "**!topcountry**: Zeigt die besten 10 Länder an";
+            "**!topcountry**: Zeigt die besten 10 L\u00E4nder an";
 
-    private static final String helpMessageVerifiedCommands = "\n**!addIP**: Fügt eine IP der IP-Datenbank hinzu. Für weitere Informationen schreibe **!help addIP**\n" +
-            "**!register + *[Nutzername im Spiel]***: Erstellt einen neuen, für 30 Tage gültigen Account in der GHC-IP-Datenbank\n" +
+    private static final String helpMessageVerifiedCommands = "\n**!addIP**: F\u00FCgt eine IP der IP-Datenbank hinzu. F\u00FCr weitere Informationen schreibe **!help addIP**\n" +
+            "**!register + *[Nutzername im Spiel]***: Erstellt einen neuen, f\u00FCr 30 Tage g\u00FCltigen Account in der GHC-IP-Datenbank\n" +
             "**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.";
-    private static final String helpMessageModCommands = "\n**!tut + *[@User]*** oder **!guide + *[@User]*  **: Zeigt einem Nutzer den Link zum Tutorial *Nur für Moderatoren*\n" +
-            "**!regeln + *[@User]*** oder **!rules + *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur für Moderatoren*\n" +
-            "**!gilde + *[@User]*** oder **!guild + *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum *Nur für Moderatoren*\n" +
+    private static final String helpMessageModCommands = "\n**!tut + *[@User]*** oder **!guide + *[@User]*  **: Zeigt einem Nutzer den Link zum Tutorial *Nur f\u00FCr Moderatoren*\n" +
+            "**!regeln + *[@User]*** oder **!rules + *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur f\u00FCr Moderatoren*\n" +
+            "**!gilde + *[@User]*** oder **!guild + *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum *Nur f\u00FCr Moderatoren*\n" +
             "**!help + *[@User]***:: Sendet einem Nutzer diesen Text";
 
-    private static final String helpMessageVerified = "Der Bot kümmert sich auch um die Vergabe des Rangs Verified. \n" +
+    private static final String helpMessageVerified = "Der Bot k\u00FCmmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verified-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
-    private static final String helMessageAddIPParams = "**!addIP IP** Als erstes muss eine *gültige* IP angegeben werden.\n" +
-            "Darauf können einige dieser Parameter folgen: \n" +
+    private static final String helMessageAddIPParams = "**!addIP IP** Als erstes muss eine *g\u00FCltige* IP angegeben werden.\n" +
+            "Darauf k\u00F6nnen einige dieser Parameter folgen: \n" +
             "**-n** Name des Hackers (nur ein Wort)\n" +
             "**-m** Anzahl der Miner\n" +
             "**-r** Reputation des Hackers\n" +
-            "**-g** Kürzel der Gilde des Hackers. (immer drei Zeichen) \n" +
-            "Alle darauf folgenden Wörter werden automatisch der Beschreibung hinzugefügt\n" +
-            "Wenn keine Parameter angegeben werden, werden die nötigen Informationen abgefragt.";
+            "**-g** K\u00FCrzel der Gilde des Hackers. (immer drei Zeichen) \n" +
+            "Alle darauf folgenden W\u00F6rter werden automatisch der Beschreibung hinzugef\u00FCgt\n" +
+            "Wenn keine Parameter angegeben werden, werden die n\u00F6tigen Informationen abgefragt.";
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

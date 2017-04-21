@@ -22,7 +22,7 @@ public class TopGuilds implements Command {
             JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
             EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:").setColor(getRandomColor()).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200");
 
-            //Funktioniert nicht auf mobilen Geräten
+            //Funktioniert nicht auf mobilen Ger\u00E4ten
 
             //StringBuilder ranks = new StringBuilder(), names = new StringBuilder("**"), mitigation = new StringBuilder();
             /*for (int i = 0; i < jsonArray.length(); i++) {

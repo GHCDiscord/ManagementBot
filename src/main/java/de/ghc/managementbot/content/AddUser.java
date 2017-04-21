@@ -24,7 +24,7 @@ public class AddUser extends Database implements Command {
           DM.sendMessage("Bei Nutzernamen in der Datenbank ist nur ein Wort erlaubt (keine Leerzeichen).\nDein Account wird nun mit dem ersten Wort deines Nutzernamens erstellt").queue();
         });
       } else if (usernamearr.length < 1) {
-        event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Bitte gebe einen Nutzernamen für die Datenbank an!").queue(m -> new Thread(new DeleteMessageThread(120, m)).start()));
+        event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Bitte gebe einen Nutzernamen f\u00FCr die Datenbank an!").queue(m -> new Thread(new DeleteMessageThread(120, m)).start()));
       }
       String username = usernamearr[1];
       if (!username.matches("[a-zA-Z0-9_]*")) {
@@ -38,7 +38,7 @@ public class AddUser extends Database implements Command {
         String password = user.getPassword();
         if (response.equals("success")) {
           event.getAuthor().openPrivateChannel().queue(DM -> {
-            DM.sendMessage(String.format("Dein Account wurde erfolgreich erstellt.\nNutzername: %s\nPasswort: %s\nDein Account ist nun 30 Tage gültig. Danach musst du mit `!refresh` deinen Account reaktivieren.\nViel Spaß mit der IP-Datenbank unter %s", username, password, url)).queue();
+            DM.sendMessage(String.format("Dein Account wurde erfolgreich erstellt.\nNutzername: %s\nPasswort: %s\nDein Account ist nun 30 Tage g\u00FCltig. Danach musst du mit `!refresh` deinen Account reaktivieren.\nViel Spaß mit der IP-Datenbank unter %s", username, password, url)).queue();
           });
         } else if (response.equals("discord taken")) {
           event.getAuthor().openPrivateChannel().queue(DM -> {
@@ -46,7 +46,7 @@ public class AddUser extends Database implements Command {
           });
         } else if (response.equals("name taken")) {
           event.getAuthor().openPrivateChannel().queue(DM ->
-              DM.sendMessage(String.format("Der Nutzername %s ist bereits vergeben! Bitte wähle einen anderen Nutzernamen!", username)).queue(m -> new Thread(new DeleteMessageThread(120, m)).start())
+              DM.sendMessage(String.format("Der Nutzername %s ist bereits vergeben! Bitte w\u00E4hle einen anderen Nutzernamen!", username)).queue(m -> new Thread(new DeleteMessageThread(120, m)).start())
           );
         } else {
           event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Es ist ein unerwarteter Fehler aufgetreten! Bitte sende die folgenden Informationen an die Programmierer via @Coding:\n" + response).queue());

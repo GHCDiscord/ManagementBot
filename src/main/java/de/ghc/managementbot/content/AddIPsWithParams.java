@@ -32,9 +32,8 @@ public class AddIPsWithParams extends AddIP implements Command {
         member = Content.getGHCMember(event.getAuthor());
       }
       if (checkIP(IP) && isVerified(member)) {
-        if (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728"))) {
+        if (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728")))
           return;
-        }
         entry = new IPEntry(IP);
         for (int i = 2; i < command.length - 1; i++) {
           if (command[i].equalsIgnoreCase("-n")) {
@@ -44,7 +43,7 @@ public class AddIPsWithParams extends AddIP implements Command {
               entry.setMiners(Integer.parseInt(command[++i]));
             } catch (NumberFormatException ignore) {
             }
-          } else if (command[i].equalsIgnoreCase("-r")) {
+          } else if (command[i].equalsIgnoreCase("-r") || command[i].equalsIgnoreCase("-rep")) {
             try {
               entry.setRepopulation(Integer.parseInt(command[++i]));
             } catch (NumberFormatException ignore) {
@@ -65,7 +64,7 @@ public class AddIPsWithParams extends AddIP implements Command {
         }
         entry.setUser(event.getAuthor());
         done = true;
-        event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum bestätigen").queue(m -> new Thread(new DeleteMessageThread(100, m)).start());
+        event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(100, m)).start());
       }
     } else {
       Content.deleteUserAddIPWithParams(user, this);
@@ -73,9 +72,9 @@ public class AddIPsWithParams extends AddIP implements Command {
       if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
         String result = addIPtoDB(entry);
         if (result.equals("1")) {
-          event.getGuild().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugefügt").build()).queue();
+          Content.getGhc().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
         } else if (result.equals("ip already registered")) {
-          event.getChannel().sendMessage("Diese IP existiert bereits in der Datenbank. Updates können momentan noch nicht mit dem Bot durchgeführt werden. Bitte schreibe einem Kontributor, er wird sich dann darum kümmern.").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+          event.getChannel().sendMessage("Diese IP existiert bereits in der Datenbank. Updates k\u00F6nnen momentan noch nicht mit dem Bot durchgef\u00FChrt werden. Bitte schreibe einem Kontributor, er wird sich dann darum k\u00FCmmern.").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
         } else {
           event.getChannel().sendMessage("Es ist ein Fehler aufgetreten:\n" + result).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
         }

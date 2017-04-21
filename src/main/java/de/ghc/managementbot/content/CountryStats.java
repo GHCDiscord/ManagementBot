@@ -24,7 +24,7 @@ public class CountryStats extends Country implements Command {
                     .addField("Durchschnittliche HC", country.getInt("AvHC") + "", true)
                     .addField("HC Insgesammt", country.getInt("TotalHC") + "", true)
                     .addField("Gestohlene Miner", country.getInt("TotalSteals") + "", true)
-                    .addField("Erfolgreich geknackte Passwörter", country.getInt("TotalCracks") + "", true)
+                    .addField("Erfolgreich geknackte Passw\u00F6rter", country.getInt("TotalCracks") + "", true)
                     //.addField("Blackbits", germany.get("TotalBlacklists") + "", true)
                     .addField("Abgeschlossene Missionen", country.getInt("TotalMissionsOK") + "", true);
             event.getChannel().sendMessage(builder.build()).queue();

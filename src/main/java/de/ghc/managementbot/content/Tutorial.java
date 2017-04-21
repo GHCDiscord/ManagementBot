@@ -17,7 +17,7 @@ public class Tutorial extends Guide implements Command {
         try {
             event.getMessage().deleteMessage().queue();
         } catch (PermissionException e) {
-            if (event.getChannel().getType() != ChannelType.PRIVATE) //Private Nachrichten können nicht gelöscht werden
+            if (event.getChannel().getType() != ChannelType.PRIVATE) //Private Nachrichten k\u00F6nnen nicht gel\u00F6scht werden
                 e.printStackTrace();
         }
         if (isModerator(event.getMember())) {

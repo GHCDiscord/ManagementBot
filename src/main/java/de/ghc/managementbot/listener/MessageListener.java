@@ -56,7 +56,8 @@ public class MessageListener extends ListenerAdapter {
     } else if (command[0].equalsIgnoreCase("!gilde") || command[0].equalsIgnoreCase("!guild")) {
       return new GuildsGuide();
     } /*else if (command[0].equalsIgnoreCase("!taktik"))
-            return new Taktik(); */ else if (command[0].equalsIgnoreCase("!register") || command[0].equalsIgnoreCase("!addAccount")) {
+            return new Taktik(); */
+    else if (command[0].equalsIgnoreCase("!register") || command[0].equalsIgnoreCase("!addAccount")) {
       return new AddUser();
     } else if (command[0].equalsIgnoreCase("!refresh")) {
       return new RefreshUser();
@@ -76,16 +77,16 @@ public class MessageListener extends ListenerAdapter {
   public void onMessageReceived(MessageReceivedEvent event) {
     String msg = event.getMessage().getContent();
     //output
-        /*if (event.getGuild() == null) {
+        if (event.getGuild() == null) {
 			System.out.printf("[Priv][%s] %s: %s\n", event.getChannel().getName(), event.getAuthor().getName(), msg);
 		} else {
 			System.out.printf("[%s][%s] %s: %s \n", event.getGuild().getName(),
 					event.getChannel().getName(), event.getAuthor().getName(), msg);
-		} */
+		}
 
     if (Content.getGhc() == null && event.getGuild() != null && event.getGuild().getName().equals("German Hackers Community")) {
       Content.setGhc(event.getGuild());
-      new Thread(new ServerStatsThread(Content.getGhc(), 2592000)).start();
+      new Thread(new ServerStatsThread(Content.getGhc(), 43200000)).start();
     }
 
     startCommand(event);

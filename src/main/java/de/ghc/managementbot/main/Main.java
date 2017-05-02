@@ -1,5 +1,5 @@
 package de.ghc.managementbot.main;
-
+// COMMENT FOR TESTING PURPOSES (Git buggy?)
 import de.ghc.managementbot.listener.JoinListener;
 import de.ghc.managementbot.listener.MessageListener;
 import net.dv8tion.jda.core.AccountType;

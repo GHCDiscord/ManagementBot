@@ -40,13 +40,13 @@ public class Content {
         if (member == null)
             return false;
         List<Role> roles = member.getRoles();
-        return roles.containsAll(member.getGuild().getRolesByName("GHC-Staff", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Admin", true))
+        return     roles.containsAll(member.getGuild().getRolesByName("Admin", true))
                 || roles.containsAll(member.getGuild().getRolesByName("Moderator", true))
                 || roles.containsAll(member.getGuild().getRolesByName("Hackers-Staff", true))
                 || roles.containsAll(member.getGuild().getRolesByName("Coding", true))
                 || roles.containsAll(member.getGuild().getRolesByName("Sponsor", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true));
+                || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true))
+                || roles.containsAll(member.getGuild().getRolesByName("Autor", true));
     }
 
     static boolean isVerified(Member member) {

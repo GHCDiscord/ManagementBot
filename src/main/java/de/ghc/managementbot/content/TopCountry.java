@@ -34,6 +34,6 @@ public class TopCountry extends Country implements Command {
         for (int i = 0; i < places.length; i++) {
             builder.append(places[i]);
         }
-        event.getChannel().sendMessage(new EmbedBuilder().setColor(getRandomColor()).setTitle("Top 10 L\u00E4nder nach HC pro Spieler").setDescription(builder.toString()).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+        event.getChannel().sendMessage(new EmbedBuilder().setColor(getRandomColor()).setTitle("Top 10 L\u00E4nder nach HC pro Spieler", null).setDescription(builder.toString()).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
     }
 }

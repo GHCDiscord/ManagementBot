@@ -33,7 +33,7 @@ public class ServerStatsThread extends Database implements Runnable {
                         for (int i = 3; i < values.length; i+=2) {
                             numbers.append(values[i]);
                         }
-                        ips.sendMessage(new EmbedBuilder().setTitle("IP-Updates").setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+                        ips.sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
                         this.wait(timeout);
                     } else
                         this.wait(5000);

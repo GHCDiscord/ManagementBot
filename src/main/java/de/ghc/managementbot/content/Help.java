@@ -20,7 +20,8 @@ public class Help implements Command {
     private static final String helpMessageUserCommands = "**!stats**: Zeigt live-Statistiken des Spiels an. Sie werden t\u00E4glich zur\u00FCckgesetzt.\n" +
             "**!stats *Land***: Zeit live-Statistiken eine bestimmten Landes an\nM\u00F6glich ist entweder der Landescode (z.B. 'DE' f\u00FCr Deutschland, 'ES' f\u00FCr Spanien)\noder der Englische Name des Landes (z.B. Germany, Espain)"
             + "\n**!topguilds**: Zeigt die besten 10 Gilden an\n" +
-            "**!topcountry**: Zeigt die besten 10 L\u00E4nder an";
+            "**!topcountry**: Zeigt die besten 10 L\u00E4nder an\n" +
+            "**!stats DB** Zeigt aktuelle Statistiken der IP-Datenbank an";
 
     private static final String helpMessageVerifiedCommands = "\n**!addIP**: F\u00FCgt eine IP der IP-Datenbank hinzu. F\u00FCr weitere Informationen schreibe **!help addIP**\n" +
             "**!register + *[Nutzername im Spiel]***: Erstellt einen neuen, f\u00FCr 30 Tage g\u00FCltigen Account in der GHC-IP-Datenbank\n" +
@@ -28,10 +29,13 @@ public class Help implements Command {
     private static final String helpMessageModCommands = "\n**!tut + *[@User]*** oder **!guide + *[@User]*  **: Zeigt einem Nutzer den Link zum Tutorial *Nur f\u00FCr Moderatoren*\n" +
             "**!regeln + *[@User]*** oder **!rules + *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen *Nur f\u00FCr Moderatoren*\n" +
             "**!gilde + *[@User]*** oder **!guild + *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum *Nur f\u00FCr Moderatoren*\n" +
-            "**!help + *[@User]***:: Sendet einem Nutzer diesen Text";
+            "**!taktik + *[@User]***: Zeigt einem Nutzer den Link zum Taktik-Tutorial von Doc *Nur f\u00FCr Moderatoren*\n" +
+            "**!en + *[@User]*** oder **!de + *[@User]***: Sagt englischsprachigen Nutzern, sie sollen den englischen Discord verwenden *Nur f\u00FCr Moderatoren*\n" +
+            "**!help + *[@User]***:: Sendet einem Nutzer diesen Text *Nur f\u00FCr Moderatoren*";
 
     private static final String helpMessageVerified = "Der Bot k\u00FCmmert sich auch um die Vergabe des Rangs Verified. \n" +
             "Solltest du noch nicht den Verified-Rang erreicht haben, lese dir bitte die Regeln nochmal genau durch.\n" +
+            "Nach Erhalt dieses Ranges hast du unter andern Zugriff auf unsere IP-Datenbank\n" +
             "**Dieser Rang wird nicht vom GHC-Team vergeben! Nachrichten an die Mods sind wirkungslos!**";
 
     private static final String helMessageAddIPParams = "**!addIP IP** Als erstes muss eine *g\u00FCltige* IP angegeben werden.\n" +
@@ -39,7 +43,7 @@ public class Help implements Command {
             "**-n** Name des Hackers (nur ein Wort)\n" +
             "**-m** Anzahl der Miner\n" +
             "**-r** Reputation des Hackers\n" +
-            "**-g** K\u00FCrzel der Gilde des Hackers. (immer drei Zeichen) \n" +
+            "**-g** K\u00FCrzel der Gilde des Hackers. (immer drei oder vier Zeichen) \n" +
             "Alle darauf folgenden W\u00F6rter werden automatisch der Beschreibung hinzugef\u00FCgt\n" +
             "Wenn keine Parameter angegeben werden, werden die n\u00F6tigen Informationen abgefragt.";
 
@@ -118,7 +122,6 @@ public class Help implements Command {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
             DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageVerifiedCommands).build()).queue();
-            DM.sendMessage(helpMessageVerified).queue();
         });
     }
 
@@ -126,7 +129,6 @@ public class Help implements Command {
         user.openPrivateChannel().queue(DM -> {
             DM.sendMessage(helpMessageIntro).queue();
             DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helpMessageUserCommands + helpMessageVerifiedCommands + helpMessageModCommands).build()).queue();
-            DM.sendMessage(helpMessageVerified).queue();
         });
     }
     private static void sendAddIPHelpMessage(User user) {

@@ -24,10 +24,10 @@ public class CountryStats extends Country implements Command {
                     //.setThumbnail("http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png")
                     .setAuthor(country.getString("CountryName"), "http://hackerz.online/country_competition", url)
                     .addField("Durchschnittliche HC", country.getInt("AvHC") + "", true)
-                    .addField("HC Insgesammt", country.getInt("TotalHC") + "", true)
+                    .addField("HC Insgesamt", country.getInt("TotalHC") + "", true)
                     .addField("Gestohlene Miner", country.getInt("TotalSteals") + "", true)
                     .addField("Erfolgreich geknackte Passw\u00F6rter", country.getInt("TotalCracks") + "", true)
-                    .addField("Blacklist-Einträge", country.get("TotalBlacklists") + "", true)
+                    .addField("Blacklist-Eintr\u00E4ge", country.get("TotalBlacklists") + "", true)
                     .addField("Abgeschlossene Missionen", country.getInt("TotalMissionsOK") + "", true);
             event.getChannel().sendMessage(builder.build()).queue();
         } else

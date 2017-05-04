@@ -46,7 +46,7 @@ public class TopGuilds implements Command {
                         .append(jsonArray.getJSONObject(i).getString("mitigation"))
                         .append("\n");
             }
-            event.getTextChannel().sendMessage(builder.setDescription(string.toString()).build()).queue();
+            event.getChannel().sendMessage(builder.setDescription(string.toString()).build()).queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

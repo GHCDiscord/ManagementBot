@@ -1,9 +1,7 @@
 package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -31,7 +29,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
       messages.add(event.getMessage());
     }
     String msg = event.getMessage().getContent();
-    TextChannel channel = event.getTextChannel();
+    MessageChannel channel = event.getChannel();
     Member member = event.getMember();
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());

@@ -71,10 +71,10 @@ public class AddIPWithQuestions extends AddIP implements Command {
           } catch (NumberFormatException e) {
           }
           status = Status.guild;
-          channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe null").queue(messages::add);
+          channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n").queue(messages::add);
           break;
         case guild:
-          if (msg.length() == 3) {
+          if (msg.length() == 3 || msg.length() == 4) {
             entry.setGuildTag(msg);
           }
           channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);

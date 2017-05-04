@@ -6,17 +6,21 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Content {
 
     //Versionsnumer
     public static final int versionNumer = 5;
     //Version
-    public static final String version = "Development 2.3";
+    public static final String version = "Development 3.2.2";
 
     private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
 
@@ -26,6 +30,17 @@ public class Content {
 
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
+    }
+
+    static Color getImageColor(String imageURL) {
+        try {
+            URL url = new URL(imageURL);
+            BufferedImage image = ImageIO.read(url);
+            Random r = new Random();
+            return new Color(image.getRGB(1 + r.nextInt(image.getWidth() - 2),1 + r.nextInt(image.getHeight() - 2)));
+        } catch (Exception e) {
+            return getRandomColor();
+        }
     }
 
     static void addRole(Member member, Guild guild, Role role) {

@@ -14,7 +14,7 @@ import javax.security.auth.login.LoginException;
 public class Main {
   public static void main(String[] args) {
     try {
-      JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener(), new JoinListener()).setToken("TOKEN").setGame(new GameImpl("Hackerz", "", Game.GameType.DEFAULT)).buildBlocking();
+      JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener(), new JoinListener()).setToken("TOKEN").setGame(Game.of("Hackerz")).buildBlocking();
     } catch (LoginException | InterruptedException | RateLimitedException e) {
       e.printStackTrace();
     }

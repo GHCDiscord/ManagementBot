@@ -49,7 +49,7 @@ public class AddIPsWithParams extends AddIP implements Command {
             } catch (NumberFormatException ignore) {
             }
           } else if (command[i].equalsIgnoreCase("-g")) {
-            if (command[++i].length() == 3) {
+            if (command[++i].length() == 3 || command[i].length() == 4) {
               entry.setGuildTag(command[i]);
             }
           } else {

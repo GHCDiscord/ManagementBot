@@ -1,9 +1,7 @@
 package de.ghc.managementbot.content;
 
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -31,7 +29,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
       messages.add(event.getMessage());
     }
     String msg = event.getMessage().getContent();
-    TextChannel channel = event.getTextChannel();
+    MessageChannel channel = event.getChannel();
     Member member = event.getMember();
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
@@ -71,10 +69,10 @@ public class AddIPWithQuestions extends AddIP implements Command {
           } catch (NumberFormatException e) {
           }
           status = Status.guild;
-          channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe null").queue(messages::add);
+          channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n").queue(messages::add);
           break;
         case guild:
-          if (msg.length() == 3) {
+          if (msg.length() == 3 || msg.length() == 4) {
             entry.setGuildTag(msg);
           }
           channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);

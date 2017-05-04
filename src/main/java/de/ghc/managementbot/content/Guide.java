@@ -19,7 +19,7 @@ public class Guide implements Command{
 
     public static final String taktik = " Genaue Erkl\u00E4rungen zu verschiedenen Taktiken und Spielweisen finest du unter https://forum.hackerz.online/viewtopic.php?f=10&t=334";
 
-    public static final String language = " `If you don't know the german language and you are not invited please leave. We are talking german in all channels here.`\n English Discord: *link*";
+    public static final String language = " `If you don't know the german language and you are not invited please leave. We are talking german in all channels here.`\n English Discord: http://discord.gg/r7uHe3H";
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (isModerator(event.getMember())) {

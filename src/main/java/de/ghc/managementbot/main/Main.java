@@ -1,5 +1,5 @@
 package de.ghc.managementbot.main;
-// COMMENT FOR TESTING PURPOSES (Git buggy?)
+
 import de.ghc.managementbot.listener.JoinListener;
 import de.ghc.managementbot.listener.MessageListener;
 import net.dv8tion.jda.core.AccountType;
@@ -14,7 +14,7 @@ import javax.security.auth.login.LoginException;
 public class Main {
   public static void main(String[] args) {
     try {
-      JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener(), new JoinListener()).setToken("TOKEN").setGame(new GameImpl("Hackerz", "", Game.GameType.DEFAULT)).buildBlocking();
+      JDA jda = new JDABuilder(AccountType.BOT).addListener(new MessageListener(), new JoinListener()).setToken("TOKEN").setGame(Game.of("Hackerz")).buildBlocking();
     } catch (LoginException | InterruptedException | RateLimitedException e) {
       e.printStackTrace();
     }

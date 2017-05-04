@@ -46,7 +46,9 @@ public class MessageListener extends ListenerAdapter {
       return new AddUser();
     } else if (command[0].equalsIgnoreCase("!refresh")) {
       return new RefreshUser();
-    } else if (command[0].equalsIgnoreCase("!stats") && command.length >= 2) {
+    } else if (msg.equalsIgnoreCase("!stats db") || msg.equalsIgnoreCase("!stats ip"))
+        return new ServerStats();
+    else if (command[0].equalsIgnoreCase("!stats") && command.length >= 2) {
       return new CountryStats();
     } else if (msg.equalsIgnoreCase("!topcountry")) {
       return new TopCountry();

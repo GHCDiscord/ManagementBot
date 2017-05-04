@@ -1,21 +1,6 @@
 package de.ghc.managementbot.listener;
 
-import de.ghc.managementbot.content.AddIPWithQuestions;
-import de.ghc.managementbot.content.AddIPsWithParams;
-import de.ghc.managementbot.content.AddUser;
-import de.ghc.managementbot.content.Command;
-import de.ghc.managementbot.content.Content;
-import de.ghc.managementbot.content.CountryStats;
-import de.ghc.managementbot.content.GuildsGuide;
-import de.ghc.managementbot.content.Help;
-import de.ghc.managementbot.content.RefreshUser;
-import de.ghc.managementbot.content.Rules;
-import de.ghc.managementbot.content.ServerStatsThread;
-import de.ghc.managementbot.content.Stats;
-import de.ghc.managementbot.content.TopCountry;
-import de.ghc.managementbot.content.TopGuilds;
-import de.ghc.managementbot.content.Tutorial;
-import de.ghc.managementbot.content.Verify;
+import de.ghc.managementbot.content.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -44,7 +29,7 @@ public class MessageListener extends ListenerAdapter {
     } else if (command[0].equalsIgnoreCase("!regeln") || command[0].equalsIgnoreCase("!rules")) {
       return new Rules();
     } else if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
-      return new Tutorial();
+      return new Guide(Guide.faq);
     } else if (command[0].equalsIgnoreCase("!addip") && command.length > 3) {
       AddIPsWithParams com = new AddIPsWithParams(event.getAuthor());
       Content.addUserAddIPWithParams(event.getAuthor(), com);
@@ -54,9 +39,9 @@ public class MessageListener extends ListenerAdapter {
       Content.addUserAddIPWithQuestions(event.getAuthor(), com);
       return com;
     } else if (command[0].equalsIgnoreCase("!gilde") || command[0].equalsIgnoreCase("!guild")) {
-      return new GuildsGuide();
-    } /*else if (command[0].equalsIgnoreCase("!taktik"))
-            return new Taktik(); */
+      return new Guide(Guide.guild);
+    } else if (command[0].equalsIgnoreCase("!taktik"))
+      return new Guide(Guide.taktik);
     else if (command[0].equalsIgnoreCase("!register") || command[0].equalsIgnoreCase("!addAccount")) {
       return new AddUser();
     } else if (command[0].equalsIgnoreCase("!refresh")) {
@@ -65,12 +50,9 @@ public class MessageListener extends ListenerAdapter {
       return new CountryStats();
     } else if (msg.equalsIgnoreCase("!topcountry")) {
       return new TopCountry();
-    }
-    return new Command() {
-      @Override
-      public void onMessageReceived(MessageReceivedEvent event) {
-      }
-    };
+    } else if (command[0].equalsIgnoreCase("!de") || command[0].equalsIgnoreCase("!english") || command[0].equalsIgnoreCase("!englisch") || command[0].equalsIgnoreCase("!en"))
+      return new Guide(Guide.language);
+    return e -> {};
   }
 
   @Override

@@ -71,7 +71,7 @@ abstract class Database {
     urlparams.add(new BasicNameValuePair("token", token));
     urlparams.add(new BasicNameValuePair("name", new String(user.getUsername().getBytes(Charset.forName("UTF-8")), Charset.forName("UTF-8"))));
     urlparams.add(new BasicNameValuePair("password", user.getPassword()));
-    urlparams.add(new BasicNameValuePair("email", user.getEMail())); //TODO wird nie gesetzt
+    //urlparams.add(new BasicNameValuePair("email", user.getEMail())); //TODO wird nie gesetzt
     urlparams.add(new BasicNameValuePair("discorduser", user.getDiscordUser().getId()));
 
 

@@ -24,8 +24,6 @@ abstract class Database {
   private static final String refresh = url + "/api/refreshaccount.php";
   private static final String stats = url + "/api/stats.php";
 
-  private static final String token = "TOKEN";
-
   private static HttpClient client = HttpClients.createDefault();
 
   protected static synchronized String addIPtoDB(IPEntry entry) {
@@ -35,7 +33,7 @@ abstract class Database {
 
     List<NameValuePair> urlparams = new ArrayList<>();
 
-    urlparams.add(new BasicNameValuePair("token", token));
+    urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
     urlparams.add(new BasicNameValuePair("ip", entry.getIP()));
     urlparams.add(new BasicNameValuePair("rep", entry.getRepopulation() + ""));
     urlparams.add(new BasicNameValuePair("desc", entry.getDescription()));
@@ -68,7 +66,7 @@ abstract class Database {
     HttpPost post = new HttpPost(registerUser);
     List<NameValuePair> urlparams = new ArrayList<>();
 
-    urlparams.add(new BasicNameValuePair("token", token));
+    urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
     urlparams.add(new BasicNameValuePair("name", new String(user.getUsername().getBytes(Charset.forName("UTF-8")), Charset.forName("UTF-8"))));
     urlparams.add(new BasicNameValuePair("password", user.getPassword()));
     //urlparams.add(new BasicNameValuePair("email", user.getEMail())); //TODO wird nie gesetzt
@@ -101,7 +99,7 @@ abstract class Database {
     client = HttpClients.createDefault();
     List<NameValuePair> urlparams = new ArrayList<>();
 
-    urlparams.add(new BasicNameValuePair("token", token));
+    urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
     urlparams.add(new BasicNameValuePair("discorduser", user.getId()));
 
     try {

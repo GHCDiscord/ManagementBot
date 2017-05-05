@@ -24,10 +24,10 @@ public class TwitterThread implements Runnable {
                 } catch (InterruptedException ignore) {}
                 ConfigurationBuilder builder = new ConfigurationBuilder()
                         .setDebugEnabled(true)
-                        .setOAuthConsumerKey("")
-                        .setOAuthConsumerSecret("")
-                        .setOAuthAccessToken("")
-                        .setOAuthAccessTokenSecret("");
+                        .setOAuthConsumerKey(Secure.ConsumerKey)
+                        .setOAuthConsumerSecret(Secure.ConsumerSecret)
+                        .setOAuthAccessToken(Secure.AccessToken)
+                        .setOAuthAccessTokenSecret(Secure.AccesSecret);
                 Twitter twitter = new TwitterFactory(builder.build()).getInstance();
                 try {
                     ResponseList<Status> response = twitter.getUserTimeline(811996248840531969L);
@@ -38,8 +38,7 @@ public class TwitterThread implements Runnable {
                                     .setAuthor(status.getUser().getScreenName(), status.getUser().getURL(), status.getUser().getProfileImageURL())
                                     .setDescription(status.getText())
                                     .setThumbnail(status.getUser().getProfileBannerURL())
-                                    .setTitle("Neuer Tweet", String.format("https://twitter.com/%s/status/%s", status.getUser().getScreenName(), status.getId()))
-                                    .setFooter("Tweet gesendet um: " + status.getCreatedAt(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+                                    .setFooter("Tweet gesendet: " + status.getCreatedAt(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
                         }
                     }
                 }catch (TwitterException e) {

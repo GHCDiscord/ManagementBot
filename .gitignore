@@ -104,4 +104,4 @@ gradle-app.setting
 # test
 
 # End of https://www.gitignore.io/api/java,gradle,intellij
-# src/main/java/de/ghc/managementbot/content/Secure.java
+src/main/java/de/ghc/managementbot/content/Secure.java

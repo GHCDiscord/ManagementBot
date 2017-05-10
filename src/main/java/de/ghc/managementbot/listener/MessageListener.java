@@ -71,6 +71,7 @@ public class MessageListener extends ListenerAdapter {
     if (Content.getGhc() == null && event.getGuild() != null && event.getGuild().getName().equals("German Hackers Community")) {
       Content.setGhc(event.getGuild());
       new Thread(new ServerStatsThread(Content.getGhc(), 43200000)).start();
+      new Thread(new TwitterThread()).start();
     }
 
     startCommand(event);

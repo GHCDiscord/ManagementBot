@@ -35,32 +35,36 @@ public class AddIPsWithParams extends AddIP implements Command {
         if (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728")))
           return;
         entry = new IPEntry(IP);
-        for (int i = 2; i < command.length - 1; i++) {
-          if (command[i].equalsIgnoreCase("-n")) {
-            entry.setName(command[++i]);
-          } else if (command[i].equalsIgnoreCase("-m")) {
-            try {
-              entry.setMiners(Integer.parseInt(command[++i]));
-            } catch (NumberFormatException ignore) {
+        try {
+          for (int i = 2; i < command.length; i++) {
+            if (command[i].equalsIgnoreCase("-n")) {
+              entry.setName(command[++i]);
+            } else if (command[i].equalsIgnoreCase("-m")) {
+              try {
+                entry.setMiners(Integer.parseInt(command[++i]));
+              } catch (NumberFormatException ignore) {
+              }
+            } else if (command[i].equalsIgnoreCase("-r") || command[i].equalsIgnoreCase("-rep")) {
+              try {
+                entry.setRepopulation(Integer.parseInt(command[++i]));
+              } catch (NumberFormatException ignore) {
+              }
+            } else if (command[i].equalsIgnoreCase("-g")) {
+              if (command[++i].length() == 3 || command[i].length() == 4) {
+                entry.setGuildTag(command[i]);
+              }
+            } else {
+              String[] desc = Arrays.copyOfRange(command, i, command.length);
+              StringBuilder description = new StringBuilder();
+              for (String s : desc) {
+                description.append(" ").append(s);
+              }
+              entry.setDescription(description.toString());
+              break;
             }
-          } else if (command[i].equalsIgnoreCase("-r") || command[i].equalsIgnoreCase("-rep")) {
-            try {
-              entry.setRepopulation(Integer.parseInt(command[++i]));
-            } catch (NumberFormatException ignore) {
-            }
-          } else if (command[i].equalsIgnoreCase("-g")) {
-            if (command[++i].length() == 3 || command[i].length() == 4) {
-              entry.setGuildTag(command[i]);
-            }
-          } else {
-            String[] desc = Arrays.copyOfRange(command, i, command.length);
-            StringBuilder description = new StringBuilder();
-            for (String s : desc) {
-              description.append(" ").append(s);
-            }
-            entry.setDescription(description.toString());
-            break;
           }
+        } catch (ArrayIndexOutOfBoundsException e) {
+          event.getChannel().sendMessage(String.format("Der Parameter %s hat kein Argument erhalten!", command[command.length - 1])).queue();
         }
         entry.setUser(event.getAuthor());
         done = true;

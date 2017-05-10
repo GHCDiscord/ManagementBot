@@ -95,7 +95,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
               new Thread(new DeleteMessageThread(0, m)).start();
             }
             if (result.equals("1")) {
-              event.getGuild().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
+              Content.getGhc().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
             } else if (result.equals("ip already registered")) {
               channel.sendMessage("Diese IP existiert bereits in der Datenbank. Updates k\u00F6nnen momentan noch nicht mit dem Bot durchgef\u00FChrt werden. Bitte schreibe einem Kontributor, er wird sich dann darum k\u00FCmmern.").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
             } else {

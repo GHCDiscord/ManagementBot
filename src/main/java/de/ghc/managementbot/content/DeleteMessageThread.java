@@ -7,23 +7,11 @@ public class DeleteMessageThread implements Runnable{
     int duration;
     Message message;
 
-    /*
-    TextChannel channel;
-    Collection<Message> messages;
-    */
-
     DeleteMessageThread(int duration, Message message) {
         this.duration = duration;
         this.message = message;
     }
 
-    /*
-    DeleteMessageThread(int duration, Collection<Message> messages, TextChannel channel) {
-        this.duration = duration;
-        this.messages = messages;
-        this.channel = channel;
-    }
-     */
 
     @Override
     public void run() {
@@ -37,8 +25,7 @@ public class DeleteMessageThread implements Runnable{
         } catch (InterruptedException e) {
         }finally {
             try {
-                message.deleteMessage().queue();
-                //channel.deleteMessages(messages).queue();
+                message.delete().queue();
             }catch (PermissionException e) {
                 e.printStackTrace();
             }

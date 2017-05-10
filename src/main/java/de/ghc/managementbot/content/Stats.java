@@ -40,7 +40,7 @@ public class Stats implements Command {
                     .append("\n**Gestohlene Miner:** ").append(jsonObject.getInt("total_miners_stolen"))
                     .append("\n**Gestohlene Wallets:** ").append(jsonObject.getInt("total_wallets_stolen"))
                     .toString();
-            event.getChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken").setColor(getRandomColor())
+            event.getChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken", null).setColor(getRandomColor())
                     .setDescription(strg)
                     .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
         } catch (IOException e) {

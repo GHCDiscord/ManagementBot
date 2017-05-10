@@ -24,12 +24,12 @@ public class Help implements Command {
             "**!stats DB** Zeigt aktuelle Statistiken der IP-Datenbank an";
 
     private static final String helpMessageVerifiedCommands =
-            "\n*Nachfolgende Befehle funktionieren ausschlie\u00dflich im Channel #hackers-ip: *\n" +
+            "\n**Nachfolgende Befehle funktionieren ausschlie\u00dflich im Channel #hackers-ip:**\n" +
             "**!addIP**: F\u00FCgt eine IP der IP-Datenbank hinzu. F\u00FCr weitere Informationen schreibe **!help addIP**\n" +
             "**!register + *[Nutzername im Spiel]***: Erstellt einen neuen, f\u00FCr 30 Tage g\u00FCltigen Account in der GHC-IP-Datenbank\n" +
             "**!refresh**: Reaktiviert deinen Account in der GHC-IP-Datenbank wieder, wenn er abgelaufen ist.";
     private static final String helpMessageModCommands =
-            "\n*Nachfolgende Befehle stehen nur Teammitgliedern zur Verf\u00FCgung *\n" +
+            "\n**Nachfolgende Befehle stehen nur Teammitgliedern zur Verf\u00FCgung**\n" +
             "**!tut + *[@User]*** oder **!guide + *[@User]*  **: Zeigt einem Nutzer den Link zum Tutorial \n" +
             "**!regeln + *[@User]*** oder **!rules + *[@User]***: Sagt einem Nutzer, er solle sich die Regeln durchlesen \n" +
             "**!gilde + *[@User]*** oder **!guild + *[@User]***: Zeit einem Nutzer den Link zum Giden-Tutorial im Forum \n" +

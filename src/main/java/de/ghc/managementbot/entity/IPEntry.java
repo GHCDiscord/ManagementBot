@@ -1,4 +1,4 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.entity;
 
 import net.dv8tion.jda.core.entities.User;
 
@@ -57,23 +57,23 @@ public final class IPEntry implements Serializable {
         return guildTag;
     }
 
-    void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    void setMiners(int miners) {
+    public void setMiners(int miners) {
         this.miners = miners;
     }
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    void setRepopulation(int repopulation) {
+    public void setRepopulation(int repopulation) {
         this.repopulation = repopulation;
     }
 
-    void setUser(User addedBy) {
+    public void setUser(User addedBy) {
         this.addedBy = addedBy;
     }
 

@@ -1,5 +1,7 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Database;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

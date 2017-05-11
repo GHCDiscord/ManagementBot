@@ -1,7 +1,13 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.AddIP;
+import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.entity.IPEntry;
+import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -12,8 +18,8 @@ import static de.ghc.managementbot.content.Content.isVerified;
 
 public class AddIPWithQuestions extends AddIP implements Command {
 
-  ArrayList<Message> messages;
-  User user;
+  private ArrayList<Message> messages;
+  private User user;
   private IPEntry entry;
   private Status status;
 

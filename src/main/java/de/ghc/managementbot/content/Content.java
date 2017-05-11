@@ -1,5 +1,8 @@
 package de.ghc.managementbot.content;
 
+import de.ghc.managementbot.commands.AddIPWithQuestions;
+import de.ghc.managementbot.commands.AddIPsWithParams;
+import de.ghc.managementbot.commands.Command;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -32,7 +35,7 @@ public class Content {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
     }
 
-    static Color getImageColor(String imageURL) {
+    public static Color getImageColor(String imageURL) {
         try {
             URL url = new URL(imageURL);
             BufferedImage image = ImageIO.read(url);
@@ -43,7 +46,7 @@ public class Content {
         }
     }
 
-    static void addRole(Member member, Guild guild, Role role) {
+    public static void addRole(Member member, Guild guild, Role role) {
         try {
             guild.getController().addRolesToMember(member, role).queue();
         } catch (PermissionException e) {
@@ -51,7 +54,7 @@ public class Content {
         }
     }
 
-    static boolean isModerator(Member member) {
+    public static boolean isModerator(Member member) {
         if (member == null)
             return false;
         List<Role> roles = member.getRoles();
@@ -64,13 +67,13 @@ public class Content {
                 || roles.containsAll(member.getGuild().getRolesByName("Autor", true));
     }
 
-    static boolean isVerified(Member member) {
+    public static boolean isVerified(Member member) {
         if (member == null)
             return false;
         List<Role> roles = member.getRoles();
         return roles.containsAll(member.getGuild().getRolesByName("Verified", true));
     }
-    static Member getGHCMember(User user) {
+    public static Member getGHCMember(User user) {
         if (ghc != null) {
             return ghc.getMember(user);
         }

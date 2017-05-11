@@ -1,5 +1,6 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Country;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
@@ -8,7 +9,6 @@ import org.json.JSONObject;
 import java.util.Date;
 
 import static de.ghc.managementbot.content.Content.getImageColor;
-import static de.ghc.managementbot.content.Content.getRandomColor;
 
 public class CountryStats extends Country implements Command {
 

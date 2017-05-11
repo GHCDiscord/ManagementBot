@@ -1,11 +1,12 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import static de.ghc.managementbot.content.Content.isModerator;
 
-public class Guide implements Command{
+public class Guide implements Command {
 
     private String guide;
 

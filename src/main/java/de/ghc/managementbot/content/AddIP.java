@@ -1,8 +1,8 @@
 package de.ghc.managementbot.content;
 
-abstract class AddIP extends Database {
+public abstract class AddIP extends Database {
 
-    static boolean checkIP(String s) {
+    protected static boolean checkIP(String s) {
         String[] numbers = s.split("\\.");
         if (numbers.length != 4)
             return false;

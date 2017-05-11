@@ -1,5 +1,9 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.AddIP;
+import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.entity.IPEntry;
+import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;

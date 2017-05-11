@@ -1,4 +1,4 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.threads;
 
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -7,7 +7,7 @@ public class DeleteMessageThread implements Runnable{
     int duration;
     Message message;
 
-    DeleteMessageThread(int duration, Message message) {
+    public DeleteMessageThread(int duration, Message message) {
         this.duration = duration;
         this.message = message;
     }

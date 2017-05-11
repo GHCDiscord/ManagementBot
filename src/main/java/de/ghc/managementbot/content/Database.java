@@ -1,5 +1,7 @@
 package de.ghc.managementbot.content;
 
+import de.ghc.managementbot.entity.IPEntry;
+import de.ghc.managementbot.entity.User;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -16,7 +18,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class Database {
+public abstract class Database {
   protected static final String url = "https://ghc-community.de";
   private static final String postIP = url + "/api/addip.php";
   private static final String getIP = url + "/api/jawasweißdenich";

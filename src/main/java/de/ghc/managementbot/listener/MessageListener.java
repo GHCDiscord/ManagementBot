@@ -75,6 +75,7 @@ public class MessageListener extends ListenerAdapter {
       Content.setGhc(event.getGuild());
       new Thread(new ServerStatsThread(Content.getGhc(), 43200000)).start();
       new Thread(new TwitterThread()).start();
+      //Strings.start();
     }
 
     startCommand(event);

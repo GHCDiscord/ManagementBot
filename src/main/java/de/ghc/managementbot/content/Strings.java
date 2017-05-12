@@ -14,13 +14,18 @@ public abstract class Strings extends Database {
     public static final String addIP_field_inputMinerCount = "addIP_field_inputMinerCount";
     public static final String addIP_field_inputReputation = "addIP_field_inputReputation";
     public static final String addIP_field_inputGuildTag = "addIP_field_inputGuildTag";
-    public static final String addIP_error_noParameterAnswer = "addIP_error_noParameterAnswer";
-    public static final String addIP_error_ipAlreadyExsistsAnswer = "addIP_error_ipAlreadyExsistsAnswer";
-    public static final String addIP_error_exceptionAnswer = "addIP_error_exceptionAnswer";
-    public static final String addIP_confirm_correctDataQuestionsAnswer = "addIP_confirm_correctDataQuestionsAnswer";
-    public static final String addIP_confirm_correctDataParamsAnswer = "addIP_confirm_correctDataParamsAnswer";
+    public static final String addIP_error_noParameter = "addIP_error_noParameter";
+    public static final String addIP_error_ipAlreadyExsists = "addIP_error_ipAlreadyExsists";
+    public static final String addIP_error_exception = "addIP_error_exception";
+    public static final String addIP_confirm_correctDataQuestions = "addIP_confirm_correctDataQuestions";
+    public static final String addIP_confirm_correctDataParams = "addIP_confirm_correctDataParams";
 
-
+    public static final String register_success_addedAccount = "register_success_addedAccount";
+    public static final String register_error_multipleWords = "register_error_multipleWords";
+    public static final String register_error_unexpectedChars = "register_error_unexpectedChars";
+    public static final String register_error_noUsername = "register_error_noUsername";
+    public static final String register_error_accountAlreadyExists = "register_error_accountAlreadyExists";
+    public static final String register_error_usernameIsAlreadyTaken = "register_error_usernameIsAlreadyTaken";
 
 
     private static final Object lock = new Object();
@@ -42,13 +47,9 @@ public abstract class Strings extends Database {
     }
     private static Thread makeStringsThread = new Thread(() -> {
         while (true) {
-            final Object a = new Object();
-            synchronized (a) {
-                try {
-                    a.wait(3600000);
-                } catch (InterruptedException ignore) {
-                }
-            }
+            try {
+                Thread.sleep(3600000);
+            } catch (InterruptedException ignore) {}
             JSONObject stringJSON = getStrings();
             synchronized (lock) {
                 if (stringJSON != null) {

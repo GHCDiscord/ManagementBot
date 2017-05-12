@@ -25,6 +25,8 @@ public class Content {
     //Version
     public static final String version = "Development 3.2.2";
 
+    public static final String GHCImageURL = "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200";
+
     private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
 
     private static Map<User, Command> userAddIPsWithParamsMap = new HashMap<>();

@@ -1,5 +1,6 @@
 package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Content;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ public class Stats implements Command {
                     .toString();
             event.getChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken", null).setColor(getRandomColor())
                     .setDescription(strg)
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+                    .setFooter("Stand: " + new Date(), Content.GHCImageURL).build()).queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

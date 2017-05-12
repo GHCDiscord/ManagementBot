@@ -1,5 +1,6 @@
 package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Country;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -20,7 +21,7 @@ public class CountryStats extends Country implements Command {
         if (country != null) {
             String url = "http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png";
             EmbedBuilder builder = new EmbedBuilder().setColor(getImageColor(url))
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200")
+                    .setFooter("Stand: " + new Date(), Content.GHCImageURL)
                     //.setThumbnail("http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png")
                     .setAuthor(country.getString("CountryName"), "http://hackerz.online/country_competition", url)
                     .addField("Durchschnittliche HC", country.getInt("AvHC") + "", true)

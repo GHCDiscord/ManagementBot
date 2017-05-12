@@ -43,7 +43,7 @@ public class TwitterThread implements Runnable {
                                     .setAuthor(status.getUser().getScreenName(), status.getUser().getURL(), status.getUser().getProfileImageURL())
                                     .setDescription(status.getText())
                                     .setThumbnail(status.getUser().getProfileBannerURL())
-                                    .setFooter("Tweet gesendet: " + status.getCreatedAt(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+                                    .setFooter("Tweet gesendet: " + status.getCreatedAt(), Content.GHCImageURL).build()).queue();
                         }
                     }
                 }catch (TwitterException e) {

@@ -19,6 +19,7 @@ public abstract class Strings extends Database {
     public static final String addIP_error_exception = "addIP_error_exception";
     public static final String addIP_confirm_correctDataQuestions = "addIP_confirm_correctDataQuestions";
     public static final String addIP_confirm_correctDataParams = "addIP_confirm_correctDataParams";
+    public static final String addIP_success_addedIp = "addIP_success_addedIp";
 
     public static final String register_success_addedAccount = "register_success_addedAccount";
     public static final String register_error_multipleWords = "register_error_multipleWords";

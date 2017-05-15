@@ -4,7 +4,6 @@ package de.ghc.managementbot.content;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public abstract class Strings extends Database {
@@ -48,26 +47,22 @@ public abstract class Strings extends Database {
     }
     private static Thread makeStringsThread = new Thread(() -> {
         while (true) {
-            try {
-                Thread.sleep(3600000);
-            } catch (InterruptedException ignore) {}
             JSONObject stringJSON = getStrings();
             synchronized (lock) {
-                if (stringJSON != null) {
+                if (stringJSON != null && stringJSON != JSONObject.NULL) {
                     strings = new HashMap<>();
-                    Iterator<String> commands = stringJSON.keys();
-                    while (commands.hasNext()) {
-                        String command = commands.next();
+                    for (String command : stringJSON.keySet()) {
                         JSONObject commandStrings = stringJSON.getJSONObject(command);
-                        Iterator<String> commandStringNames = commandStrings.keys();
-                        while (commandStringNames.hasNext()) {
-                            String commandStringName = commandStringNames.next();
+                        for (String commandStringName : commandStrings.keySet()) {
                             String commandStringAnswer = commandStrings.getJSONObject(commandStringName).getString("answer");
                             strings.put(command + "_" + commandStringName, commandStringAnswer);
                         }
                     }
                 }
             }
+            try {
+                Thread.sleep(3600000);
+            } catch (InterruptedException ignore) {}
         }
     });
 

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
+import static de.ghc.managementbot.content.Content.formatDate;
 import static de.ghc.managementbot.content.Content.getImageColor;
 
 public class CountryStats extends Country implements Command {
@@ -21,7 +22,7 @@ public class CountryStats extends Country implements Command {
         if (country != null) {
             String url = "http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png";
             EmbedBuilder builder = new EmbedBuilder().setColor(getImageColor(url))
-                    .setFooter("Stand: " + new Date(), Content.GHCImageURL)
+                    .setFooter("Stand: " + formatDate(), Content.GHCImageURL)
                     //.setThumbnail("http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png")
                     .setAuthor(country.getString("CountryName"), "http://hackerz.online/country_competition", url)
                     .addField("Durchschnittliche HC", country.getInt("AvHC") + "", true)

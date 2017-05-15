@@ -7,10 +7,10 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static de.ghc.managementbot.content.Content.formatDate;
 import static de.ghc.managementbot.content.Content.getRandomColor;
 
 public class TopCountry extends Country implements Command {
@@ -36,6 +36,6 @@ public class TopCountry extends Country implements Command {
         for (int i = 0; i < places.length; i++) {
             builder.append(places[i]);
         }
-        event.getChannel().sendMessage(new EmbedBuilder().setColor(getRandomColor()).setTitle("Top 10 L\u00E4nder nach HC pro Spieler", null).setDescription(builder.toString()).setFooter("Stand: " + new Date(), Content.GHCImageURL).build()).queue();
+        event.getChannel().sendMessage(new EmbedBuilder().setColor(getRandomColor()).setTitle("Top 10 L\u00E4nder nach HC pro Spieler", null).setDescription(builder.toString()).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
     }
 }

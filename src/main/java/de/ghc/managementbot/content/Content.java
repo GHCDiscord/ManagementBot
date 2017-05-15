@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +82,14 @@ public class Content {
             return ghc.getMember(user);
         }
         return null;
+    }
+
+    public static String formatDate(Date date) {
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(date);
+    }
+
+    public static String formatDate() {
+        return formatDate(new Date());
     }
 
     public static void setGhc(Guild ghc) {

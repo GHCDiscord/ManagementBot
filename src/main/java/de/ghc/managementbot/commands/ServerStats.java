@@ -5,7 +5,7 @@ import de.ghc.managementbot.content.Database;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.util.Date;
+import static de.ghc.managementbot.content.Content.formatDate;
 
 public class ServerStats extends Database implements Command {
     @Override
@@ -21,7 +21,7 @@ public class ServerStats extends Database implements Command {
             for (int i = 3; i < values.length; i += 2) {
                 numbers.append(values[i]);
             }
-            event.getChannel().sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + new Date(), Content.GHCImageURL).build()).queue();
+            event.getChannel().sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
         }
     }
 }

@@ -17,7 +17,7 @@ public abstract class Strings extends Database {
     public static final String addIP_error_ipAlreadyExsists = "addIP_error_ipAlreadyExsists";
     public static final String addIP_error_exception = "addIP_error_exception";
     public static final String addIP_confirm_correctDataQuestions = "addIP_confirm_correctDataQuestions";
-    public static final String addIP_confirm_correctDataParams = "addIP_confirm_correctDataParams";
+    public static final String addIP_confirm_correctDataParamsAnswer = "addIP_confirm_correctDataParamsAnswer";
     public static final String addIP_success_addedIp = "addIP_success_addedIp";
 
     public static final String register_success_addedAccount = "register_success_addedAccount";
@@ -26,6 +26,18 @@ public abstract class Strings extends Database {
     public static final String register_error_noUsername = "register_error_noUsername";
     public static final String register_error_accountAlreadyExists = "register_error_accountAlreadyExists";
     public static final String register_error_usernameIsAlreadyTaken = "register_error_usernameIsAlreadyTaken";
+
+    public static final String stats_land_field_averageHC = "stats_land_field_averageHC";
+    public static final String stats_land_field_totalHC = "stats_land_field_totalHC";
+    public static final String stats_land_field_stolenMinersCount = "stats_land_field_stolenMinersCount";
+    public static final String stats_land_field_hackedPasswordsCount = "stats_land_field_hackedPasswordsCount";
+    public static final String stats_land_field_blacklistEntriesCount = "stats_land_field_blacklistEntriesCount";
+    public static final String stats_land_field_completedMissions = "stats_land_field_completedMissions";
+    public static final String stats_land_error_unexpectedCountry = "stats_land_error_unexpectedCountry";
+
+    public static final String regeln_success = "regeln_success";
+
+    public static final String help_header_ghcBot = "help_header_ghcBot";
 
 
     private static final Object lock = new Object();

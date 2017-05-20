@@ -5,10 +5,7 @@ import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
@@ -19,6 +16,7 @@ import static de.ghc.managementbot.content.Content.isVerified;
 public class AddIPWithQuestions extends AddIP implements Command {
 
   private ArrayList<Message> messages;
+  private TextChannel channel;
   private User user;
   private IPEntry entry;
   private Status status;
@@ -31,11 +29,19 @@ public class AddIPWithQuestions extends AddIP implements Command {
 
   @Override
   public void onMessageReceived(MessageReceivedEvent event) {
+    if (channel == null)
+      channel = event.getTextChannel();
+    if (channel != null && !channel.equals(event.getChannel())) { // channel == null if private Message
+      // channel switched
+      channel.deleteMessages(messages).queue();
+      messages = new ArrayList<>();
+      channel = event.getTextChannel();
+    }
     if (!messages.contains(event.getMessage())) {
       messages.add(event.getMessage());
     }
     String msg = event.getMessage().getContent();
-    MessageChannel channel = event.getChannel();
+    MessageChannel channel = event.getChannel(); //private Messages
     Member member = event.getMember();
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
@@ -97,8 +103,12 @@ public class AddIPWithQuestions extends AddIP implements Command {
           entry.setUser(user);
           String result = addIPtoDB(entry);
           if (messages != null) {
-            for (Message m : messages) {
-              new Thread(new DeleteMessageThread(0, m)).start();
+            if (this.channel != null) {
+              this.channel.deleteMessages(messages).queue();
+            } else {
+              for (Message message : messages) {
+                message.delete().queue();
+              }
             }
             if (result.equals("1")) {
               Content.getGhc().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();

@@ -42,7 +42,7 @@ public class TwitterThread implements Runnable {
                             Content.getGhc().getTextChannelById(269150030965768193L).sendMessage(new EmbedBuilder().setColor(new Color(53, 137, 255))
                                     .setAuthor(status.getUser().getScreenName(), status.getUser().getURL(), status.getUser().getProfileImageURL())
                                     .setDescription(status.getText())
-                                    .setImage(status.getMediaEntities() != null? status.getMediaEntities()[0] != null? status.getMediaEntities()[0].getMediaURL() : null : null)
+                                    .setImage(status.getMediaEntities().length > 0 ? status.getMediaEntities()[0].getType().equals("photo")? status.getMediaEntities()[0].getMediaURL() : null : null)
                                     .setThumbnail(status.getUser().getProfileBannerURL())
                                     .setFooter("Tweet gesendet: " + Content.formatDate(status.getCreatedAt()), Content.GHCImageURL).build()).queue();
                         }

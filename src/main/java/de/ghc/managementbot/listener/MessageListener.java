@@ -1,9 +1,7 @@
 package de.ghc.managementbot.listener;
 
-import de.ghc.managementbot.content.*;
 import de.ghc.managementbot.commands.*;
-import de.ghc.managementbot.threads.ServerStatsThread;
-import de.ghc.managementbot.threads.TwitterThread;
+import de.ghc.managementbot.content.Content;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -70,14 +68,6 @@ public class MessageListener extends ListenerAdapter {
 			System.out.printf("[%s][%s] %s: %s \n", event.getGuild().getName(),
 					event.getChannel().getName(), event.getAuthor().getName(), msg);
 		}
-
-    if (Content.getGhc() == null && event.getGuild() != null && event.getGuild().getName().equals("German Hackers Community")) {
-      Content.setGhc(event.getGuild());
-      new Thread(new ServerStatsThread(Content.getGhc(), 43200000)).start();
-      new Thread(new TwitterThread()).start();
-      //Strings.start();
-    }
-
     startCommand(event);
   }
 }

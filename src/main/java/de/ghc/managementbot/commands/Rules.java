@@ -1,6 +1,5 @@
 package de.ghc.managementbot.commands;
 
-import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -13,7 +12,7 @@ public class Rules implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getGuild() != null)
-            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+            event.getMessage().delete().queue();
 
 
         if (isModerator(event.getMember())) {

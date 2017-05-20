@@ -27,7 +27,7 @@ public class Verify implements Command {
             new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
         );
       }
-      new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+      event.getMessage().delete().queue();
     }
   }
 }

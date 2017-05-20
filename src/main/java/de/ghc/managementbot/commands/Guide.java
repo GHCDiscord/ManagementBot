@@ -1,6 +1,5 @@
 package de.ghc.managementbot.commands;
 
-import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -28,6 +27,6 @@ public class Guide implements Command {
             event.getMessage().getMentionedUsers().forEach(builder::append);
             event.getChannel().sendMessage(builder.append(guide).build()).queue();
         }
-        new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+        event.getMessage().delete().queue();
     }
 }

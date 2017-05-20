@@ -111,7 +111,7 @@ public class Help implements Command {
                 });
         }
         if (event.getGuild() != null)
-           new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+           event.getMessage().delete().queue();
 
 
     }

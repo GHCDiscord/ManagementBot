@@ -122,7 +122,10 @@ public class AddIPWithQuestions extends AddIP implements Command {
           break;
         case unknown:
           channel.sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
-          messages.forEach(m -> new Thread(new DeleteMessageThread(0, m)).start());
+          if (this.channel != null)
+            this.channel.deleteMessages(messages);
+          else
+            messages.forEach(m -> m.delete().queue());
           Content.deleteUserAddIPWithQuestions(user, this);
           break;
       }

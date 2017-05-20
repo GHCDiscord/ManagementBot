@@ -38,6 +38,25 @@ public abstract class Strings extends Database {
     public static final String regeln_success = "regeln_success";
 
     public static final String help_header_ghcBot = "help_header_ghcBot";
+    public static final String help_userCommands = "help_userCommands";
+    public static final String help_verifiedCommands = "help_verifiedCommands";
+    public static final String help_modCommands = "help_modCommands";
+    public static final String help_verifiedMessage = "help_verifiedMessage";
+    public static final String help_addIPParams = "help_addIPParams";
+
+    public static final String refresh_success = "refresh_success";
+    public static final String refresh_error_userNotFound = "refresh_error_userNotFound";
+
+    public static final String stats_DB_title = "stats_DB_title";
+    public static final String stats_DB_field_date = "public static final String stats_DB_field_date";
+    public static final String stats_DB_field_updated = "stats_DB_field_updated";
+
+    public static final String topCountry_title = "topCountry_title";
+
+    public static final String topGuilds_title = "topGuilds_title";
+
+    public static final String verify_success = "verify_sucess";
+    public static final String verify_error = "verify_error";
 
 
     private static final Object lock = new Object();

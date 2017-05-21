@@ -7,7 +7,7 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.awt.*;
-import java.util.*;
+import java.util.Date;
 
 public class TwitterThread implements Runnable {
 

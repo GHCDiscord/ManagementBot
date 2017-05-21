@@ -1,5 +1,6 @@
 package de.ghc.managementbot.content;
 
+import com.google.api.client.util.DateTime;
 import de.ghc.managementbot.commands.AddIPWithQuestions;
 import de.ghc.managementbot.commands.AddIPsWithParams;
 import de.ghc.managementbot.commands.Command;
@@ -14,11 +15,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class Content {
 
@@ -90,6 +88,10 @@ public class Content {
 
     public static String formatDate() {
         return formatDate(new Date());
+    }
+
+    public static String formatDate(DateTime oldDate) {
+        return formatDate(new Date(oldDate.getValue()));
     }
 
     public static void setGhc(Guild ghc) {

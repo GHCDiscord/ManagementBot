@@ -26,7 +26,7 @@ public class YouTubeThread implements Runnable{
         try {
             YouTube.Channels.List channels = youTube.channels().list("id, snippet");
             channels.setId("UCC_ds4x9Iv3tcvKi-JdQ-Qw");
-            channels.setKey(Secure.YoutTubeKey);
+            channels.setKey(Secure.YouTubeKey);
 
             List<Channel> channelResponse = channels.execute().getItems();
             okitoo = channelResponse.get(0);
@@ -36,7 +36,7 @@ public class YouTubeThread implements Runnable{
         try {
             while (true) {
                 YouTube.Search.List search = youTube.search().list("id, snippet");
-                search.setKey(Secure.YoutTubeKey);
+                search.setKey(Secure.YouTubeKey);
                 search.setChannelId("UCC_ds4x9Iv3tcvKi-JdQ-Qw");
                 search.setType("video");
                 search.setMaxResults(10L);

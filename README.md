@@ -37,14 +37,23 @@ However, if you don't want to do this here is a step-by-step.
 4. After you created your app you will find the `Consumer Key (API Key)` and the `Customer Secret (API Secret)` on the `Keys and Access Tokens` page.
 5. Generate your access token (bottom of the page). You now got the `Access Token` and the `Access Token Secret`.
 6. Add them to /content/Secure.java
-
 _______________________
 
 *** Step 3: Access to your IP Database
 The bot does not have direct access to your database. It's using the API of your Website.
 1. to generate a token for your bot login to any admin account, go to your user settings and click at `Neuer Token`.
 2. add your "database token" to `public static final String DBToken = "";` in /content/Secure.java
+_______________________
 
+*** Step 4: Access to YouTube API
+This Bot uses the YouTube Data API V3. Follow these Steps to access it:
+1. Go to https://console.developers.google.com/apis/dashboard
+2. Select your Project or create a new one
+3. Click 'Activate API' -> 'YouTube Data API' -> Activate
+4. Go to https://console.developers.google.com/apis/credentials
+5. Click 'generate Authentication Data' -> 'API Key'
+6. Copy your Key and paste it to content/Secure.java
+`public static final String YouTubeKey = "";`
 _______________________
 
 **Congratulations, your bot is ready to run.**

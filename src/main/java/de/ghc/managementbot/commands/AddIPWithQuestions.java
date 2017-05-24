@@ -2,9 +2,10 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Strings;
+import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -72,10 +73,10 @@ public class AddIPWithQuestions extends AddIP implements Command {
             entry.setMiners(Integer.parseInt(msg));
           } catch (NumberFormatException e) {
           }
-          status = Status.repupulation;
+          status = Status.reputation;
           channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(messages::add);
           break;
-        case repupulation:
+        case reputation:
           try {
             entry.setRepopulation(Integer.parseInt(msg));
           } catch (NumberFormatException e) {
@@ -101,7 +102,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
         case accepted:
           Content.deleteUserAddIPWithQuestions(user, this);
           entry.setUser(user);
-          String result = addIPtoDB(entry);
+          addEntryAndHandleResponse(entry, channel, event.getAuthor());
           if (messages != null) {
             if (this.channel != null) {
               this.channel.deleteMessages(messages).queue();
@@ -109,13 +110,6 @@ public class AddIPWithQuestions extends AddIP implements Command {
               for (Message message : messages) {
                 message.delete().queue();
               }
-            }
-            if (result.equals("1")) {
-              Content.getGhc().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
-            } else if (result.equals("ip already registered")) {
-              channel.sendMessage("Diese IP existiert bereits in der Datenbank. Updates k\u00F6nnen momentan noch nicht mit dem Bot durchgef\u00FChrt werden. Bitte schreibe einem Kontributor, er wird sich dann darum k\u00FCmmern.").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
-            } else {
-              channel.sendMessage("Es ist ein Fehler aufgetreten:\n" + result).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
             }
           }
           messages = null;
@@ -132,7 +126,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
     }
   }
 
-  private enum Status {
-    start, IP, name, miner, repupulation, guild, accept, accepted, unknown
+  private static enum Status {
+    start, IP, name, miner, reputation, guild, accept, accepted, unknown
   }
 }

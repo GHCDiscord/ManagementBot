@@ -2,9 +2,9 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -16,14 +16,13 @@ import static de.ghc.managementbot.content.Content.isVerified;
 
 public class AddIPsWithParams extends AddIP implements Command {
 
-  boolean done = false;
-  IPEntry entry;
-  private User user;
+  private boolean done = false;
+  private IPEntry entry;
+  private final User user;
 
   public AddIPsWithParams(User user) {
     this.user = user;
   }
-
 
   @Override
   public void onMessageReceived(MessageReceivedEvent event) {
@@ -69,25 +68,21 @@ public class AddIPsWithParams extends AddIP implements Command {
           }
         } catch (ArrayIndexOutOfBoundsException e) {
           event.getChannel().sendMessage(String.format("Der Parameter %s hat kein Argument erhalten!", command[command.length - 1])).queue();
+          //event.getChannel().sendMessage(Strings.getString(Strings.addIP_error_noParameter).replace("$[param]", command[command.length - 1])).queue();
         }
         entry.setUser(event.getAuthor());
         done = true;
-        event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(100, m)).start());
+        event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+        //event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer).replace()) //TODO
       }
     } else {
       Content.deleteUserAddIPWithParams(user, this);
       String msg = event.getMessage().getContent();
       if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
-        String result = addIPtoDB(entry);
-        if (result.equals("1")) {
-          Content.getGhc().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(event.getAuthor()).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
-        } else if (result.equals("ip already registered")) {
-          event.getChannel().sendMessage("Diese IP existiert bereits in der Datenbank. Updates k\u00F6nnen momentan noch nicht mit dem Bot durchgef\u00FChrt werden. Bitte schreibe einem Kontributor, er wird sich dann darum k\u00FCmmern.").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
-        } else {
-          event.getChannel().sendMessage("Es ist ein Fehler aufgetreten:\n" + result).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
-        }
+        addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
       } else {
         event.getChannel().sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(10, m)).start());
+        //TODO Add to Bot CI
       }
     }
 

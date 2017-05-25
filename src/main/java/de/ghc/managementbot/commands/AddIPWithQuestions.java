@@ -47,10 +47,11 @@ public class AddIPWithQuestions extends AddIP implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if (isVerified(member)) {
+    if ((isVerified(member) && this.channel != null && event.getGuild().getTextChannelById(269153131957321728L).equals(this.channel) || (isVerified(member) && this.channel == null))) {
       switch (status) {
         case start:
           channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);
+          channel.sendMessage(Strings.getString(Strings.addIP_field_inputIp)).queue(messages::add);
           status = Status.IP;
           break;
         case IP:
@@ -58,6 +59,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
             entry = new IPEntry(msg);
             status = Status.name;
             channel.sendMessage("Bitte nenne den Namen: ").queue(messages::add);
+            channel.sendMessage(Strings.getString(Strings.addIP_field_inputName)).queue(messages::add);
           } else {
             status = Status.unknown;
             onMessageReceived(event);
@@ -67,6 +69,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           entry.setName(msg);
           status = Status.miner;
           channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(messages::add);
+          channel.sendMessage(Strings.getString(Strings.addIP_field_inputMinerCount)).queue(messages::add);
           break;
         case miner:
           try {
@@ -75,6 +78,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           }
           status = Status.reputation;
           channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(messages::add);
+          channel.sendMessage(Strings.getString(Strings.addIP_field_inputReputation)).queue(messages::add);
           break;
         case reputation:
           try {
@@ -83,12 +87,14 @@ public class AddIPWithQuestions extends AddIP implements Command {
           }
           status = Status.guild;
           channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n").queue(messages::add);
+          channel.sendMessage(Strings.getString(Strings.addIP_field_inputGuildTag)).queue(messages::add);
           break;
         case guild:
           if (msg.length() == 3 || msg.length() == 4) {
             entry.setGuildTag(msg);
           }
           channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);
+          //channel.sendMessage(Strings.getString(Strings.addIP_confirm_correctDataQuestions).replace()).queue(messages::add); //TODO
           status = Status.accept;
           break;
         case accept:
@@ -123,10 +129,12 @@ public class AddIPWithQuestions extends AddIP implements Command {
           Content.deleteUserAddIPWithQuestions(user, this);
           break;
       }
+    } else {
+      Content.deleteUserAddIPWithQuestions(user, this);
     }
   }
 
-  private static enum Status {
+  private enum Status {
     start, IP, name, miner, reputation, guild, accept, accepted, unknown
   }
 }

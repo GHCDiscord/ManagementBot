@@ -29,16 +29,18 @@ public class AddIPsWithParams extends AddIP implements Command {
     new Thread(new DeleteMessageThread(30, event.getMessage())).start();
     String[] command = event.getMessage().getContent().split(" ");
     if (!done) {
-      String IP = command[1];
-      Member member = event.getMember();
-      if (member == null) {
-        member = Content.getGHCMember(event.getAuthor());
-      }
-      if (checkIP(IP) && isVerified(member)) {
-        if (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728")))
-          return;
-        entry = new IPEntry(IP);
-        try {
+      try {
+        String IP = command[1];
+        Member member = event.getMember();
+        if (member == null) {
+          member = Content.getGHCMember(event.getAuthor());
+        }
+        if (checkIP(IP)) {
+          if (!isVerified(member) || (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728")))) {
+            Content.deleteUserAddIPWithParams(user, this);
+            return;
+          }
+          entry = new IPEntry(IP);
           for (int i = 2; i < command.length; i++) {
             if (command[i].equalsIgnoreCase("-n")) {
               entry.setName(command[++i]);
@@ -58,23 +60,29 @@ public class AddIPsWithParams extends AddIP implements Command {
               }
             } else {
               String[] desc = Arrays.copyOfRange(command, i, command.length);
-              StringBuilder description = new StringBuilder();
-              for (String s : desc) {
-                description.append(" ").append(s);
+              StringBuilder description = new StringBuilder().append(desc[0]);
+              for (int j = 0; i < desc.length; i++) {
+                description.append(" ").append(desc[j]);
               }
               entry.setDescription(description.toString());
               break;
             }
           }
-        } catch (ArrayIndexOutOfBoundsException e) {
-          event.getChannel().sendMessage(String.format("Der Parameter %s hat kein Argument erhalten!", command[command.length - 1])).queue();
-          //event.getChannel().sendMessage(Strings.getString(Strings.addIP_error_noParameter).replace("$[param]", command[command.length - 1])).queue();
+        } else {
+          event.getChannel().sendMessageFormat("Die IP %s ist nicht gültig!", IP).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
+          Content.deleteUserAddIPWithParams(user, this);
+          return;
         }
-        entry.setUser(event.getAuthor());
-        done = true;
-        event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
-        //event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer).replace()) //TODO
+      } catch (ArrayIndexOutOfBoundsException e) {
+        event.getChannel().sendMessage(String.format("Der Parameter %s hat kein Argument erhalten!", command[command.length - 1])).queue();
+        //event.getChannel().sendMessage(Strings.getString(Strings.addIP_error_noParameter).replace("$[param]", command[command.length - 1])).queue();
+        Content.deleteUserAddIPWithParams(user, this);
+        return;
       }
+      entry.setUser(event.getAuthor());
+      done = true;
+      event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+      //event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer).replace()) //TODO
     } else {
       Content.deleteUserAddIPWithParams(user, this);
       String msg = event.getMessage().getContent();

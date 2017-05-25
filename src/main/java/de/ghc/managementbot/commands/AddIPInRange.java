@@ -41,6 +41,7 @@ public class AddIPInRange extends AddIP implements Command {
                     Content.deleteUserAddIPInRange(user, this);
                     AddIPWithQuestions command = new AddIPWithQuestions(user);
                     Content.addUserAddIPWithQuestions(user, command);
+                    event.getChannel().sendMessage("Es ist ein Fehler bei der Verarbeitung deiner Eingaben aufgetreten. Bitte gebe die Informationen einzlen ein: ").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                     command.onMessageReceived(event);
                 }
             } else {

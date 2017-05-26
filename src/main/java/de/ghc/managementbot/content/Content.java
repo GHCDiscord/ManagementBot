@@ -1,9 +1,10 @@
 package de.ghc.managementbot.content;
 
 import com.google.api.client.util.DateTime;
+import de.ghc.managementbot.commands.AddIPInRange;
 import de.ghc.managementbot.commands.AddIPWithQuestions;
 import de.ghc.managementbot.commands.AddIPsWithParams;
-import de.ghc.managementbot.commands.Command;
+import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -20,16 +21,13 @@ import java.util.List;
 
 public class Content {
 
-    //Versionsnumer
-    public static final int versionNumer = 5;
-    //Version
-    public static final String version = "Development 3.2.2";
-
     public static final String GHCImageURL = "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200";
 
     private static Map<User, Command> userAddIPWithQuestionsMap = new HashMap<>();
 
     private static Map<User, Command> userAddIPsWithParamsMap = new HashMap<>();
+
+    private static Map<User, Command> userAddIPInRangeMap = new HashMap<>();
 
     private static Guild ghc;
 
@@ -121,5 +119,17 @@ public class Content {
 
     public static Map<User, Command> getUserAddIPsWithParamsMap() {
         return userAddIPsWithParamsMap;
+    }
+
+    public static void addUserAddIPInRange (User user, AddIPInRange command) {
+        userAddIPInRangeMap.put(user, command);
+    }
+
+    public static void deleteUserAddIPInRange (User user, AddIPInRange command) {
+        userAddIPInRangeMap.remove(user, command);
+    }
+
+    public static Map<User, Command> getUserAddIPInRangeMap() {
+        return userAddIPInRangeMap;
     }
 }

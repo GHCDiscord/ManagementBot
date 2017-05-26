@@ -65,6 +65,8 @@ public class MessageListener extends ListenerAdapter {
       return new TopCountry();
     } else if (command[0].equalsIgnoreCase("!de") || command[0].equalsIgnoreCase("!english") || command[0].equalsIgnoreCase("!englisch") || command[0].equalsIgnoreCase("!en")) {
       return new Guide(Guide.language);
+    } else if (msg.equalsIgnoreCase("!latest") || msg.equalsIgnoreCase("!version")) {
+      return new Version();
     } else if (msg.equalsIgnoreCase("!allTutorials") || msg.equalsIgnoreCase("!alltut") || msg.equalsIgnoreCase("!allTutorial")) {
       return new AllTutorals();
     }

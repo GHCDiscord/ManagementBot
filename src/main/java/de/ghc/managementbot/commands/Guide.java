@@ -1,5 +1,6 @@
 package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

@@ -2,6 +2,7 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Country;
+import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONArray;

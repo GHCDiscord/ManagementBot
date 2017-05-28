@@ -68,7 +68,7 @@ public class MessageListener extends ListenerAdapter {
     } else if (msg.equalsIgnoreCase("!latest") || msg.equalsIgnoreCase("!version")) {
       return new Version();
     } else if (msg.equalsIgnoreCase("!allTutorials") || msg.equalsIgnoreCase("!alltut") || msg.equalsIgnoreCase("!allTutorial")) {
-      return new AllTutorals();
+      return new AllTutorials();
     }
     return e -> {};
   }

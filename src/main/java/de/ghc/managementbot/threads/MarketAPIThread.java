@@ -90,7 +90,7 @@ public class MarketAPIThread implements Runnable {
               String data = getGameInfo();
               String v = getVersionNumber(data);
               if (v != null && !v.equals(oldVersion)) {
-                  Content.getGhc().getTextChannelById(280685448303476737L).sendMessage(new EmbedBuilder()
+                  Content.getGhc().getTextChannelById(269150030965768193L).sendMessage(new EmbedBuilder()
                           .setColor(new Color(59, 176, 65))
                           .setTitle("Neue Version verfügbar!", "https://play.google.com/store/apps/details?id=net.okitoo.hackers")
                           .setAuthor("Hackers - Hacking simulator", "https://play.google.com/store/apps/details?id=net.okitoo.hackers", "https://lh3.googleusercontent.com/iZK3i8S-dUl76VOzwalBSLvOi7z1XfSp5Evjy4vn4XtQ67gf3Y9daGns-2S7-eTsKg=w300-rw")

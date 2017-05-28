@@ -33,8 +33,8 @@ public class YouTubeThread implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            while (true) {
+        while (true) {
+            try {
                 YouTube.Search.List search = youTube.search().list("id, snippet");
                 search.setKey(Secure.YouTubeKey);
                 search.setChannelId("UCC_ds4x9Iv3tcvKi-JdQ-Qw");
@@ -53,7 +53,7 @@ public class YouTubeThread implements Runnable{
                                 .setImage(result.getSnippet().getThumbnails().getDefault().getUrl())
                                 .setColor(new Color(255, 44, 52))
                                 .setFooter("Video hochgeladen: " + Content.formatDate(result.getSnippet().getPublishedAt()), Content.GHCImageURL)
-                                .setThumbnail("https://yt3.ggpht.com/OF3m9O73nRiHTCfP1kG7HDOnPHvIt8FCqEuamB7_Ia9BSLz8AAJVlY_Hb92BRNXz-CoNA3Ai=w1920-fcrop64=1,00000000ffffffff-nd-c0xffffffff-rj-k-no")
+                                .setThumbnail("https://yt3.ggpht.com/OF3m9O73nRiHTCfP1kG7HDOnPHvIt8FCqEuamB7_Ia9BSLz8AAJVlY_Hb92BRNXz-CoNA3Ai")
                                 .build()
                         ).queue();
                     }
@@ -61,9 +61,9 @@ public class YouTubeThread implements Runnable{
                 synchronized (this) {
                     this.wait(60000);
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException ignore) {}
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException ignore) {}
+        }
     }
 }

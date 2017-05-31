@@ -1,6 +1,7 @@
 package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Database;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.threads.DeleteMessageThread;
@@ -19,7 +20,7 @@ public class RefreshUser extends Database implements Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
-        if ((event.getGuild() == null && isVerified(member)) || (event.getGuild() != null && event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728")) && isVerified(member))) {
+        if ((event.getGuild() == null && isVerified(member)) || (event.getGuild() != null && event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.hackersip)) && isVerified(member))) {
             String result = refreshUser(event.getAuthor());
             if (result.equals("success"))
                 event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Account wurde erfolgreich reaktiviert! Viel Spaß mit der IP-Datenbank der GCH unter " + url).queue());

@@ -1,6 +1,7 @@
 package de.ghc.managementbot.threads;
 
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Database;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -15,7 +16,7 @@ public class ServerStatsThread extends Database implements Runnable {
 
     public ServerStatsThread(Guild ghc, int timeout) {
         this.timeout = timeout;
-        ips = ghc.getTextChannelById("269153131957321728");
+        ips = ghc.getTextChannelById(Data.hackersip);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Database;
 import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
@@ -19,7 +20,7 @@ public class AddUser extends Database implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if ((event.getGuild() == null && isVerified(member)) || (event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728"))) && isVerified(member)) {
+    if ((event.getGuild() == null && isVerified(member)) || (event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.hackersip))) && isVerified(member)) {
       if (event.getChannel().getType() != ChannelType.PRIVATE) {
         new Thread(new DeleteMessageThread(3, event.getMessage())).start();
       }

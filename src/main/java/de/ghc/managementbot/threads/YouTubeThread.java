@@ -6,6 +6,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.SearchResult;
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Secure;
 import net.dv8tion.jda.core.EmbedBuilder;
 
@@ -46,7 +47,7 @@ public class YouTubeThread implements Runnable{
                 for (SearchResult result : results) {
                     if (result.getSnippet().getPublishedAt().getValue() > lastVideo) {
                         lastVideo = result.getSnippet().getPublishedAt().getValue();
-                        Content.getGhc().getTextChannelById(269150030965768193L).sendMessage(new EmbedBuilder()
+                        Content.getGhc().getTextChannelById(Data.general).sendMessage(new EmbedBuilder()
                                 .setAuthor(result.getSnippet().getChannelTitle(), "https://www.youtube.com/channel/UCC_ds4x9Iv3tcvKi-JdQ-Qw", okitoo.getSnippet().getThumbnails().getDefault().getUrl())
                                 .setTitle(result.getSnippet().getTitle(), "https://youtube.com/watch?v=" + result.getId().getVideoId())
                                 .setDescription(result.getSnippet().getDescription())

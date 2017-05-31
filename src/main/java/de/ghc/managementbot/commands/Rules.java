@@ -1,5 +1,6 @@
 package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
@@ -21,7 +22,7 @@ public class Rules implements Command {
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);
             builder.append(" lies dir bitte die ")
-                    .append(event.getGuild().getTextChannelById("269153175137812481"))
+                    .append(event.getGuild().getTextChannelById(Data.regeln))
                     .append(" genau durch!");
             event.getTextChannel().sendMessage(builder.build()).queue();
         }

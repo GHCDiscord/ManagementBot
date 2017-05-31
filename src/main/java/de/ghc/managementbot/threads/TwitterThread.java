@@ -1,6 +1,7 @@
 package de.ghc.managementbot.threads;
 
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Secure;
 import net.dv8tion.jda.core.EmbedBuilder;
 import twitter4j.*;
@@ -38,8 +39,8 @@ public class TwitterThread implements Runnable {
                             lastTweet = status.getCreatedAt();
                             String content = status.getText();
                             if (content.contains("maintenance"))
-                                Content.getGhc().getTextChannelById(269150030965768193L).sendMessage("@everyone Achtung: Wartungsarbeiten!").queue();
-                            Content.getGhc().getTextChannelById(269150030965768193L).sendMessage(new EmbedBuilder().setColor(new Color(53, 137, 255))
+                                Content.getGhc().getTextChannelById(Data.general).sendMessage("@everyone Achtung: Wartungsarbeiten!").queue();
+                            Content.getGhc().getTextChannelById(Data.general).sendMessage(new EmbedBuilder().setColor(new Color(53, 137, 255))
                                     .setAuthor(status.getUser().getScreenName(), status.getUser().getURL(), status.getUser().getProfileImageURL())
                                     .setDescription(status.getText())
                                     .setImage(status.getMediaEntities().length > 0 ? status.getMediaEntities()[0].getType().equals("photo")? status.getMediaEntities()[0].getMediaURL() : null : null)

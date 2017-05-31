@@ -2,6 +2,7 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
@@ -47,7 +48,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if ((isVerified(member) && this.channel != null && event.getGuild().getTextChannelById(269153131957321728L).equals(this.channel) || (isVerified(member) && this.channel == null))) {
+    if ((isVerified(member) && this.channel != null && event.getGuild().getTextChannelById(Data.hackersip).equals(this.channel) || (isVerified(member) && this.channel == null))) {
       switch (status) {
         case start:
           //channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);

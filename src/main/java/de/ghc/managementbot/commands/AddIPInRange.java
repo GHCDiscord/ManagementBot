@@ -2,6 +2,7 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
@@ -27,7 +28,7 @@ public class AddIPInRange extends AddIP implements Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
-        if ((Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().equals(event.getGuild().getTextChannelById(269153131957321728L))) || (Content.isVerified(member) && event.getChannel().getType().equals(ChannelType.PRIVATE))) {
+        if ((Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.hackersip))) || (Content.isVerified(member) && event.getChannel().getType().equals(ChannelType.PRIVATE))) {
             if (!done) {
                 String[] data = event.getMessage().getContent().split(" ");
                 entry = setupEntry(data);

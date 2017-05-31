@@ -2,6 +2,7 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
@@ -37,7 +38,7 @@ public class AddIPsWithParams extends AddIP implements Command {
           member = Content.getGHCMember(event.getAuthor());
         }
         if (checkIP(IP)) {
-          if (!isVerified(member) || (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById("269153131957321728")))) {
+          if (!isVerified(member) || (event.getGuild() != null && !event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.hackersip)))) {
             Content.deleteUserAddIPWithParams(user, this);
             return;
           }

@@ -26,11 +26,11 @@ public abstract class Database {
   private static final String registerUser = url + "/api/registeruser.php";
   private static final String refresh = url + "/api/refreshaccount.php";
   private static final String stats = url + "/api/stats.php";
+  private static final String expire = url + "api/expireuser.php";
 
   private static HttpClient client = HttpClients.createDefault();
 
   protected static synchronized String addIPtoDB(IPEntry entry) {
-    System.out.println("add to db");
     client = HttpClients.createDefault();
     HttpPost post = new HttpPost(postIP);
 
@@ -52,7 +52,6 @@ public abstract class Database {
           new InputStreamReader(response.getEntity().getContent()));
       String data, line = "";
       while ((data = rd.readLine()) != null) {
-        System.out.println(data);
         line += data;
       }
       System.out.println(line);
@@ -155,5 +154,28 @@ public abstract class Database {
       e.printStackTrace();
     }
     return null;
+  }
+
+  public static synchronized String expireUser(net.dv8tion.jda.core.entities.User user) {
+    HttpClient client = HttpClients.createDefault();
+    HttpPost post = new HttpPost(expire);
+    List<NameValuePair> params = new ArrayList<>();
+
+    params.add(new BasicNameValuePair("token", Secure.DBToken));
+    params.add(new BasicNameValuePair("discorduser", user.getId()));
+
+    try {
+      HttpResponse response = client.execute(post);
+      BufferedReader rd = new BufferedReader(
+              new InputStreamReader(response.getEntity().getContent()));
+      String data, line = "";
+      while ((data = rd.readLine()) != null) {
+        line += data;
+      }
+      return line;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return e.getMessage();
+    }
   }
 }

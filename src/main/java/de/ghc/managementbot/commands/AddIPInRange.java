@@ -65,25 +65,25 @@ public class AddIPInRange extends AddIP implements Command {
             IPEntry entry = new IPEntry(data[1]);
             if (data.length < 3)
                 return entry;
-            entry.setName(data[2]);
-            if (data.length < 4)
+            int i = setName(2, data, entry);
+            if (data.length < i + 2)
                 return entry;
             try {
-                entry.setRepopulation(Integer.parseInt(data[3]));
+                entry.setRepopulation(Integer.parseInt(data[++i]));
             } catch (NumberFormatException ignore) {
             }
-            if (data.length < 5)
+            if (data.length < i + 2)
                 return entry;
             try {
-                entry.setMiners(Integer.parseInt(data[4]));
+                entry.setMiners(Integer.parseInt(data[++i]));
             } catch (NumberFormatException ignore) {
             }
-            if (data.length < 6)
+            if (data.length < i + 2)
                 return entry;
-            if (data[5].length() == 3 || data[5].length() == 4)
-                entry.setGuildTag(data[5]);
+            if (data[5].length() == 3 || data[++i].length() == 4)
+                entry.setGuildTag(data[++i]);
             StringBuilder builder = new StringBuilder();
-            for (int i = 6; i < data.length; i++) {
+            for (; i < data.length; i++) {
                 builder.append(data[i]).append(" ");
             }
             entry.setDescription(builder.toString());

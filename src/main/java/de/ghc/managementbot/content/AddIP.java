@@ -40,6 +40,21 @@ public abstract class AddIP extends Database {
         }
     }
 
+    protected static int setName(int i, String[] command, IPEntry entry) {
+        if (command[i].startsWith("{")) {
+            StringBuilder name = new StringBuilder().append(command[i].replaceFirst("\\{", ""));
+            while (!command[i].endsWith("}")) {
+                name.append(" ").append(command[i]);
+                i++;
+            }
+            name.append(command[i].replace("}", ""));
+            entry.setName(name.toString());
+        } else {
+            entry.setName(command[i]);
+        }
+        return i;
+    }
+
     public static AddIP getAddIP(String msg, User user) {
         String[] data = msg.split(" ");
         if (!data[0].equalsIgnoreCase("!addIP"))

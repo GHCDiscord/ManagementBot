@@ -45,7 +45,7 @@ public class AddIPsWithParams extends AddIP implements Command {
           entry = new IPEntry(IP);
           for (int i = 2; i < command.length; i++) {
             if (command[i].equalsIgnoreCase("-n")) {
-              entry.setName(command[++i]);
+              i = setName(++i, command, entry);
             } else if (command[i].equalsIgnoreCase("-m")) {
               try {
                 entry.setMiners(Integer.parseInt(command[++i]));
@@ -85,8 +85,7 @@ public class AddIPsWithParams extends AddIP implements Command {
       event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer)
               .replace("$[IP]", entry.getIP()).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag()).replace("$[desc]", entry.getDescription())
       ).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
-      //event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer).replace()) //TODO
-    } else {
+     } else {
       Content.deleteUserAddIPWithParams(user, this);
       String msg = event.getMessage().getContent();
       if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {

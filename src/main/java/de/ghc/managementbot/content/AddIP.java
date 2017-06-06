@@ -43,11 +43,10 @@ public abstract class AddIP extends Database {
     protected static int setName(int i, String[] command, IPEntry entry) {
         if (command[i].startsWith("{")) {
             StringBuilder name = new StringBuilder().append(command[i].replaceFirst("\\{", ""));
-            while (!command[i].endsWith("}")) {
+            for (i++;!command[i].endsWith("}"); i++) {
                 name.append(" ").append(command[i]);
-                i++;
             }
-            name.append(command[i].replace("}", ""));
+            name.append(" ").append(command[i].replace("}", ""));
             entry.setName(name.toString());
         } else {
             entry.setName(command[i]);

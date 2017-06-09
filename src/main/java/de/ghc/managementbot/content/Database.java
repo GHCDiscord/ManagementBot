@@ -26,7 +26,7 @@ public abstract class Database {
   private static final String registerUser = url + "/api/registeruser.php";
   private static final String refresh = url + "/api/refreshaccount.php";
   private static final String stats = url + "/api/stats.php";
-  private static final String expire = url + "api/expireuser.php";
+  private static final String expire = url + "/api/expireuser.php";
 
   private static HttpClient client = HttpClients.createDefault();
 
@@ -165,6 +165,7 @@ public abstract class Database {
     params.add(new BasicNameValuePair("discorduser", user.getId()));
 
     try {
+      post.setEntity(new UrlEncodedFormEntity(params));
       HttpResponse response = client.execute(post);
       BufferedReader rd = new BufferedReader(
               new InputStreamReader(response.getEntity().getContent()));

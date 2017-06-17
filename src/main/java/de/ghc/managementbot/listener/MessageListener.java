@@ -29,26 +29,14 @@ public class MessageListener extends ListenerAdapter {
       return new Verify();
     } else if (msg.equalsIgnoreCase("!topGuilds")) {
       return new TopGuilds();
-    } else if (command[0].equalsIgnoreCase("!help")) {
+    } else if (command[0].equalsIgnoreCase("!help") || command[0].equalsIgnoreCase("!hilfe")) {
       return new Help();
     } else if (command[0].equalsIgnoreCase("!regeln") || command[0].equalsIgnoreCase("!rules")) {
       return new Rules();
     } else if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
       return new Guide(Guide.faq);
     } else if (command[0].equalsIgnoreCase("!addip")) {
-      AddIP addIP = AddIP.getAddIP(msg, event.getAuthor());
-      if (addIP instanceof Command) {
-        if (addIP instanceof AddIPWithQuestions) {
-          Content.addUserAddIPWithQuestions(event.getAuthor(), (AddIPWithQuestions) addIP);
-          return (Command) addIP;
-        } else if (addIP instanceof AddIPsWithParams) {
-          Content.addUserAddIPWithParams(event.getAuthor(), (AddIPsWithParams) addIP);
-          return (Command) addIP;
-        } else if (addIP instanceof  AddIPInRange) {
-          Content.addUserAddIPInRange(event.getAuthor(), (AddIPInRange) addIP);
-          return (Command) addIP;
-        }
-      }
+      return getAddIP(msg, event);
     } else if (command[0].equalsIgnoreCase("!gilde") || command[0].equalsIgnoreCase("!guild")) {
       return new Guide(Guide.guild);
     } else if (command[0].equalsIgnoreCase("!taktik")) {
@@ -69,6 +57,23 @@ public class MessageListener extends ListenerAdapter {
       return new Version();
     } else if (msg.equalsIgnoreCase("!allTutorials") || msg.equalsIgnoreCase("!alltut") || msg.equalsIgnoreCase("!allTutorial")) {
       return new AllTutorials();
+    }
+    return e -> {};
+  }
+
+  private static Command getAddIP(String msg, MessageReceivedEvent event) {
+    AddIP addIP = AddIP.getAddIP(msg, event.getAuthor());
+    if (addIP instanceof Command) {
+      if (addIP instanceof AddIPWithQuestions) {
+        Content.addUserAddIPWithQuestions(event.getAuthor(), (AddIPWithQuestions) addIP);
+        return (Command) addIP;
+      } else if (addIP instanceof AddIPsWithParams) {
+        Content.addUserAddIPWithParams(event.getAuthor(), (AddIPsWithParams) addIP);
+        return (Command) addIP;
+      } else if (addIP instanceof  AddIPInRange) {
+        Content.addUserAddIPInRange(event.getAuthor(), (AddIPInRange) addIP);
+        return (Command) addIP;
+      }
     }
     return e -> {};
   }

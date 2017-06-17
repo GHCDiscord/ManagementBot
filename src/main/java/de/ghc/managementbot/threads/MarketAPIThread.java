@@ -64,7 +64,8 @@ public class MarketAPIThread implements Runnable {
     public static String getUpdateNotes(String data) {
         if (data != null && data.contains("<div class=\"recent-change\">")) {
             int i = data.indexOf("<div class=\"recent-change\">");
-            return data.substring(i + 27, data.indexOf("</div> <div class=\"show-more-end\" jsaction=\"click:vhaaFf\"></div>"));
+            String changes = data.substring(i + 27, data.indexOf("</div> <div class=\"show-more-end\" jsaction=\"click:vhaaFf\"></div>"));
+            return changes.replace("</div><div class=\"recent-change\">", "\n");
         }
         return null;
     }

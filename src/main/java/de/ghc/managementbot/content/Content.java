@@ -92,11 +92,11 @@ public class Content {
         return formatDate(new Date(oldDate.getValue()));
     }
 
-    public static void setGhc(Guild ghc) {
+    public static synchronized void setGhc(Guild ghc) {
         Content.ghc = ghc;
     }
 
-    public static Guild getGhc() {
+    public static synchronized Guild getGhc() {
         return ghc;
     }
 

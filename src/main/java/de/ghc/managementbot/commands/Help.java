@@ -49,7 +49,7 @@ public class Help implements Command {
 
     private static final String helMessageAddIPParams = "Es gibt drei M\u00F6glichkeiten, eine IP zur Datenbank hinzuzuf\u00FCgen:\n" +
             "\n1. Parameter:\n" +
-            "Schreibe **!addIP** gefolgt von einer g\u00FCltige IP-Adresse.\n" +
+            "Schreibe **!addIP** gefolgt von einer g\u00FCltigen IP-Adresse.\n" +
             "Darauf k\u00F6nnen diese Parameter folgen:\n" +
             "**-n** Name des Hackers (nur ein Wort)\n" +
             "**-m** Anzahl der Miner\n" +

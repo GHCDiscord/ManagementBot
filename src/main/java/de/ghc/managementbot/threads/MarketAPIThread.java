@@ -75,7 +75,7 @@ public class MarketAPIThread implements Runnable {
     }
 
     public static String getLastUpdateDate(String data) {
-        if (data != null && data.contains("<span class=\"review-date\">")) {
+        if (data != null && data.contains("itemprop=\"datePublished\">")) {
             int i = data.indexOf("itemprop=\"datePublished\">");
             return data.substring(i + 25, data.indexOf("</div> </div>  <div class=\"meta-info\">"));
         }

@@ -7,4 +7,5 @@ public class Secure {
     public static final String AccesSecret = "";
     public static final String DBToken = "";
     public static final String DiscordToken = "";
+    public static final String YouTubeKey = "";
 }

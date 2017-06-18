@@ -27,7 +27,7 @@ public class Main {
       new Thread(new TwitterThread()).start();
       new Thread(new YouTubeThread()).start();
       new Thread(new MarketAPIThread()).start();
-      Strings.start();
+      //Strings.start();
     } catch (LoginException | InterruptedException | RateLimitedException e) {
       e.printStackTrace();
     }

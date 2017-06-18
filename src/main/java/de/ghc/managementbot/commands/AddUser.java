@@ -70,6 +70,11 @@ public class AddUser extends Database implements Command {
           event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage(Strings.getString(Strings.addIP_error_exception).replace("$[err]", response)).queue());
         }
       }).start();
+    } else {
+      if (!isVerified(member)) {
+        new Rules().onMessageReceived(event);
+      } else
+        new Thread(new DeleteMessageThread(3, event.getMessage())).start();
     }
   }
 }

@@ -1,5 +1,7 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Data;
+import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -12,7 +14,7 @@ public class Rules implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (event.getGuild() != null)
-            new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+            event.getMessage().delete().queue();
 
 
         if (isModerator(event.getMember())) {
@@ -20,7 +22,7 @@ public class Rules implements Command {
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);
             builder.append(" lies dir bitte die ")
-                    .append(event.getGuild().getTextChannelById("269153175137812481"))
+                    .append(event.getGuild().getTextChannelById(Data.regeln))
                     .append(" genau durch!");
             event.getTextChannel().sendMessage(builder.build()).queue();
         }

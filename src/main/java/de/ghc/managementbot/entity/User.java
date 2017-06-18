@@ -1,24 +1,18 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.entity;
 
 import java.util.Random;
 
 public class User {
 
-    enum Role {
-        Admin, Moderator, User
-    }
-
     private String Username;
     private String Password;
     private String EMail;
-    private Role Role;
     private net.dv8tion.jda.core.entities.User discordUser;
 
     public User (String username) {
         Username = username;
         Password = generatePassword();
         EMail = "";
-        Role = Role.User;
     }
 
     private String generatePassword() {
@@ -40,10 +34,6 @@ public class User {
             }
         }
         return pw.toString();
-    }
-
-    public User.Role getRole() {
-        return Role;
     }
 
     public String getEMail() {

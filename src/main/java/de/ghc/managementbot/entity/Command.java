@@ -1,4 +1,4 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.entity;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

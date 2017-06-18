@@ -1,5 +1,7 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONObject;
@@ -8,8 +10,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Date;
 
+import static de.ghc.managementbot.content.Content.formatDate;
 import static de.ghc.managementbot.content.Content.getRandomColor;
 
 public class Stats implements Command {
@@ -28,7 +30,7 @@ public class Stats implements Command {
                     .addField("" ,"**Erfolgreich geknackte Passw\u00F6rter**"+ jsonObject.getInt("successful_cracked_passwords") + "", true)
                     .addField("", "**Gestohlene Miner**"+ jsonObject.getInt("total_miners_stolen") + "", false)
                     .addField("", "**Gestohlene Wallets**"+ jsonObject.getInt("total_wallets_stolen") + "", true)
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200")
+                    .setFooter("Stand: " + Content.formateDate(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200")
                     .build();
             return new MessageBuilder().setEmbed(messageEmbed).build(); */
             String strg = new StringBuilder()
@@ -42,7 +44,7 @@ public class Stats implements Command {
                     .toString();
             event.getChannel().sendMessage(new EmbedBuilder().setTitle("Statistiken", null).setColor(getRandomColor())
                     .setDescription(strg)
-                    .setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+                    .setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

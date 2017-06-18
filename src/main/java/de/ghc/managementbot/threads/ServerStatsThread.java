@@ -1,19 +1,21 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.threads;
 
+import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
+import de.ghc.managementbot.content.Database;
+import de.ghc.managementbot.content.Strings;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.util.Date;
+import static de.ghc.managementbot.content.Content.formatDate;
 
 public class ServerStatsThread extends Database implements Runnable {
 
     private int timeout;
-    private TextChannel ips;
 
-    public ServerStatsThread(Guild ghc, int timeout) {
+    public ServerStatsThread(int timeout) {
         this.timeout = timeout;
-        ips = ghc.getTextChannelById("269153131957321728");
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ServerStatsThread extends Database implements Runnable {
                         for (int i = 3; i < values.length; i+=2) {
                             numbers.append(values[i]);
                         }
-                        ips.sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + new Date(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200").build()).queue();
+                        Content.getGhc().getTextChannelById(Data.hackersip).sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
                         this.wait(timeout);
                     } else
                         this.wait(5000);

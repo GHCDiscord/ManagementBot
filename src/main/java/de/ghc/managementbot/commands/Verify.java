@@ -1,5 +1,7 @@
-package de.ghc.managementbot.content;
+package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.entity.Command;
+import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -26,7 +28,7 @@ public class Verify implements Command {
             new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
         );
       }
-      new Thread(new DeleteMessageThread(0, event.getMessage())).start();
+      event.getMessage().delete().queue();
     }
   }
 }

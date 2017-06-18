@@ -51,16 +51,16 @@ public class AddIPWithQuestions extends AddIP implements Command {
     if ((isVerified(member) && this.channel != null && this.channel.getIdLong() == Data.hackersip || (isVerified(member) && this.channel == null))) {
       switch (status) {
         case start:
-          //channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);
-          channel.sendMessage(Strings.getString(Strings.addIP_field_inputIp)).queue(messages::add);
+          channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);
+          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputIp)).queue(messages::add);
           status = Status.IP;
           break;
         case IP:
           if (checkIP(msg)) {
             entry = new IPEntry(msg);
             status = Status.name;
-            //channel.sendMessage("Bitte nenne den Namen: ").queue(messages::add);
-            channel.sendMessage(Strings.getString(Strings.addIP_field_inputName)).queue(messages::add);
+            channel.sendMessage("Bitte nenne den Namen: ").queue(messages::add);
+            //channel.sendMessage(Strings.getString(Strings.addIP_field_inputName)).queue(messages::add);
           } else {
             status = Status.unknown;
             onMessageReceived(event);
@@ -69,8 +69,8 @@ public class AddIPWithQuestions extends AddIP implements Command {
         case name:
           entry.setName(msg);
           status = Status.miner;
-          //channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(messages::add);
-          channel.sendMessage(Strings.getString(Strings.addIP_field_inputMinerCount)).queue(messages::add);
+          channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(messages::add);
+          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputMinerCount)).queue(messages::add);
           break;
         case miner:
           try {
@@ -78,8 +78,8 @@ public class AddIPWithQuestions extends AddIP implements Command {
           } catch (NumberFormatException e) {
           }
           status = Status.reputation;
-          //channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(messages::add);
-          channel.sendMessage(Strings.getString(Strings.addIP_field_inputReputation)).queue(messages::add);
+          channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(messages::add);
+          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputReputation)).queue(messages::add);
           break;
         case reputation:
           try {
@@ -87,15 +87,15 @@ public class AddIPWithQuestions extends AddIP implements Command {
           } catch (NumberFormatException e) {
           }
           status = Status.guild;
-          //channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n").queue(messages::add);
-          channel.sendMessage(Strings.getString(Strings.addIP_field_inputGuildTag)).queue(messages::add);
+          channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n").queue(messages::add);
+          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputGuildTag)).queue(messages::add);
           break;
         case guild:
           if (msg.length() == 3 || msg.length() == 4) {
             entry.setGuildTag(msg);
           }
-          //channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);
-          channel.sendMessage(Strings.getString(Strings.addIP_confirm_correctDataQuestions).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag())).queue(messages::add); //TODO
+          channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);
+          //channel.sendMessage(Strings.getString(Strings.addIP_confirm_correctDataQuestions).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag())).queue(messages::add); //TODO
           status = Status.accept;
           break;
         case accept:

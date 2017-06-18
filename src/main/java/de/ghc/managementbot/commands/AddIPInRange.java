@@ -34,9 +34,7 @@ public class AddIPInRange extends AddIP implements Command {
                 entry = setupEntry(data);
                 if (entry != null) {
                     entry.setUser(user);
-                    event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer)
-                            .replace("$[IP]", entry.getIP()).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag()).replace("$[desc]", entry.getDescription())
-                    ).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+                    event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
                     done = true;
                 } else {
                     Content.deleteUserAddIPInRange(user, this);

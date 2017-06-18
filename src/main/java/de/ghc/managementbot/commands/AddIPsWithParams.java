@@ -76,15 +76,13 @@ public class AddIPsWithParams extends AddIP implements Command {
           return;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
-        event.getChannel().sendMessage(Strings.getString(Strings.addIP_error_noParameter).replace("$[param]", command[command.length - 1])).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
+        event.getChannel().sendMessage(String.format("Der Parameter %s hat keinen Wert erhalten", command[command.length - 1])).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
         Content.deleteUserAddIPWithParams(user, this);
         return;
       }
       entry.setUser(event.getAuthor());
       done = true;
-      event.getChannel().sendMessage(Strings.getString(Strings.addIP_confirm_correctDataParamsAnswer)
-              .replace("$[IP]", entry.getIP()).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag()).replace("$[desc]", entry.getDescription())
-      ).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+      event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
      } else {
       Content.deleteUserAddIPWithParams(user, this);
       String msg = event.getMessage().getContent();

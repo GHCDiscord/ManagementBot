@@ -5,7 +5,7 @@ public abstract class Data {
     @Deprecated
     public static final long GHC_OLD = 269150030965768193L;
     public static final long test = 280685448303476737L;
-    public static final long GHC = 269150030965768193L;
+    public static final long GHC = 270162736095297536L;
     //Channels
     @Deprecated
     public static final long general_OLD = 269150030965768193L;
@@ -61,5 +61,6 @@ public abstract class Data {
     public static final long altes_Eisen = 334053327820161026L;
     public static final long verified = 334053556158201860L;
     public static final long muted = 270172445523181569L;
+    public static final long botMod = 334349882238173184L;
     //Dyno, Kontributor, Mee6, VIP, BotNet, GHC Bot, Altes_Eisen, Verified, Muted, everyone
 }

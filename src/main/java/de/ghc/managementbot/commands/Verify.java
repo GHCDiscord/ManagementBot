@@ -1,5 +1,6 @@
 package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -16,7 +17,7 @@ public class Verify implements Command {
   public void onMessageReceived(MessageReceivedEvent event) {
     if (event.getGuild() != null) {
       if (!event.getMember().getRoles().contains(event.getGuild().getRolesByName("verified", true).get(0))) {
-        addRole(event.getMember(), event.getGuild(), event.getGuild().getRolesByName("verified", true).get(0));
+        addRole(event.getMember(), event.getGuild(), event.getGuild().getRoleById(Data.verified));
         Message message = new MessageBuilder().append(event.getAuthor()).append(" ist nun verifiziert!").build();
         event.getMessage().getChannel().sendMessage(message).queue(m ->
             new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()

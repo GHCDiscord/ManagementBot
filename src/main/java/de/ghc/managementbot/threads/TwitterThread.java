@@ -9,11 +9,13 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Date;
 
 public class TwitterThread implements Runnable {
 
     private Date lastTweet;
+    private Twitter twitter;
 
     public TwitterThread() {
         lastTweet = new Date();
@@ -22,17 +24,19 @@ public class TwitterThread implements Runnable {
     @Override
     public void run() {
         synchronized (this) {
+            ConfigurationBuilder builder = new ConfigurationBuilder()
+                    .setDebugEnabled(true)
+                    .setOAuthConsumerKey(Secure.ConsumerKey)
+                    .setOAuthConsumerSecret(Secure.ConsumerSecret)
+                    .setOAuthAccessToken(Secure.AccessToken)
+                    .setOAuthAccessTokenSecret(Secure.AccesSecret);
+            twitter = new TwitterFactory(builder.build()).getInstance();
             while (true) {
                 try {
                     this.wait(60000);
-                } catch (InterruptedException ignore) {}
-                ConfigurationBuilder builder = new ConfigurationBuilder()
-                        .setDebugEnabled(true)
-                        .setOAuthConsumerKey(Secure.ConsumerKey)
-                        .setOAuthConsumerSecret(Secure.ConsumerSecret)
-                        .setOAuthAccessToken(Secure.AccessToken)
-                        .setOAuthAccessTokenSecret(Secure.AccesSecret);
-                Twitter twitter = new TwitterFactory(builder.build()).getInstance();
+                } catch (InterruptedException e) {
+                    return;
+                }
                 try {
                     ResponseList<Status> response = twitter.getUserTimeline(811996248840531969L);
                     for (Status status : response) {

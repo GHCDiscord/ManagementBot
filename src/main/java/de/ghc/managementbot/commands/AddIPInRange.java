@@ -78,10 +78,10 @@ public class AddIPInRange extends AddIP implements Command {
             }
             if (data.length < i + 2)
                 return entry;
-            if (data[5].length() == 3 || data[++i].length() == 4)
-                entry.setGuildTag(data[++i]);
+            if (data[++i].length() == 3 || data[i].length() == 4)
+                entry.setGuildTag(data[i]);
             StringBuilder builder = new StringBuilder();
-            for (; i < data.length; i++) {
+            for (; ++i < data.length; i++) {
                 builder.append(data[i]).append(" ");
             }
             entry.setDescription(builder.toString());

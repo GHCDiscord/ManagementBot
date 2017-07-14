@@ -50,28 +50,26 @@ public class Content {
         try {
             guild.getController().addRolesToMember(member, role).queue();
         } catch (PermissionException e) {
-            e.printStackTrace();
+            ghc.getTextChannelById(Data.botLog).sendMessageFormat("Failed to add permission %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
         }
     }
 
     public static boolean isModerator(Member member) {
         if (member == null)
             return false;
+        if (member.getGuild().getIdLong() != Data.GHC)
+            return false;
         List<Role> roles = member.getRoles();
-        return     roles.containsAll(member.getGuild().getRolesByName("Admin", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Moderator", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Hackers-Staff", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Coding", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Sponsor", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Ex-Staff", true))
-                || roles.containsAll(member.getGuild().getRolesByName("Autor", true));
+        return roles.contains(getGhc().getRoleById(Data.botMod));
     }
 
     public static boolean isVerified(Member member) {
         if (member == null)
             return false;
+        if (member.getGuild().getIdLong() != Data.GHC)
+            return false;
         List<Role> roles = member.getRoles();
-        return roles.containsAll(member.getGuild().getRolesByName("Verified", true));
+        return roles.contains(getGhc().getRoleById(Data.verified));
     }
     public static Member getGHCMember(User user) {
         if (ghc != null) {

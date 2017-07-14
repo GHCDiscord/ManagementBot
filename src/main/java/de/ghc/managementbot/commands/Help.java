@@ -60,13 +60,13 @@ public class Help implements Command {
             "**!addIP 1.2.3.4 -n {Datacenter ABC} -g ABC -m 0**\n" +
             "**!addIP 4.3.2.1 -n HackerTom -r 1234 -m 2 Sehr aktiv**\n" +
             "\n2. Reihenfolge\n" +
-            "Es gebt etwas schneller, wenn man die Werte ohne Parameter eingibt.\n" +
+            "Es geht etwas schneller, wenn man die Werte ohne Parameter eingibt.\n" +
             "Dann m\u00FCssen sie in dieser Reihenfolge sein:\n" +
             "**!addIP *IP* *Name* *Rep* *Miner* *Gilde***\n" +
             "Beispiel:\n" +
             "**!addIP 1.2.3.4 HackerTom 1234 2 Sehr aktiv**\n" +
             "\n3. Abfrage\n" +
-            "Wenn keine weiterne Informationen angegeben werden, werden die n\u00F6tigen Informationen abgefragt.";
+            "Wenn keine weiteren Informationen angegeben werden, werden die n\u00F6tigen Informationen abgefragt.";
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {

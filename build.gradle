@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    compile 'net.dv8tion:JDA:3.1.1_213'
+    compile 'net.dv8tion:JDA:3.2.0_227'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
     compile 'com.google.api-client:google-api-client:1.22.0'

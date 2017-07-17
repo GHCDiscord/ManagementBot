@@ -57,7 +57,7 @@ public abstract class Database {
       System.out.println(line);
       return line;
     } catch (Exception e) {
-      e.printStackTrace();
+      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
       return e.toString();
     }
   }
@@ -89,7 +89,7 @@ public abstract class Database {
       System.out.println(line);
       return line;
     } catch (Exception e) {
-      e.printStackTrace();
+      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
       return e.toString();
     } finally {
       System.out.println("finish register");
@@ -116,7 +116,7 @@ public abstract class Database {
       System.out.println(line);
       return line;
     } catch (Exception e) {
-      e.printStackTrace();
+      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
       return e.toString();
     }
   }
@@ -134,7 +134,7 @@ public abstract class Database {
       }
       return stats.toString().replace("<br>", "\n ").replace("<title>Stats 1.0</title>", "").replace("<", "**").replace(">", "**");
     } catch (IOException e) {
-      e.printStackTrace();
+      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
       return null;
     }
   }
@@ -151,7 +151,7 @@ public abstract class Database {
       }
       return new JSONObject(strings.toString());
     } catch (IOException e) {
-      e.printStackTrace();
+      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
     }
     return null;
   }
@@ -175,7 +175,7 @@ public abstract class Database {
       }
       return line;
     } catch (IOException e) {
-      e.printStackTrace();
+      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
       return e.getMessage();
     }
   }

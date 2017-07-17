@@ -1,5 +1,7 @@
 package de.ghc.managementbot.threads;
 
+import de.ghc.managementbot.content.Content;
+import de.ghc.managementbot.content.Data;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
@@ -27,7 +29,8 @@ public class DeleteMessageThread implements Runnable{
             try {
                 message.delete().queue();
             }catch (PermissionException e) {
-                e.printStackTrace();
+                Content.getGhc().getTextChannelById(Data.botLog).sendMessage("DeleteMessageThread: PermissionException: " + e.getLocalizedMessage()).queue();
+
             }
         }
     }

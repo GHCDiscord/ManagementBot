@@ -32,7 +32,7 @@ public class YouTubeThread implements Runnable{
             List<Channel> channelResponse = channels.execute().getItems();
             okitoo = channelResponse.get(0);
         } catch (IOException e) {
-            e.printStackTrace();
+            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("YouTubeThread: IOException: " + e.getLocalizedMessage()).queue();
         }
         while (true) {
             try {

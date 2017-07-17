@@ -54,7 +54,7 @@ public class TwitterThread implements Runnable {
                         }
                     }
                 }catch (TwitterException e) {
-                    e.printStackTrace();
+                    Content.getGhc().getTextChannelById(Data.botLog).sendMessage("TwitterThread: TwitterException: " + e.getLocalizedMessage()).queue();
                 }
             }
         }

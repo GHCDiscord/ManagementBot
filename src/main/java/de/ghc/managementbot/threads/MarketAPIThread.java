@@ -40,7 +40,7 @@ public class MarketAPIThread implements Runnable {
             }
             return d.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("MarketAPIThread: IOException: " + e.getLocalizedMessage()).queue();
         }
         return null;
     }

@@ -94,7 +94,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           if (msg.length() == 3 || msg.length() == 4) {
             entry.setGuildTag(msg);
           }
-          channel.sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);
+          channel.sendMessage("Stimmen diese Daten?\n" + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);
           //channel.sendMessage(Strings.getString(Strings.addIP_confirm_correctDataQuestions).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag())).queue(messages::add); //TODO
           status = Status.accept;
           break;
@@ -107,7 +107,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           onMessageReceived(event);
           break;
         case accepted:
-          Content.deleteUserAddIPWithQuestions(user, this);
+          Content.deleteUserAddIP(user, this);
           entry.setUser(user);
           addEntryAndHandleResponse(entry, channel, event.getAuthor());
           if (messages != null) {
@@ -127,11 +127,11 @@ public class AddIPWithQuestions extends AddIP implements Command {
             this.channel.deleteMessages(messages).queue();
           else
             messages.forEach(m -> m.delete().queue());
-          Content.deleteUserAddIPWithQuestions(user, this);
+          Content.deleteUserAddIP(user, this);
           break;
       }
     } else {
-      Content.deleteUserAddIPWithQuestions(user, this);
+      Content.deleteUserAddIP(user, this);
     }
   }
 

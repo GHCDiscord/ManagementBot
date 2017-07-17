@@ -28,23 +28,23 @@ public class AddIPInRange extends AddIP implements Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
-        if ((Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().getIdLong() == Data.hackersip) || (Content.isVerified(member) && event.getChannel().getType().equals(ChannelType.PRIVATE))) {
+       // if ((Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().getIdLong() == Data.hackersip) || (Content.isVerified(member) && event.getChannel().getType().equals(ChannelType.PRIVATE))) {
             if (!done) {
                 String[] data = event.getMessage().getContent().split(" ");
                 entry = setupEntry(data);
                 if (entry != null) {
                     entry.setUser(user);
-                    event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+                    event.getChannel().sendMessage("Stimmen diese Daten?\n" + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
                     done = true;
                 } else {
-                    Content.deleteUserAddIPInRange(user, this);
+                    Content.deleteUserAddIP(user, this);
                     AddIPWithQuestions command = new AddIPWithQuestions(user);
-                    Content.addUserAddIPWithQuestions(user, command);
+                    Content.addUserAddIP(user, command);
                     event.getChannel().sendMessage("Es ist ein Fehler bei der Verarbeitung deiner Eingaben aufgetreten. Bitte gebe die Informationen einzlen ein: ").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                     command.onMessageReceived(event);
                 }
             } else {
-                Content.deleteUserAddIPInRange(user, this);
+                Content.deleteUserAddIP(user, this);
                 String msg = event.getMessage().getContent();
                 if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
                     addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
@@ -53,9 +53,9 @@ public class AddIPInRange extends AddIP implements Command {
                 }
 
             }
-        } else {
-            Content.deleteUserAddIPInRange(user, this);
-        }
+        /*} else {
+            Content.deleteUserAddIP(user, this);
+        }*/
     }
 
     private IPEntry setupEntry(String[] data) {

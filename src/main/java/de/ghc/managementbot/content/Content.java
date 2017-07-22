@@ -47,9 +47,9 @@ public class Content {
 
     public static void addRole(Member member, Guild guild, Role role) {
         try {
-            guild.getController().addRolesToMember(member, role).queue();
+            guild.getController().addSingleRoleToMember(member, role).complete();
         } catch (PermissionException e) {
-            ghc.getTextChannelById(Data.botLog).sendMessageFormat("Failed to add permission %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
+            ghc.getTextChannelById(Data.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
         }
     }
 

@@ -17,6 +17,7 @@ import java.util.List;
 public class YouTubeThread implements Runnable{
 
     private long lastVideo = System.currentTimeMillis();
+    private long lastLiveStream = System.currentTimeMillis();
     private YouTube youTube;
     private Channel okitoo;
 
@@ -36,35 +37,66 @@ public class YouTubeThread implements Runnable{
         }
         while (true) {
             try {
-                YouTube.Search.List search = youTube.search().list("id, snippet");
-                search.setKey(Secure.YouTubeKey);
-                search.setChannelId("UCC_ds4x9Iv3tcvKi-JdQ-Qw");
-                search.setType("video");
-                search.setMaxResults(10L);
+                YouTube.Search.List search = makeSearchRequest();
 
                 List<SearchResult> results = search.execute().getItems();
 
                 for (SearchResult result : results) {
                     if (result.getSnippet().getPublishedAt().getValue() > lastVideo) {
                         lastVideo = result.getSnippet().getPublishedAt().getValue();
-                        Content.getGhc().getTextChannelById(Data.general).sendMessage(new EmbedBuilder()
-                                .setAuthor(result.getSnippet().getChannelTitle(), "https://www.youtube.com/channel/UCC_ds4x9Iv3tcvKi-JdQ-Qw", okitoo.getSnippet().getThumbnails().getDefault().getUrl())
-                                .setTitle(result.getSnippet().getTitle(), "https://youtube.com/watch?v=" + result.getId().getVideoId())
-                                .setDescription(result.getSnippet().getDescription())
-                                .setImage(result.getSnippet().getThumbnails().getDefault().getUrl())
-                                .setColor(new Color(255, 44, 52))
-                                .setFooter("Video hochgeladen: " + Content.formatDate(result.getSnippet().getPublishedAt()), Content.GHCImageURL)
-                                .setThumbnail("https://yt3.ggpht.com/OF3m9O73nRiHTCfP1kG7HDOnPHvIt8FCqEuamB7_Ia9BSLz8AAJVlY_Hb92BRNXz-CoNA3Ai")
-                                .build()
-                        ).queue();
+                        sendMessage("Video hochgeladen: ", result);
                     }
                 }
+
+                YouTube.Search.List live = makeSearchRequest();
+                live.setEventType("live");
+
+                List<SearchResult> resultsLive = search.execute().getItems();
+
+                for (SearchResult result : resultsLive) {
+                    if (result.getSnippet().getPublishedAt().getValue() > lastLiveStream) {
+                        lastLiveStream = result.getSnippet().getPublishedAt().getValue();
+                        sendMessage("Livestream gestartet: ", result);
+                    }
+                }
+
                 synchronized (this) {
-                    this.wait(60000);
+                    this.wait(60001);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException ignore) {}
+                Content.getGhc().getTextChannelById(Data.botLog).sendMessage("YouTubeThread: IOException: " + e.getLocalizedMessage()).queue();
+                synchronized (this) {
+                    try {
+                        this.wait(30000);
+                    } catch (InterruptedException e1) {
+                        return;
+                    }
+                }
+            } catch (InterruptedException ignore) {
+                return;
+            }
         }
+    }
+
+    private void sendMessage(String footer, SearchResult result) {
+        Content.getGhc().getTextChannelById(Data.general).sendMessage(new EmbedBuilder()
+                .setAuthor(result.getSnippet().getChannelTitle(), "https://www.youtube.com/channel/UCC_ds4x9Iv3tcvKi-JdQ-Qw", okitoo.getSnippet().getThumbnails().getDefault().getUrl())
+                .setTitle(result.getSnippet().getTitle(), "https://youtube.com/watch?v=" + result.getId().getVideoId())
+                .setDescription(result.getSnippet().getDescription())
+                .setImage(result.getSnippet().getThumbnails().getDefault().getUrl())
+                .setColor(Color.RED)
+                .setFooter(footer + Content.formatDate(result.getSnippet().getPublishedAt()), Content.GHCImageURL)
+                .setThumbnail("https://yt3.ggpht.com/OF3m9O73nRiHTCfP1kG7HDOnPHvIt8FCqEuamB7_Ia9BSLz8AAJVlY_Hb92BRNXz-CoNA3Ai")
+                .build()
+        ).queue();
+    }
+
+    private YouTube.Search.List makeSearchRequest() throws IOException {
+        YouTube.Search.List request = youTube.search().list("part, snippet");
+        request.setKey(Secure.YouTubeKey);
+        request.setChannelId("UCC_ds4x9Iv3tcvKi-JdQ-Qw");
+        request.setType("video");
+        request.setMaxResults(10L);
+        return request;
     }
 }

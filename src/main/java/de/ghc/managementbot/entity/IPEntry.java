@@ -80,4 +80,9 @@ public final class IPEntry implements Serializable {
     public void setGuildTag(String guildTag) {
         this.guildTag = guildTag;
     }
+
+    @Override
+    public String toString() {
+        return "IP: " + getIP() + "\nName: " + getName() + "\nMiner: " + getMiners() + "\nReputation: " + getRepopulation() + "\nGilde: " + getGuildTag() + "\nBeschreibung: "+ getDescription();
+    }
 }

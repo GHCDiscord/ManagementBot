@@ -19,6 +19,7 @@ public abstract class Data {
     public static final long hackersip = 334056693954772992L;
     public static final long regeln = 334056556465356810L;
     public static final long botLog = 334057646564966404L;
+    public static final long zahlenschlacht = 334057251872702464L;
 
     //Roles
     @Deprecated

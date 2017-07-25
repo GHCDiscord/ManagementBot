@@ -3,7 +3,6 @@ package de.ghc.managementbot.commands;
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
-import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
@@ -34,17 +33,17 @@ public class AddIPInRange extends AddIP implements Command {
                 entry = setupEntry(data);
                 if (entry != null) {
                     entry.setUser(user);
-                    event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.getIP() + "\nName: " + entry.getName() + "\nMiner: " + entry.getMiners() + "\nReputation: " + entry.getRepopulation() + "\nGilde: " + entry.getGuildTag() + "\nBeschreibung: " + entry.getDescription() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+                    event.getChannel().sendMessage("Stimmen diese Daten?\n" + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
                     done = true;
                 } else {
-                    Content.deleteUserAddIPInRange(user, this);
+                    Content.deleteUserAddIP(user, this);
                     AddIPWithQuestions command = new AddIPWithQuestions(user);
-                    Content.addUserAddIPWithQuestions(user, command);
+                    Content.addUserAddIP(user, command);
                     event.getChannel().sendMessage("Es ist ein Fehler bei der Verarbeitung deiner Eingaben aufgetreten. Bitte gebe die Informationen einzlen ein: ").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                     command.onMessageReceived(event);
                 }
             } else {
-                Content.deleteUserAddIPInRange(user, this);
+                Content.deleteUserAddIP(user, this);
                 String msg = event.getMessage().getContent();
                 if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
                     addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
@@ -54,7 +53,7 @@ public class AddIPInRange extends AddIP implements Command {
 
             }
         } else {
-            Content.deleteUserAddIPInRange(user, this);
+            Content.deleteUserAddIP(user, this);
         }
     }
 

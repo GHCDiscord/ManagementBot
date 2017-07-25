@@ -26,7 +26,7 @@ public abstract class Country {
                 line.append(data);
             return new JSONArray(line.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("CountryStats: IOException: " + e.getLocalizedMessage()).queue();
             return new JSONArray();
         }
     }

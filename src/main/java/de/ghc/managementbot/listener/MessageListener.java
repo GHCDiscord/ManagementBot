@@ -17,12 +17,10 @@ public class MessageListener extends ListenerAdapter {
     String msg = event.getMessage().getContent();
     String[] command = msg.split(" ");
 
-    if (Content.getUserAddIPWithQuestionsMap().containsKey(event.getAuthor())) {
-      return Content.getUserAddIPWithQuestionsMap().get(event.getAuthor());
-    } else if (Content.getUserAddIPsWithParamsMap().containsKey(event.getAuthor())) {
-      return Content.getUserAddIPsWithParamsMap().get(event.getAuthor());
-    } else if (Content.getUserAddIPInRangeMap().containsKey(event.getAuthor())) {
-      return Content.getUserAddIPInRangeMap().get(event.getAuthor());
+    if (Content.getUserAddIP().containsKey(event.getAuthor())) {
+      return (Command) Content.getUserAddIP().get(event.getAuthor());
+    } else if (Content.getUpdateIP().containsKey(event.getAuthor())) {
+      return Content.getUpdateIP().get(event.getAuthor());
     } else if (msg.equalsIgnoreCase("!stats")) {
       return new Stats();
     } else if (msg.equalsIgnoreCase(".c3po")) { //verify
@@ -64,16 +62,8 @@ public class MessageListener extends ListenerAdapter {
   private static Command getAddIP(String msg, MessageReceivedEvent event) {
     AddIP addIP = AddIP.getAddIP(msg, event.getAuthor());
     if (addIP instanceof Command) {
-      if (addIP instanceof AddIPWithQuestions) {
-        Content.addUserAddIPWithQuestions(event.getAuthor(), (AddIPWithQuestions) addIP);
-        return (Command) addIP;
-      } else if (addIP instanceof AddIPsWithParams) {
-        Content.addUserAddIPWithParams(event.getAuthor(), (AddIPsWithParams) addIP);
-        return (Command) addIP;
-      } else if (addIP instanceof  AddIPInRange) {
-        Content.addUserAddIPInRange(event.getAuthor(), (AddIPInRange) addIP);
-        return (Command) addIP;
-      }
+      Content.addUserAddIP(event.getAuthor(), addIP);
+      return (Command) addIP;
     }
     return e -> {};
   }

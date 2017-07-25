@@ -1,11 +1,8 @@
 package de.ghc.managementbot.content;
 
 import com.google.api.client.util.DateTime;
-import de.ghc.managementbot.commands.AddIPInRange;
-import de.ghc.managementbot.commands.AddIPWithQuestions;
-import de.ghc.managementbot.commands.AddIPsWithParams;
 import de.ghc.managementbot.commands.UpdateIP;
-import de.ghc.managementbot.entity.Command;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -29,6 +26,7 @@ public class Content {
     private static Map<User, UpdateIP> userUpdateIP = new HashMap<>();
 
     private static Guild ghc;
+    private static JDA jda;
 
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
@@ -95,6 +93,14 @@ public class Content {
 
     public static synchronized Guild getGhc() {
         return ghc;
+    }
+
+    public static JDA getJda() {
+        return jda;
+    }
+
+    public static void setJda(JDA jda) {
+        Content.jda = jda;
     }
 
     public static Map<User, AddIP> getUserAddIP() {

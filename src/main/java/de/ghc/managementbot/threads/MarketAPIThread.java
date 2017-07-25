@@ -2,23 +2,32 @@ package de.ghc.managementbot.threads;
 
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
+import de.ghc.managementbot.entity.Registrable;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MarketAPIThread implements Runnable {
+public class MarketAPIThread implements Runnable, Registrable {
 
     private String oldVersion;
 
+    private static List<TextChannel> channels = new ArrayList<>();
+    public static final String TOKEN = "GP";
+    private static MarketAPIThread instance;
+
     public MarketAPIThread() {
         oldVersion = getVersionNumber();
+        instance = this;
     }
 
     public static void main(String[] args) {
@@ -92,7 +101,8 @@ public class MarketAPIThread implements Runnable {
               String data = getGameInfo();
               String v = getVersionNumber(data);
               if (v != null && !v.equals(oldVersion)) {
-                  Content.getGhc().getTextChannelById(Data.general).sendMessage(new EmbedBuilder()
+                  for (TextChannel channel : channels)
+                    channel.sendMessage(new EmbedBuilder()
                           .setColor(new Color(59, 176, 65))
                           .setTitle("Neue Version verfügbar!", "https://play.google.com/store/apps/details?id=net.okitoo.hackers")
                           .setAuthor("Hackers - Hacking simulator", "https://play.google.com/store/apps/details?id=net.okitoo.hackers", "https://lh3.googleusercontent.com/iZK3i8S-dUl76VOzwalBSLvOi7z1XfSp5Evjy4vn4XtQ67gf3Y9daGns-2S7-eTsKg=w300-rw")
@@ -107,5 +117,29 @@ public class MarketAPIThread implements Runnable {
               }
             } catch (InterruptedException ignore) {}
         }
+    }
+
+    @Override
+    public void addChannel(TextChannel channel) {
+        channels.add(channel);
+    }
+
+    @Override
+    public void removeChannel(TextChannel channel) {
+        channels.remove(channel);
+    }
+
+    @Override
+    public List<TextChannel> getChannels() {
+        return channels;
+    }
+
+    public static MarketAPIThread getInstance() {
+        return instance;
+    }
+
+    @Override
+    public String getToken() {
+        return TOKEN;
     }
 }

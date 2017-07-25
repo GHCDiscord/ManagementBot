@@ -4,6 +4,9 @@ import de.ghc.managementbot.commands.*;
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.entity.Command;
+import de.ghc.managementbot.threads.MarketAPIThread;
+import de.ghc.managementbot.threads.TwitterThread;
+import de.ghc.managementbot.threads.YouTubeThread;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -55,6 +58,15 @@ public class MessageListener extends ListenerAdapter {
       return new Version();
     } else if (msg.equalsIgnoreCase("!allTutorials") || msg.equalsIgnoreCase("!alltut") || msg.equalsIgnoreCase("!allTutorial")) {
       return new AllTutorials();
+    } else if (command[0].equalsIgnoreCase("!requestYouTubeUpdates") || command[0].equalsIgnoreCase("!registerYouTubeUpdates")) {
+      return new RegisterChannel(YouTubeThread.getInstance());
+    } else if (command[0].equals("!requestTwitterUpdates") || command[0].equalsIgnoreCase("!registerTwitterUpdates")) {
+      return new RegisterChannel(TwitterThread.getInstance());
+    } else if (command[0].equals("!requestGPlayUpdates") || command[0].equalsIgnoreCase("!registerGPlayUpdates")
+            || command[0].equals("!requestPlayUpdates") || command[0].equalsIgnoreCase("!registerPlayUpdates")
+            || command[0].equals("!requestGooglePlayUpdates") || command[0].equalsIgnoreCase("!registerGooglePlayUpdates")
+            ) {
+      return new RegisterChannel(MarketAPIThread.getInstance());
     }
     return e -> {};
   }

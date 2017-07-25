@@ -92,7 +92,7 @@ public class YouTubeThread implements Runnable{
     }
 
     private YouTube.Search.List makeSearchRequest() throws IOException {
-        YouTube.Search.List request = youTube.search().list("part, snippet");
+        YouTube.Search.List request = youTube.search().list("id, snippet");
         request.setKey(Secure.YouTubeKey);
         request.setChannelId("UCC_ds4x9Iv3tcvKi-JdQ-Qw");
         request.setType("video");

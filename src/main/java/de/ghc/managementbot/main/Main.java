@@ -23,7 +23,7 @@ public class Main {
     try {
       JDA jda = new JDABuilder(AccountType.BOT).addEventListener(new MessageListener(), new LeaveListener()).setToken(Secure.DiscordToken).setGame(Game.of("Hackerz")).buildBlocking();
       Content.setGhc(jda.getGuildById(Data.GHC));
-      new Thread(new ServerStatsThread(43200000)).start();
+      new Thread(new ServerStatsThread(23)).start();
       new Thread(new TwitterThread()).start();
       new Thread(new YouTubeThread()).start();
       new Thread(new MarketAPIThread()).start();

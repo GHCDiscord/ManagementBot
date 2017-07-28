@@ -8,6 +8,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -30,10 +31,7 @@ public abstract class Database {
 
   private static HttpClient client = HttpClients.createDefault();
 
-  protected static synchronized String addIPtoDB(IPEntry entry) {
-    client = HttpClients.createDefault();
-    HttpPost post = new HttpPost(postIP);
-
+  protected static synchronized final String addIPtoDB(IPEntry entry) {
     List<NameValuePair> urlparams = new ArrayList<>();
 
     urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
@@ -45,25 +43,10 @@ public abstract class Database {
     urlparams.add(new BasicNameValuePair("name", entry.getName()));
     urlparams.add(new BasicNameValuePair("discorduser", entry.getAddedBy().getId()));
 
-    try {
-      post.setEntity(new UrlEncodedFormEntity(urlparams));
-      HttpResponse response = client.execute(post);
-      BufferedReader rd = new BufferedReader(
-          new InputStreamReader(response.getEntity().getContent()));
-      String data, line = "";
-      while ((data = rd.readLine()) != null) {
-        line += data;
-      }
-      System.out.println(line);
-      return line;
-    } catch (Exception e) {
-      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
-      return e.toString();
-    }
+    return makePOSTRequestAndHandleException(postIP, urlparams);
   }
 
-  protected static synchronized String registerNewUserInDB(User user) {
-    System.out.println("start register");
+  protected static synchronized final String registerNewUserInDB(User user) {
     client = HttpClients.createDefault();
     HttpPost post = new HttpPost(registerUser);
     List<NameValuePair> urlparams = new ArrayList<>();
@@ -74,109 +57,72 @@ public abstract class Database {
     //urlparams.add(new BasicNameValuePair("email", user.getEMail())); //TODO wird nie gesetzt
     urlparams.add(new BasicNameValuePair("discorduser", user.getDiscordUser().getId()));
 
-
-    try {
-      post.setEntity(new UrlEncodedFormEntity(urlparams));
-      HttpResponse response = client.execute(post);
-      System.out.println(response.getStatusLine().getStatusCode());
-      System.out.println(response.getStatusLine().getReasonPhrase());
-      BufferedReader rd = new BufferedReader(
-          new InputStreamReader(response.getEntity().getContent()));
-      String data, line = "";
-      while ((data = rd.readLine()) != null) {
-        line += data;
-      }
-      System.out.println(line);
-      return line;
-    } catch (Exception e) {
-      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
-      return e.toString();
-    } finally {
-      System.out.println("finish register");
-    }
+    return makePOSTRequestAndHandleException(registerUser, urlparams);
   }
 
-  protected static synchronized String refreshUser(net.dv8tion.jda.core.entities.User user) {
-    HttpPost post = new HttpPost(refresh);
-    client = HttpClients.createDefault();
+  protected static synchronized final String refreshUser(net.dv8tion.jda.core.entities.User user) {
     List<NameValuePair> urlparams = new ArrayList<>();
 
     urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
     urlparams.add(new BasicNameValuePair("discorduser", user.getId()));
 
-    try {
-      post.setEntity(new UrlEncodedFormEntity(urlparams));
-      HttpResponse response = client.execute(post);
-      BufferedReader rd = new BufferedReader(
-          new InputStreamReader(response.getEntity().getContent()));
-      String data, line = "";
-      while ((data = rd.readLine()) != null) {
-        line += data;
-      }
-      System.out.println(line);
-      return line;
-    } catch (Exception e) {
-      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
-      return e.toString();
-    }
+    return makePOSTRequestAndHandleException(refresh, urlparams);
   }
 
-  protected static synchronized String getStats() {
-    HttpGet get = new HttpGet(stats);
-    client = HttpClients.createDefault();
-    try {
-      HttpResponse response = client.execute(get);
-      BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-      StringBuilder stats = new StringBuilder();
-      String data;
-      while ((data = rd.readLine()) != null) {
-        stats.append(data);
-      }
-      return stats.toString().replace("<br>", "\n ").replace("<title>Stats 1.0</title>", "").replace("<", "**").replace(">", "**");
-    } catch (IOException e) {
-      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
-      return null;
-    }
+  protected static synchronized final String getStats() {
+    return makeGETRequestAndHandleException(stats)
+            .replace("<br>", "\n ").replace("<title>Stats 1.0</title>", "").replace("<", "**").replace(">", "**");
   }
-  protected static synchronized JSONObject getStrings() {
-    HttpClient client = HttpClients.createDefault();
-    HttpGet get = new HttpGet(url + "botCommands.json");
-    try {
-      HttpResponse response = client.execute(get);
-      BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-      StringBuilder strings = new StringBuilder();
-      String data;
-      while ((data = rd.readLine()) != null) {
-        strings.append(data);
-      }
-      return new JSONObject(strings.toString());
-    } catch (IOException e) {
-      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
-    }
-    return null;
+  protected static synchronized final JSONObject getStrings() {
+    return new JSONObject(makeGETRequestAndHandleException("http://jonas.frikz.de/GHC/botCommands.json"));
   }
 
-  public static synchronized String expireUser(net.dv8tion.jda.core.entities.User user) {
-    HttpClient client = HttpClients.createDefault();
-    HttpPost post = new HttpPost(expire);
+  public static synchronized final String expireUser(net.dv8tion.jda.core.entities.User user) {
     List<NameValuePair> params = new ArrayList<>();
 
     params.add(new BasicNameValuePair("token", Secure.DBToken));
     params.add(new BasicNameValuePair("discorduser", user.getId()));
 
+    return makePOSTRequestAndHandleException(expire, params);
+  }
+
+  private static synchronized final String makeGETRequest(String url) throws IOException {
+    HttpGet get = new HttpGet(url);
+    return makeRequest(get);
+  }
+
+  private static synchronized final String makeGETRequestAndHandleException(String url) {
     try {
-      post.setEntity(new UrlEncodedFormEntity(params));
-      HttpResponse response = client.execute(post);
-      BufferedReader rd = new BufferedReader(
-              new InputStreamReader(response.getEntity().getContent()));
-      String data, line = "";
-      while ((data = rd.readLine()) != null) {
-        line += data;
-      }
-      return line;
+      return makeGETRequest(url);
     } catch (IOException e) {
-      Content.getGhc().getTextChannelById(Data.botLog).sendMessage("Database: IOException: " + e.getLocalizedMessage()).queue();
-      return e.getMessage();
+      Content.sendException(e, Database.class);
+      return e.getLocalizedMessage();
     }
+  }
+
+  private static synchronized final String makePOSTRequest(String url, List<NameValuePair> params) throws IOException {
+    HttpPost post = new HttpPost(url);
+    post.setEntity(new UrlEncodedFormEntity(params));
+    return makeRequest(post);
+  }
+
+  private static synchronized final String makePOSTRequestAndHandleException(String url, List<NameValuePair> params) {
+    try {
+      return makePOSTRequest(url, params);
+    } catch (IOException e) {
+      Content.sendException(e, Database.class);
+      return e.getLocalizedMessage();
+    }
+  }
+
+  private static synchronized final String makeRequest(HttpRequestBase request) throws IOException {
+    HttpClient client = HttpClients.createDefault();
+    HttpResponse response = client.execute(request);
+    BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    StringBuilder site = new StringBuilder();
+    for (String data; (data = reader.readLine()) != null;) {
+      site.append(data);
+    }
+    return site.toString();
   }
 }

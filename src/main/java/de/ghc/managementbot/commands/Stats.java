@@ -1,7 +1,6 @@
 package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.Content;
-import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -47,7 +46,7 @@ public class Stats implements Command {
                     .setDescription(strg)
                     .setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
         } catch (IOException e) {
-            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("!stats: IOException: " + e.getLocalizedMessage()).queue();
+            Content.sendException(e, Stats.class);
         }
     }
 }

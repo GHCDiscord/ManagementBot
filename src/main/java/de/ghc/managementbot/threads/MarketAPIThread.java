@@ -1,7 +1,6 @@
 package de.ghc.managementbot.threads;
 
 import de.ghc.managementbot.content.Content;
-import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.entity.Registrable;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -49,7 +48,7 @@ public class MarketAPIThread implements Runnable, Registrable {
             }
             return d.toString();
         } catch (IOException e) {
-            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("MarketAPIThread: IOException: " + e.getLocalizedMessage()).queue();
+            Content.sendException(e, MarketAPIThread.class);
         }
         return null;
     }

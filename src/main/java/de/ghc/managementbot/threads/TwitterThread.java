@@ -63,7 +63,7 @@ public class TwitterThread implements Runnable, Registrable {
                         }
                     }
                 }catch (TwitterException e) {
-                    Content.getGhc().getTextChannelById(Data.botLog).sendMessage("TwitterThread: TwitterException: " + e.getLocalizedMessage()).queue();
+                    Content.sendException(e, TwitterThread.class);
                 }
             }
         }

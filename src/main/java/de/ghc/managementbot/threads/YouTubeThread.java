@@ -6,7 +6,6 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.SearchResult;
 import de.ghc.managementbot.content.Content;
-import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Secure;
 import de.ghc.managementbot.entity.Registrable;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -44,7 +43,7 @@ public class YouTubeThread implements Runnable, Registrable {
             List<Channel> channelResponse = channels.execute().getItems();
             okitoo = channelResponse.get(0);
         } catch (IOException e) {
-            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("YouTubeThread: IOException: " + e.getLocalizedMessage()).queue();
+            Content.sendException(e, YouTubeThread.class);
         }
         while (true) {
             try {
@@ -75,7 +74,7 @@ public class YouTubeThread implements Runnable, Registrable {
                     this.wait(60001);
                 }
             } catch (IOException e) {
-                Content.getGhc().getTextChannelById(Data.botLog).sendMessage("YouTubeThread: IOException: " + e.getLocalizedMessage()).queue();
+                Content.sendException(e, YouTubeThread.class);
                 synchronized (this) {
                     try {
                         this.wait(30000);

@@ -87,6 +87,10 @@ public class Content {
         return formatDate(new Date(oldDate.getValue()));
     }
 
+    public static void sendException(Throwable t, Class<?> at) {
+        getGhc().getTextChannelById(Data.botLog).sendMessageFormat("%s: %s: %s", at.getName(), t.getClass().getName(), t.getLocalizedMessage()).queue();
+    }
+
     public static synchronized void setGhc(Guild ghc) {
         Content.ghc = ghc;
     }

@@ -50,7 +50,7 @@ public class TopGuilds implements Command {
             }
             event.getChannel().sendMessage(builder.setDescription(string.toString()).build()).queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            Content.sendException(e, TopGuilds.class);
         }
     }
 }

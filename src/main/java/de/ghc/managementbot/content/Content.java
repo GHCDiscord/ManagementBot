@@ -47,30 +47,31 @@ public class Content {
         try {
             guild.getController().addSingleRoleToMember(member, role).complete();
         } catch (PermissionException e) {
-            ghc.getTextChannelById(Data.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
+            ghc.getTextChannelById(Data.Channel.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
         }
     }
 
     public static boolean isModerator(Member member) {
         if (member == null)
             return false;
-        if (member.getGuild().getIdLong() != Data.GHC)
+        if (member.getGuild().getIdLong() != Data.Guild.GHC)
             return false;
         List<Role> roles = member.getRoles();
-        return roles.contains(getGhc().getRoleById(Data.botMod));
+        return roles.contains(getGhc().getRoleById(Data.Role.botMod));
     }
 
     public static boolean isVerified(Member member) {
         if (member == null)
             return false;
-        if (member.getGuild().getIdLong() != Data.GHC)
+        if (member.getGuild().getIdLong() != Data.Guild.GHC)
             return false;
         List<Role> roles = member.getRoles();
-        return roles.contains(getGhc().getRoleById(Data.verified));
+        return roles.contains(getGhc().getRoleById(Data.Role.verified));
     }
+
     public static Member getGHCMember(User user) {
-        if (ghc != null) {
-            return ghc.getMember(user);
+        if (getGhc() != null) {
+            return getGhc().getMember(user);
         }
         return null;
     }
@@ -88,7 +89,11 @@ public class Content {
     }
 
     public static void sendException(Throwable t, Class<?> at) {
-        getGhc().getTextChannelById(Data.botLog).sendMessageFormat("%s: %s: %s", at.getName(), t.getClass().getName(), t.getLocalizedMessage()).queue();
+        getGhc().getTextChannelById(Data.Channel.botLog).sendMessageFormat("%s: %s: %s", at.getName(), t.getClass().getName(), t.getLocalizedMessage()).queue();
+    }
+
+    public static boolean isYes(String msg) {
+        return msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y") || msg.equalsIgnoreCase("jo");
     }
 
     public static synchronized void setGhc(Guild ghc) {

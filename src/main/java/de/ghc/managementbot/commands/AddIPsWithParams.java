@@ -3,7 +3,6 @@ package de.ghc.managementbot.commands;
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
-import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
@@ -38,7 +37,7 @@ public class AddIPsWithParams extends AddIP implements Command {
           member = Content.getGHCMember(event.getAuthor());
         }
         if (checkIP(IP)) {
-          if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.hackersip)) {
+          if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.Channel.hackersip)) {
             Content.deleteUserAddIP(user, this);
             return;
           }

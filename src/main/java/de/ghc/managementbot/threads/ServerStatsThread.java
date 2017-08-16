@@ -34,7 +34,7 @@ public class ServerStatsThread extends Database implements Runnable {
                         for (int i = 3; i < values.length; i+=2) {
                             numbers.append(values[i]);
                         }
-                        Content.getGhc().getTextChannelById(Data.hackersip).sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
+                        Content.getGhc().getTextChannelById(Data.Channel.hackersip).sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
                         this.wait(timeout);
                     } else
                         this.wait(5000);

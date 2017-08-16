@@ -20,7 +20,7 @@ public class RefreshUser extends Database implements Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
-        if ((event.getGuild() == null && isVerified(member)) || (event.getGuild() != null && event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.hackersip)) && isVerified(member))) {
+        if ((event.getGuild() == null && isVerified(member)) || (event.getGuild() != null && event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.Channel.hackersip)) && isVerified(member))) {
             String result = refreshUser(event.getAuthor());
             if (result.equals("success"))
                 event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Account wurde erfolgreich reaktiviert! Viel Spaß mit der IP-Datenbank der GCH unter " + url).queue());

@@ -17,7 +17,7 @@ public class RegisterChannel implements Command {
             event.getMessage().getMentionedChannels().forEach(ch -> {
                 if (!registrable.getChannels().contains(ch)) {
                     registrable.addChannel(ch);
-                    Content.getJda().getTextChannelById(Data.saves).sendMessage(registrable.getToken() + Data.SPLITTER + ch.getId()).queue();
+                    Content.getJda().getTextChannelById(Data.Channel.saves).sendMessage(registrable.getToken() + Data.SPLITTER + ch.getId()).queue();
                 }
             });
     }

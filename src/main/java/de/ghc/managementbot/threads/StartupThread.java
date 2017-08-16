@@ -12,7 +12,7 @@ public class StartupThread implements Runnable {
     }
     @Override
     public void run() {
-        jda.getGuildById(Data.test).getTextChannelById(Data.saves).getHistory().getRetrievedHistory().forEach(m -> {
+        jda.getGuildById(Data.Guild.test).getTextChannelById(Data.Channel.saves).getHistory().getRetrievedHistory().forEach(m -> {
             String[] message = m.getContent().split(Data.SPLITTER);
             if (message.length == 2) {
                 if (message[0].equals(YouTubeThread.TOKEN))

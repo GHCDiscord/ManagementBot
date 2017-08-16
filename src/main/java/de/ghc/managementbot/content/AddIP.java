@@ -30,7 +30,7 @@ public abstract class AddIP extends Database {
     protected void addEntryAndHandleResponse(IPEntry entry, MessageChannel channel, IMentionable author) {
         String result = addIPtoDB(entry);
         if (result.equals("1")) {
-            Content.getGhc().getTextChannelById(Data.hackersip).sendMessage(new MessageBuilder().append(author).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
+            Content.getGhc().getTextChannelById(Data.Channel.hackersip).sendMessage(new MessageBuilder().append(author).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
             //Content.getGhc().getTextChannelById("269153131957321728").sendMessage(new MessageBuilder().append(author).append(Strings.getString(Strings.addIP_success_addedIp)).build()).queue();
         } else if (result.equals("ip already registered")) {
             channel.sendMessage("Diese IP existiert bereits in der Datenbank. Sollen diese Daten aktualisiert werden?").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());

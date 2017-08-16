@@ -19,7 +19,7 @@ public class UpdateIP implements Command {
         String msg = event.getMessage().getContent();
         new Thread(new DeleteMessageThread(60, event.getMessage())).start();
         if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
-            Content.getGhc().getTextChannelById(Data.zahlenschlacht).sendMessage(entry.toString() + "Daten von: " + Content.getGHCMember(entry.getAddedBy()).getEffectiveName()).queue();
+            Content.getGhc().getTextChannelById(Data.Channel.zahlenschlacht).sendMessage(entry.toString() + "Daten von: " + Content.getGHCMember(entry.getAddedBy()).getEffectiveName()).queue();
         }
         Content.deleteUserUpdateIP(event.getAuthor(), this);
     }

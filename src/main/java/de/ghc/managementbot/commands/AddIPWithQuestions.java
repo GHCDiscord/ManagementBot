@@ -106,7 +106,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           onMessageReceived(event);
           break;
         case accepted:
-          Content.deleteUserAddIP(user, this);
+          deleteUserAddIP(user, this);
           entry.setUser(user);
           addEntryAndHandleResponse(entry, channel, event.getAuthor());
           if (messages != null) {
@@ -121,7 +121,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           messages = null;
           break;
         case unknown:
-          Content.deleteUserAddIP(user, this);
+          deleteUserAddIP(user, this);
           channel.sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
           if (this.channel != null)
             this.channel.deleteMessages(messages).queue();
@@ -131,7 +131,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           break;
       }
     } else {
-      Content.deleteUserAddIP(user, this);
+      deleteUserAddIP(user, this);
     }
   }
 

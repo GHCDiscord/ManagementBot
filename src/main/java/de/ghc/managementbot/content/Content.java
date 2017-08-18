@@ -21,10 +21,6 @@ public class Content {
 
     public static final String GHCImageURL = "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200";
 
-    private static Map<User, AddIP> userAddIP = new HashMap<>();
-
-    private static Map<User, UpdateIP> userUpdateIP = new HashMap<>();
-
     private static Guild ghc;
     private static JDA jda;
 
@@ -110,26 +106,5 @@ public class Content {
 
     public static void setJda(JDA jda) {
         Content.jda = jda;
-    }
-
-    public static Map<User, AddIP> getUserAddIP() {
-        return userAddIP;
-    }
-    public static void addUserAddIP(User user, AddIP addIP) {
-        userAddIP.put(user, addIP);
-    }
-    public static void deleteUserAddIP(User user, AddIP addIP) {
-        userAddIP.remove(user, addIP);
-    }
-
-    public static Map<User, UpdateIP> getUpdateIP() {
-        return userUpdateIP;
-    }
-
-    public static void addUserUpdateIP(User user, UpdateIP updateIP) {
-        userUpdateIP.put(user, updateIP);
-    }
-    public static void deleteUserUpdateIP(User user, UpdateIP update) {
-        userUpdateIP.remove(user, update);
     }
 }

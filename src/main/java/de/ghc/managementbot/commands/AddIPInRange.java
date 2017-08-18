@@ -35,14 +35,14 @@ public class AddIPInRange extends AddIP implements Command {
                     event.getChannel().sendMessage("Stimmen diese Daten?\n" + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
                     done = true;
                 } else {
-                    Content.deleteUserAddIP(user, this);
+                    deleteUserAddIP(user, this);
                     AddIPWithQuestions command = new AddIPWithQuestions(user);
-                    Content.addUserAddIP(user, command);
+                    addUserAddIP(user, command);
                     event.getChannel().sendMessage("Es ist ein Fehler bei der Verarbeitung deiner Eingaben aufgetreten. Bitte gebe die Informationen einzlen ein: ").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                     command.onMessageReceived(event);
                 }
             } else {
-                Content.deleteUserAddIP(user, this);
+                deleteUserAddIP(user, this);
                 String msg = event.getMessage().getContent();
                 if (Content.isYes(msg)) {
                     addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
@@ -52,7 +52,7 @@ public class AddIPInRange extends AddIP implements Command {
 
             }
         } else {
-            Content.deleteUserAddIP(user, this);
+            deleteUserAddIP(user, this);
         }
     }
 

@@ -11,7 +11,22 @@ import net.dv8tion.jda.core.entities.IMentionable;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class AddIP extends Database {
+
+    private static Map<User, AddIP> userAddIP = new HashMap<>();
+
+    public static Map<User, AddIP> getUserAddIP() {
+        return userAddIP;
+    }
+    public static void addUserAddIP(User user, AddIP addIP) {
+        userAddIP.put(user, addIP);
+    }
+    public static void deleteUserAddIP(User user, AddIP addIP) {
+        userAddIP.remove(user, addIP);
+    }
 
     protected static boolean checkIP(String s) {
         String[] numbers = s.split("\\.");
@@ -35,9 +50,11 @@ public abstract class AddIP extends Database {
         } else if (result.equals("ip already registered")) {
             channel.sendMessage("Diese IP existiert bereits in der Datenbank. Sollen diese Daten aktualisiert werden?").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
             //channel.sendMessage(Strings.getString(Strings.addIP_error_ipAlreadyExsists)).queue();
-            Content.deleteUserAddIP(entry.getAddedBy(), this);
+            deleteUserAddIP(entry.getAddedBy(), this);
             UpdateIP uip = new UpdateIP(entry);
-            Content.addUserUpdateIP(entry.getAddedBy(), uip);
+            UpdateIP.addUserUpdateIP(entry.getAddedBy(), uip);
+        } else if (result.equals("discorduser not found")) {
+            channel.sendMessage("Du hast noch keinen Account in unserer Datenbank. Erstelle einen mit `!register [Name im Spiel]`, z.B. `!register GHCBot`").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
         } else {
             channel.sendMessage("Es ist ein Fehler aufgetreten:\n" + result).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
             //channel.sendMessage(Strings.getString(Strings.addIP_error_exception)).queue();

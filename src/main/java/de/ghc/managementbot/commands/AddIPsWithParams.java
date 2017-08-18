@@ -38,7 +38,7 @@ public class AddIPsWithParams extends AddIP implements Command {
         }
         if (checkIP(IP)) {
           if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.Channel.hackersip)) {
-            Content.deleteUserAddIP(user, this);
+            deleteUserAddIP(user, this);
             return;
           }
           entry = new IPEntry(IP);
@@ -71,19 +71,19 @@ public class AddIPsWithParams extends AddIP implements Command {
           }
         } else {
           event.getChannel().sendMessageFormat("Die IP %s ist nicht gültig!", IP).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
-          Content.deleteUserAddIP(user, this);
+          deleteUserAddIP(user, this);
           return;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
         event.getChannel().sendMessage(String.format("Der Parameter %s hat keinen Wert erhalten", command[command.length - 1])).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
-        Content.deleteUserAddIP(user, this);
+        deleteUserAddIP(user, this);
         return;
       }
       entry.setUser(event.getAuthor());
       done = true;
       event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
      } else {
-      Content.deleteUserAddIP(user, this);
+      deleteUserAddIP(user, this);
       String msg = event.getMessage().getContent();
       if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
         addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());

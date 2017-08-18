@@ -8,7 +8,9 @@ import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UpdateIP implements Command {
@@ -22,11 +24,22 @@ public class UpdateIP implements Command {
     public void onMessageReceived(MessageReceivedEvent event) {
         String msg = event.getMessage().getContent();
         new Thread(new DeleteMessageThread(60, event.getMessage())).start();
-        if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
+        if (Content.isYes(msg)) {
             Content.getGhc().getTextChannelById(Data.Channel.zahlenschlacht).sendMessage(entry.toString() + "Daten von: " + Content.getGHCMember(entry.getAddedBy()).getEffectiveName()).queue();
         }
         deleteUserUpdateIP(event.getAuthor(), this);
     }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Command createCommand(MessageReceivedEvent event) {
+        throw new IllegalStateException("Can't create UpdateIP! Use AddIP!");
+    }
+
     private static Map<User, UpdateIP> userUpdateIP = new HashMap<>();
 
     public static Map<User, UpdateIP> getUpdateIP() {

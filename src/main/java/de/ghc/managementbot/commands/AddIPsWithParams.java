@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.isVerified;
 
@@ -92,7 +94,26 @@ public class AddIPsWithParams extends AddIP implements Command {
         //TODO Add to Bot CI
       }
     }
+  }
 
+  @Override
+  public List<String> getCallers() {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public boolean isCalled(MessageReceivedEvent event) {
+    return false;
+  }
+
+  @Override
+  public boolean isCalled(String msg) {
+    return false;
+  }
+
+  @Override
+  public Command createCommand(MessageReceivedEvent event) {
+    throw new RuntimeException("User MessageListener#getAddIP");
   }
 
 }

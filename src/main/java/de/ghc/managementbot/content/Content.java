@@ -1,12 +1,13 @@
 package de.ghc.managementbot.content;
 
 import com.google.api.client.util.DateTime;
-import de.ghc.managementbot.commands.UpdateIP;
+import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import javax.imageio.ImageIO;
@@ -23,6 +24,22 @@ public class Content {
 
     private static Guild ghc;
     private static JDA jda;
+
+    public static final Command doNothing = new Command() {
+        @Override
+        public void onMessageReceived(MessageReceivedEvent event) {
+        }
+
+        @Override
+        public List<String> getCallers() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public Command createCommand(MessageReceivedEvent event) {
+            return doNothing;
+        }
+    };
 
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());

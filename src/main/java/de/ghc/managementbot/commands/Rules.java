@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static de.ghc.managementbot.content.Content.isModerator;
@@ -26,5 +27,16 @@ public class Rules implements Command {
                     .append(" genau durch!");
             event.getTextChannel().sendMessage(builder.build()).queue();
         }
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Arrays.asList("!regeln", "!rules");
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        List<String> callers = getCallers();
+        return callers.contains(msg.toLowerCase().split(" ")[0]);
     }
 }

@@ -7,6 +7,9 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Collections;
+import java.util.List;
+
 import static de.ghc.managementbot.content.Content.addRole;
 
 public class Verify implements Command {
@@ -31,5 +34,10 @@ public class Verify implements Command {
       }
       event.getMessage().delete().queue();
     }
+  }
+
+  @Override
+  public List<String> getCallers() {
+    return Collections.singletonList(".c3p0");
   }
 }

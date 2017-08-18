@@ -10,6 +10,9 @@ import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static de.ghc.managementbot.content.Content.isVerified;
 
 public class AddUser extends Database implements Command {
@@ -75,5 +78,10 @@ public class AddUser extends Database implements Command {
       } else
         new Thread(new DeleteMessageThread(3, event.getMessage())).start();
     }
+  }
+
+  @Override
+  public List<String> getCallers() {
+    return Arrays.asList("!register", "!addaccount");
   }
 }

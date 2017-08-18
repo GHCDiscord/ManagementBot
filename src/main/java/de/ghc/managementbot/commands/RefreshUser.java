@@ -9,6 +9,9 @@ import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Collections;
+import java.util.List;
+
 import static de.ghc.managementbot.content.Content.isVerified;
 
 public class RefreshUser extends Database implements Command {
@@ -29,5 +32,10 @@ public class RefreshUser extends Database implements Command {
             else
                 event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Es ist ein unerwarteter Fehler aufgetreten! Bitte sende die folgenden Informationen an die Programmierer via @Coding:\n" + result).queue());
         }
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.singletonList("!refresh");
     }
 }

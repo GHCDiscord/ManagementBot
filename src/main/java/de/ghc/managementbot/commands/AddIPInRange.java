@@ -10,6 +10,9 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Collections;
+import java.util.List;
+
 public class AddIPInRange extends AddIP implements Command {
 
     private boolean done;
@@ -86,5 +89,25 @@ public class AddIPInRange extends AddIP implements Command {
             return entry;
         }
         return null;
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public boolean isCalled(MessageReceivedEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        return false;
+    }
+
+    @Override
+    public Command createCommand(MessageReceivedEvent event) {
+        throw new RuntimeException("User MessageListener#getAddIP");
     }
 }

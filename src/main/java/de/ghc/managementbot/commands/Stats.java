@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.formatDate;
 import static de.ghc.managementbot.content.Content.getRandomColor;
@@ -48,5 +50,17 @@ public class Stats implements Command {
         } catch (IOException e) {
             Content.sendException(e, Stats.class);
         }
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.singletonList("!stats");
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        List<String> callers = getCallers();
+        String[] command = msg.split(" ");
+        return callers.contains(command[0].toLowerCase()) && command.length == 1;
     }
 }

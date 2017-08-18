@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static de.ghc.managementbot.content.Content.getRandomColor;
@@ -150,5 +151,16 @@ public class Help implements Command {
         user.openPrivateChannel().queue(DM ->
                 DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helMessageAddIPParams).build()).queue()
         );
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Arrays.asList("!help", "!hilfe");
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        List<String> callers = getCallers();
+        return callers.contains(msg.toLowerCase().split(" ")[0]);
     }
 }

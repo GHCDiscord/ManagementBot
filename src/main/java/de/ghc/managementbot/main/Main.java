@@ -15,19 +15,21 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import javax.security.auth.login.LoginException;
 
 public class Main {
-  public static void main(String[] args) {
-    try {
-      JDA jda = new JDABuilder(AccountType.BOT).addEventListener(new MessageListener(), new LeaveListener()).setToken(Secure.DiscordToken).setGame(Game.of("Hackerz")).buildBlocking();
-      Content.setJda(jda);
-      Content.setGhc(jda.getGuildById(Data.GHC));
-      new Thread(new ServerStatsThread(23)).start();
-      new Thread(new TwitterThread()).start();
-      new Thread(new YouTubeThread()).start();
-      new Thread(new MarketAPIThread()).start();
-      new Thread(new StartupThread(jda)).start();
-      //Strings.start();
-    } catch (LoginException | InterruptedException | RateLimitedException e) {
-      e.printStackTrace();
+    public static void main(String[] args) {
+        try {
+            MessageListener listener = new MessageListener();
+            listener.registerCommads();
+            JDA jda = new JDABuilder(AccountType.BOT).addEventListener(listener, new LeaveListener()).setToken(Secure.DiscordToken).setGame(Game.of("Hackerz")).buildBlocking();
+            Content.setJda(jda);
+            Content.setGhc(jda.getGuildById(Data.Guild.GHC));
+            new Thread(new ServerStatsThread(23)).start();
+            new Thread(new TwitterThread()).start();
+            new Thread(new YouTubeThread()).start();
+            new Thread(new MarketAPIThread()).start();
+            new Thread(new StartupThread(jda)).start();
+            //Strings.start();
+        } catch (LoginException | InterruptedException | RateLimitedException e) {
+            e.printStackTrace();
+        }
     }
-  }
 }

@@ -7,6 +7,9 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Collections;
+import java.util.List;
+
 import static de.ghc.managementbot.content.Content.addRole;
 
 public class Verify implements Command {
@@ -17,7 +20,7 @@ public class Verify implements Command {
   public void onMessageReceived(MessageReceivedEvent event) {
     if (event.getGuild() != null) {
       if (!event.getMember().getRoles().contains(event.getGuild().getRolesByName("verified", true).get(0))) {
-        addRole(event.getMember(), event.getGuild(), event.getGuild().getRoleById(Data.verified));
+        addRole(event.getMember(), event.getGuild(), event.getGuild().getRoleById(Data.Role.verified));
         Message message = new MessageBuilder().append(event.getAuthor()).append(" ist nun verifiziert!").build();
         event.getMessage().getChannel().sendMessage(message).queue(m ->
             new Thread(new DeleteMessageThread(deleteTimeVerify, m)).start()
@@ -31,5 +34,10 @@ public class Verify implements Command {
       }
       event.getMessage().delete().queue();
     }
+  }
+
+  @Override
+  public List<String> getCallers() {
+    return Collections.singletonList(".c3p0");
   }
 }

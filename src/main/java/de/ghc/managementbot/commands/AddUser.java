@@ -3,13 +3,15 @@ package de.ghc.managementbot.commands;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Database;
-import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.User;
 import de.ghc.managementbot.threads.DeleteMessageThread;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.isVerified;
 
@@ -20,7 +22,7 @@ public class AddUser extends Database implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if ((event.getGuild() == null && isVerified(member)) || (event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.hackersip))) && isVerified(member)) {
+    if ((event.getGuild() == null && isVerified(member)) || (event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.Channel.hackersip))) && isVerified(member)) {
       if (event.getChannel().getType() != ChannelType.PRIVATE) {
         new Thread(new DeleteMessageThread(3, event.getMessage())).start();
       }
@@ -76,5 +78,10 @@ public class AddUser extends Database implements Command {
       } else
         new Thread(new DeleteMessageThread(3, event.getMessage())).start();
     }
+  }
+
+  @Override
+  public List<String> getCallers() {
+    return Arrays.asList("!register", "!addaccount");
   }
 }

@@ -3,7 +3,6 @@ package de.ghc.managementbot.commands;
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
-import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
@@ -11,6 +10,8 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.isVerified;
 
@@ -48,7 +49,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if ((isVerified(member) && this.channel != null && this.channel.getIdLong() == Data.hackersip || (isVerified(member) && this.channel == null))) {
+    if (isVerified(member) && this.channel != null && this.channel.getIdLong() == Data.Channel.hackersip ) {
       switch (status) {
         case start:
           channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);
@@ -107,7 +108,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           onMessageReceived(event);
           break;
         case accepted:
-          Content.deleteUserAddIP(user, this);
+          deleteUserAddIP(user, this);
           entry.setUser(user);
           addEntryAndHandleResponse(entry, channel, event.getAuthor());
           if (messages != null) {
@@ -122,17 +123,38 @@ public class AddIPWithQuestions extends AddIP implements Command {
           messages = null;
           break;
         case unknown:
+          deleteUserAddIP(user, this);
           channel.sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
           if (this.channel != null)
             this.channel.deleteMessages(messages).queue();
           else
-            messages.forEach(m -> m.delete().queue());
-          Content.deleteUserAddIP(user, this);
+            messages.forEach(m -> m.delete().queue()); //TODO safe delete
+
           break;
       }
     } else {
-      Content.deleteUserAddIP(user, this);
+      deleteUserAddIP(user, this);
     }
+  }
+
+  @Override
+  public List<String> getCallers() {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public boolean isCalled(MessageReceivedEvent event) {
+    return false;
+  }
+
+  @Override
+  public boolean isCalled(String msg) {
+    return false;
+  }
+
+  @Override
+  public Command createCommand(MessageReceivedEvent event) {
+    throw new RuntimeException("User MessageListener#getAddIP");
   }
 
   private enum Status {

@@ -3,26 +3,25 @@ package de.ghc.managementbot.threads;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Database;
-import de.ghc.managementbot.content.Strings;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
+import org.joda.time.DateTime;
 
 import static de.ghc.managementbot.content.Content.formatDate;
 
 public class ServerStatsThread extends Database implements Runnable {
 
-    private int timeout;
+    private int hour;
+    private static final int timeout = 86400000;
 
-    public ServerStatsThread(int timeout) {
-        this.timeout = timeout;
+    public ServerStatsThread(int hour) {
+        this.hour = hour;
     }
 
     @Override
     public void run() {
         try {
             synchronized (this) {
-                this.wait(timeout); //startup
+                this.wait((hour * 60 * 60 * 1000) - DateTime.now().getMillisOfDay()); //startup
                 while (true) {
                     String string = getStats();
                     if (string != null) {
@@ -35,7 +34,7 @@ public class ServerStatsThread extends Database implements Runnable {
                         for (int i = 3; i < values.length; i+=2) {
                             numbers.append(values[i]);
                         }
-                        Content.getGhc().getTextChannelById(Data.hackersip).sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
+                        Content.getGhc().getTextChannelById(Data.Channel.hackersip).sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
                         this.wait(timeout);
                     } else
                         this.wait(5000);

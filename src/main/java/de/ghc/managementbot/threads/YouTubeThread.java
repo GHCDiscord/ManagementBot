@@ -6,20 +6,30 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Channel;
 import com.google.api.services.youtube.model.SearchResult;
 import de.ghc.managementbot.content.Content;
-import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.content.Secure;
+import de.ghc.managementbot.entity.Registrable;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class YouTubeThread implements Runnable{
+public class YouTubeThread implements Runnable, Registrable {
 
     private long lastVideo = System.currentTimeMillis();
     private long lastLiveStream = System.currentTimeMillis();
     private YouTube youTube;
     private Channel okitoo;
+
+    private static List<TextChannel> updateChannels = new ArrayList<>();
+    public static final String TOKEN = "YT";
+    private static YouTubeThread instance;
+
+    public YouTubeThread() {
+        instance = this;
+    }
 
     @Override
     public void run() {
@@ -33,7 +43,7 @@ public class YouTubeThread implements Runnable{
             List<Channel> channelResponse = channels.execute().getItems();
             okitoo = channelResponse.get(0);
         } catch (IOException e) {
-            Content.getGhc().getTextChannelById(Data.botLog).sendMessage("YouTubeThread: IOException: " + e.getLocalizedMessage()).queue();
+            Content.sendException(e, YouTubeThread.class);
         }
         while (true) {
             try {
@@ -64,7 +74,7 @@ public class YouTubeThread implements Runnable{
                     this.wait(60001);
                 }
             } catch (IOException e) {
-                Content.getGhc().getTextChannelById(Data.botLog).sendMessage("YouTubeThread: IOException: " + e.getLocalizedMessage()).queue();
+                Content.sendException(e, YouTubeThread.class);
                 synchronized (this) {
                     try {
                         this.wait(30000);
@@ -79,16 +89,17 @@ public class YouTubeThread implements Runnable{
     }
 
     private void sendMessage(String footer, SearchResult result) {
-        Content.getGhc().getTextChannelById(Data.general).sendMessage(new EmbedBuilder()
-                .setAuthor(result.getSnippet().getChannelTitle(), "https://www.youtube.com/channel/UCC_ds4x9Iv3tcvKi-JdQ-Qw", okitoo.getSnippet().getThumbnails().getDefault().getUrl())
-                .setTitle(result.getSnippet().getTitle(), "https://youtube.com/watch?v=" + result.getId().getVideoId())
-                .setDescription(result.getSnippet().getDescription())
-                .setImage(result.getSnippet().getThumbnails().getDefault().getUrl())
-                .setColor(Color.RED)
-                .setFooter(footer + Content.formatDate(result.getSnippet().getPublishedAt()), Content.GHCImageURL)
-                .setThumbnail("https://yt3.ggpht.com/OF3m9O73nRiHTCfP1kG7HDOnPHvIt8FCqEuamB7_Ia9BSLz8AAJVlY_Hb92BRNXz-CoNA3Ai")
-                .build()
-        ).queue();
+        for (TextChannel channel : updateChannels)
+            channel.sendMessage(new EmbedBuilder()
+                    .setAuthor(result.getSnippet().getChannelTitle(), "https://www.youtube.com/channel/UCC_ds4x9Iv3tcvKi-JdQ-Qw", okitoo.getSnippet().getThumbnails().getDefault().getUrl())
+                    .setTitle(result.getSnippet().getTitle(), "https://youtube.com/watch?v=" + result.getId().getVideoId())
+                    .setDescription(result.getSnippet().getDescription())
+                    .setImage(result.getSnippet().getThumbnails().getDefault().getUrl())
+                    .setColor(Color.RED)
+                    .setFooter(footer + Content.formatDate(result.getSnippet().getPublishedAt()), Content.GHCImageURL)
+                    .setThumbnail("https://yt3.ggpht.com/OF3m9O73nRiHTCfP1kG7HDOnPHvIt8FCqEuamB7_Ia9BSLz8AAJVlY_Hb92BRNXz-CoNA3Ai")
+                    .build()
+            ).queue();
     }
 
     private YouTube.Search.List makeSearchRequest() throws IOException {
@@ -98,5 +109,29 @@ public class YouTubeThread implements Runnable{
         request.setType("video");
         request.setMaxResults(10L);
         return request;
+    }
+
+    @Override
+    public void addChannel(TextChannel channel) {
+        updateChannels.add(channel);
+    }
+
+    @Override
+    public void removeChannel(TextChannel channel) {
+        updateChannels.remove(channel);
+    }
+
+    public static YouTubeThread getInstance() {
+        return instance;
+    }
+
+    @Override
+    public List<TextChannel> getChannels() {
+        return updateChannels;
+    }
+
+    @Override
+    public String getToken() {
+        return TOKEN;
     }
 }

@@ -2,10 +2,12 @@ package de.ghc.managementbot.commands;
 
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Database;
-import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.formatDate;
 
@@ -25,5 +27,15 @@ public class ServerStats extends Database implements Command {
             }
             event.getChannel().sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
         }
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Arrays.asList("!stats db", "!stats ip");
+    }
+
+    public static List<String> callers() {
+        //Callers for CountryStats -> DBStats
+        return Arrays.asList("!stats db", "!stats ip");
     }
 }

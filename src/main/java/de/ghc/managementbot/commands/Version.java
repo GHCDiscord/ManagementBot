@@ -6,6 +6,9 @@ import de.ghc.managementbot.threads.MarketAPIThread;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Version implements Command{
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -20,5 +23,10 @@ public class Version implements Command{
                 .setFooter("Letztes Update: " + MarketAPIThread.getLastUpdateDate(data), Content.GHCImageURL)
                 .build()
         ).queue();
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Arrays.asList("!latest", "!version");
     }
 }

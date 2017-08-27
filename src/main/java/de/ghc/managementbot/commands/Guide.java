@@ -1,8 +1,12 @@
 package de.ghc.managementbot.commands;
 
+import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.isModerator;
 
@@ -29,5 +33,32 @@ public class Guide implements Command {
             event.getChannel().sendMessage(builder.append(guide).build()).queue();
         }
         event.getMessage().delete().queue();
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Arrays.asList("!tut", "!guide", "!gilde", "!guild", "!guilds", "!taktik", "!de", "english", "!englisch", "!en");
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        List<String> callers = getCallers();
+        callers.replaceAll(String::toLowerCase);
+        return callers.contains(msg.toLowerCase().split(" ")[0]);
+    }
+
+    @Override
+    public Command createCommand(MessageReceivedEvent event) {
+        String[] command = event.getMessage().getContent().split(" ");
+        if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
+            return new Guide(Guide.faq);
+        } else if (command[0].equalsIgnoreCase("!gilde") || command[0].equalsIgnoreCase("!guild") || command[0].equalsIgnoreCase("Guilds")) {
+            return new Guide(Guide.guild);
+        } else if (command[0].equalsIgnoreCase("!taktik")) {
+            return new Guide(Guide.taktik);
+        }else if (command[0].equalsIgnoreCase("!de") || command[0].equalsIgnoreCase("!english") || command[0].equalsIgnoreCase("!englisch") || command[0].equalsIgnoreCase("!en")) {
+            return new Guide(Guide.language);
+        }
+        return Content.doNothing;
     }
 }

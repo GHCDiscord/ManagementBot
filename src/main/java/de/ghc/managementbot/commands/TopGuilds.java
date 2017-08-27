@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.formatDate;
 import static de.ghc.managementbot.content.Content.getRandomColor;
@@ -23,22 +25,6 @@ public class TopGuilds implements Command {
             String st = new BufferedReader(new InputStreamReader(url.openStream())).readLine();
             JSONArray jsonArray = new JSONObject(st).getJSONArray("top_20_guilds");
             EmbedBuilder builder = new EmbedBuilder().setTitle("Top 10 Gilden:", null).setColor(getRandomColor()).setFooter("Stand: " + formatDate(), Content.GHCImageURL);
-
-            //Funktioniert nicht auf mobilen Ger\u00E4ten
-
-            //StringBuilder ranks = new StringBuilder(), names = new StringBuilder("**"), mitigation = new StringBuilder();
-            /*for (int i = 0; i < jsonArray.length(); i++) {
-                ranks.append(i+1).append("\n");
-                names.append(jsonArray.getJSONObject(i).getString("guild_name")).append("\n");
-                mitigation.append(jsonArray.getJSONObject(i).getString("mitigation")).append("\n");
-            }
-            names.append("**");
-            builder.addField("Rank", ranks.toString(), true)
-                    .addField("Name", names.toString(), true)
-                    .addField("Mitigation", mitigation.toString(), true)
-                    .setFooter("Stand: " + Content.formateDate(), "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200");
-            return new MessageBuilder().setEmbed(builder.build()).build(); */
-
             StringBuilder string = new StringBuilder();
             for (int i = 0; (i < jsonArray.length() && i < 10); i++) {
                 string.append(i+1)
@@ -50,7 +36,12 @@ public class TopGuilds implements Command {
             }
             event.getChannel().sendMessage(builder.setDescription(string.toString()).build()).queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            Content.sendException(e, TopGuilds.class);
         }
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.singletonList("!topguilds");
     }
 }

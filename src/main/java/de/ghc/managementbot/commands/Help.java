@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static de.ghc.managementbot.content.Content.getRandomColor;
@@ -74,7 +75,8 @@ public class Help implements Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
-        boolean verified = isVerified(member);
+        final boolean verified = isVerified(member);
+        final boolean moderator = isModerator(member);
         String[] command = event.getMessage().getContent().split(" ");
         List<User> mentionedUsers = event.getMessage().getMentionedUsers();
 
@@ -83,47 +85,49 @@ public class Help implements Command {
         if (member != null && !member.getUser().equals(user))
             throw new IllegalArgumentException("User and Member have to be the same User!");
 
-        if (command.length > 1 && command[1].equalsIgnoreCase("addIP")) {
+        final boolean reguestedAddIPHelp = command.length > 1 && command[1].equalsIgnoreCase("addIP");
+        if (reguestedAddIPHelp) {
             if (verified) {
                 if (mentionedUsers.isEmpty())
                     sendAddIPHelpMessage(user);
-                else
+                else if (moderator)
                     mentionedUsers.forEach(Help::sendAddIPHelpMessage);
             }
         } else {
             if (mentionedUsers.isEmpty()) {
-                if (isModerator(member))
+                if (moderator)
                     sendModeratorHelpMessage(user);
-                else if (isVerified(member))
+                else if (verified)
                     sendNormalHelpMessage(user);
                 else
                     sendNewHelpMessage(user);
-            } else if (verified)
+            } else if (moderator)
                 mentionedUsers.forEach(u -> {
-                    if (event.getGuild() != null && isModerator(event.getGuild().getMember(u)))
+                    if (isModerator(Content.getGHCMember(u)))
                         sendModeratorHelpMessage(u);
-                    else if (event.getGuild() != null && isVerified(event.getGuild().getMember(u)))
+                    else if (isVerified(Content.getGHCMember(u)))
                         sendNormalHelpMessage(u);
                     else
                         sendNewHelpMessage(u);
                 });
         }
-        if (event.getGuild() != null)
-           event.getMessage().delete().queue();
 
         if (event.getGuild() != null) {
-            if (mentionedUsers.isEmpty()) {
-                event.getTextChannel().sendMessage(
-                        new MessageBuilder().append(user).append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()
-                ).queue(m ->
-                        new Thread(new DeleteMessageThread(60, m)).start()
-                );
-            } else if (verified) {
-                MessageBuilder builder = new MessageBuilder();
-                mentionedUsers.forEach(builder::append);
-                event.getTextChannel().sendMessage(builder.append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()).queue( m ->
-                        new Thread(new DeleteMessageThread(60, m)).start()
-                );
+            event.getMessage().delete().queue();
+            if (!(!verified && reguestedAddIPHelp)) {
+                if (mentionedUsers.isEmpty()) {
+                    event.getTextChannel().sendMessage(
+                            new MessageBuilder().append(user).append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()
+                    ).queue(m ->
+                            new Thread(new DeleteMessageThread(60, m)).start()
+                    );
+                } else if (moderator) {
+                    MessageBuilder builder = new MessageBuilder();
+                    mentionedUsers.forEach(builder::append);
+                    event.getTextChannel().sendMessage(builder.append(" ich habe dir alle wichtigen Informationen als private Nachricht gesendet!").build()).queue(m ->
+                            new Thread(new DeleteMessageThread(60, m)).start()
+                    );
+                }
             }
         }
     }
@@ -150,5 +154,16 @@ public class Help implements Command {
         user.openPrivateChannel().queue(DM ->
                 DM.sendMessage(new EmbedBuilder().setColor(getRandomColor()).setDescription(helMessageAddIPParams).build()).queue()
         );
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Arrays.asList("!help", "!hilfe");
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        List<String> callers = getCallers();
+        return callers.contains(msg.toLowerCase().split(" ")[0]);
     }
 }

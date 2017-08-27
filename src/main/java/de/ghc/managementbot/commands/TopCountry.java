@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -38,5 +40,10 @@ public class TopCountry extends Country implements Command {
             builder.append(places[i]);
         }
         event.getChannel().sendMessage(new EmbedBuilder().setColor(getRandomColor()).setTitle("Top 10 L\u00E4nder nach HC pro Spieler", null).setDescription(builder.toString()).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.singletonList("!topcountry");
     }
 }

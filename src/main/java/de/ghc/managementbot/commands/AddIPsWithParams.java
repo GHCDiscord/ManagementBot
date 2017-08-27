@@ -3,7 +3,6 @@ package de.ghc.managementbot.commands;
 import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
-import de.ghc.managementbot.content.Strings;
 import de.ghc.managementbot.entity.Command;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.threads.DeleteMessageThread;
@@ -12,6 +11,8 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.isVerified;
 
@@ -38,8 +39,8 @@ public class AddIPsWithParams extends AddIP implements Command {
           member = Content.getGHCMember(event.getAuthor());
         }
         if (checkIP(IP)) {
-          if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.hackersip)) {
-            Content.deleteUserAddIP(user, this);
+          if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.Channel.hackersip)) {
+            deleteUserAddIP(user, this);
             return;
           }
           entry = new IPEntry(IP);
@@ -72,19 +73,19 @@ public class AddIPsWithParams extends AddIP implements Command {
           }
         } else {
           event.getChannel().sendMessageFormat("Die IP %s ist nicht gültig!", IP).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
-          Content.deleteUserAddIP(user, this);
+          deleteUserAddIP(user, this);
           return;
         }
       } catch (ArrayIndexOutOfBoundsException e) {
         event.getChannel().sendMessage(String.format("Der Parameter %s hat keinen Wert erhalten", command[command.length - 1])).queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
-        Content.deleteUserAddIP(user, this);
+        deleteUserAddIP(user, this);
         return;
       }
       entry.setUser(event.getAuthor());
       done = true;
       event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
      } else {
-      Content.deleteUserAddIP(user, this);
+      deleteUserAddIP(user, this);
       String msg = event.getMessage().getContent();
       if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
         addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
@@ -93,7 +94,26 @@ public class AddIPsWithParams extends AddIP implements Command {
         //TODO Add to Bot CI
       }
     }
+  }
 
+  @Override
+  public List<String> getCallers() {
+    return Collections.emptyList();
+  }
+
+  @Override
+  public boolean isCalled(MessageReceivedEvent event) {
+    return false;
+  }
+
+  @Override
+  public boolean isCalled(String msg) {
+    return false;
+  }
+
+  @Override
+  public Command createCommand(MessageReceivedEvent event) {
+    throw new RuntimeException("User MessageListener#getAddIP");
   }
 
 }

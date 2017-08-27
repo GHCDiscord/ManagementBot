@@ -1,15 +1,13 @@
 package de.ghc.managementbot.content;
 
 import com.google.api.client.util.DateTime;
-import de.ghc.managementbot.commands.AddIPInRange;
-import de.ghc.managementbot.commands.AddIPWithQuestions;
-import de.ghc.managementbot.commands.AddIPsWithParams;
-import de.ghc.managementbot.commands.UpdateIP;
 import de.ghc.managementbot.entity.Command;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 import javax.imageio.ImageIO;
@@ -24,11 +22,24 @@ public class Content {
 
     public static final String GHCImageURL = "https://avatars0.githubusercontent.com/u/26769965?v=3&s=200";
 
-    private static Map<User, AddIP> userAddIP = new HashMap<>();
-
-    private static Map<User, UpdateIP> userUpdateIP = new HashMap<>();
-
     private static Guild ghc;
+    private static JDA jda;
+
+    public static final Command doNothing = new Command() {
+        @Override
+        public void onMessageReceived(MessageReceivedEvent event) {
+        }
+
+        @Override
+        public List<String> getCallers() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public Command createCommand(MessageReceivedEvent event) {
+            return doNothing;
+        }
+    };
 
     public static Color getRandomColor()  {
         return new Color((float) Math.random(), (float) Math.random(), (float) Math.random());
@@ -49,30 +60,31 @@ public class Content {
         try {
             guild.getController().addSingleRoleToMember(member, role).complete();
         } catch (PermissionException e) {
-            ghc.getTextChannelById(Data.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
+            ghc.getTextChannelById(Data.Channel.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
         }
     }
 
     public static boolean isModerator(Member member) {
         if (member == null)
             return false;
-        if (member.getGuild().getIdLong() != Data.GHC)
+        if (member.getGuild().getIdLong() != Data.Guild.GHC)
             return false;
         List<Role> roles = member.getRoles();
-        return roles.contains(getGhc().getRoleById(Data.botMod));
+        return roles.contains(getGhc().getRoleById(Data.Role.botMod));
     }
 
     public static boolean isVerified(Member member) {
         if (member == null)
             return false;
-        if (member.getGuild().getIdLong() != Data.GHC)
+        if (member.getGuild().getIdLong() != Data.Guild.GHC)
             return false;
         List<Role> roles = member.getRoles();
-        return roles.contains(getGhc().getRoleById(Data.verified));
+        return roles.contains(getGhc().getRoleById(Data.Role.verified));
     }
+
     public static Member getGHCMember(User user) {
-        if (ghc != null) {
-            return ghc.getMember(user);
+        if (getGhc() != null) {
+            return getGhc().getMember(user);
         }
         return null;
     }
@@ -89,6 +101,14 @@ public class Content {
         return formatDate(new Date(oldDate.getValue()));
     }
 
+    public static void sendException(Throwable t, Class<?> at) {
+        getGhc().getTextChannelById(Data.Channel.botLog).sendMessageFormat("%s: %s: %s", at.getName(), t.getClass().getName(), t.getLocalizedMessage()).queue();
+    }
+
+    public static boolean isYes(String msg) {
+        return msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y") || msg.equalsIgnoreCase("jo");
+    }
+
     public static synchronized void setGhc(Guild ghc) {
         Content.ghc = ghc;
     }
@@ -97,24 +117,11 @@ public class Content {
         return ghc;
     }
 
-    public static Map<User, AddIP> getUserAddIP() {
-        return userAddIP;
-    }
-    public static void addUserAddIP(User user, AddIP addIP) {
-        userAddIP.put(user, addIP);
-    }
-    public static void deleteUserAddIP(User user, AddIP addIP) {
-        userAddIP.remove(user, addIP);
+    public static JDA getJda() {
+        return jda;
     }
 
-    public static Map<User, UpdateIP> getUpdateIP() {
-        return userUpdateIP;
-    }
-
-    public static void addUserUpdateIP(User user, UpdateIP updateIP) {
-        userUpdateIP.put(user, updateIP);
-    }
-    public static void deleteUserUpdateIP(User user, UpdateIP update) {
-        userUpdateIP.remove(user, update);
+    public static void setJda(JDA jda) {
+        Content.jda = jda;
     }
 }

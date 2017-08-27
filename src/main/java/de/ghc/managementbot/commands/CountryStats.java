@@ -5,8 +5,10 @@ import de.ghc.managementbot.content.Country;
 import de.ghc.managementbot.entity.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.Collections;
+import java.util.List;
 
 import static de.ghc.managementbot.content.Content.formatDate;
 import static de.ghc.managementbot.content.Content.getImageColor;
@@ -16,7 +18,6 @@ public class CountryStats extends Country implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         event.getChannel().sendTyping().queue();
-        JSONArray array = getCountryArray();
         JSONObject country = getCountry(event.getMessage().getContent().substring(7));
         if (country != null) {
             String url = "http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png";
@@ -33,5 +34,16 @@ public class CountryStats extends Country implements Command {
             event.getChannel().sendMessage(builder.build()).queue();
         } else
             event.getChannel().sendMessage("Land wurde nicht gefunden!").queue();
+    }
+
+    @Override
+    public List<String> getCallers() {
+        return Collections.singletonList("!stats");
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        String[] command = msg.split(" ");
+        return command[0].equalsIgnoreCase("!stats") && command.length >= 2 && !ServerStats.callers().contains(msg.toLowerCase());
     }
 }

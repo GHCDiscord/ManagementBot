@@ -22,9 +22,9 @@ public class Rules implements Command {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);
-            builder.append(" lies dir bitte die ")
-                    .append(event.getGuild().getTextChannelById(Data.Channel.regeln))
-                    .append(" genau durch!");
+            builder.append(" lies dir bitte die <#")
+                    .append(Data.Channel.regeln)
+                    .append("> genau durch!");
             event.getTextChannel().sendMessage(builder.build()).queue();
         }
     }

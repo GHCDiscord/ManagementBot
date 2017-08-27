@@ -71,13 +71,13 @@ public class YouTubeThread implements Runnable, Registrable {
                 }
 
                 synchronized (this) {
-                    this.wait(60001);
+                    this.wait(60000);
                 }
             } catch (IOException e) {
                 Content.sendException(e, YouTubeThread.class);
                 synchronized (this) {
                     try {
-                        this.wait(30000);
+                        this.wait(60000);
                     } catch (InterruptedException e1) {
                         return;
                     }

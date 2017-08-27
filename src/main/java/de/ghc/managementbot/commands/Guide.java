@@ -43,7 +43,6 @@ public class Guide implements Command {
     @Override
     public boolean isCalled(String msg) {
         List<String> callers = getCallers();
-        callers.replaceAll(String::toLowerCase);
         return callers.contains(msg.toLowerCase().split(" ")[0]);
     }
 

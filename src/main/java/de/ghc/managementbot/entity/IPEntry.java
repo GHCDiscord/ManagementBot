@@ -3,7 +3,6 @@ package de.ghc.managementbot.entity;
 import net.dv8tion.jda.core.entities.User;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public final class IPEntry implements Serializable {
     private String name;
@@ -13,7 +12,7 @@ public final class IPEntry implements Serializable {
     private String description;
     private User addedBy;
     private String guildTag;
-    private Date updatedAdd;
+    private boolean update;
 
     public IPEntry(String IP) {
         this(IP, "");
@@ -26,7 +25,7 @@ public final class IPEntry implements Serializable {
         this.description = "";
         this.addedBy = null;
         this.guildTag = "";
-        updatedAdd = new Date();
+        this.update = false;
     }
 
     public int getMiners() {
@@ -79,6 +78,14 @@ public final class IPEntry implements Serializable {
 
     public void setGuildTag(String guildTag) {
         this.guildTag = guildTag;
+    }
+
+    public void setUpdate(boolean update) {
+        this.update = update;
+    }
+
+    public boolean getUpdate() {
+        return update;
     }
 
     @Override

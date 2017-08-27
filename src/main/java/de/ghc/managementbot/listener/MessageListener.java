@@ -5,6 +5,7 @@ import de.ghc.managementbot.content.AddIP;
 import de.ghc.managementbot.content.Content;
 import de.ghc.managementbot.content.Data;
 import de.ghc.managementbot.entity.Command;
+import de.ghc.managementbot.entity.WebhookHandler;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
@@ -23,6 +24,7 @@ public class MessageListener extends ListenerAdapter {
   private static Command getCommand(MessageReceivedEvent event) {
     String msg = event.getMessage().getContent();
     String[] command = msg.split(" ");
+
 
     if (AddIP.getUserAddIP().containsKey(event.getAuthor())) {
       return (Command) AddIP.getUserAddIP().get(event.getAuthor());
@@ -59,7 +61,7 @@ public class MessageListener extends ListenerAdapter {
               event.getChannel().getName(), event.getAuthor().getName(), msg);
     }
     if (event.getChannel().getIdLong() == Data.Channel.obeybot) {
-      return;
+      WebhookHandler.hadleWebhook(event.getMessage());
     }
     startCommand(event);
   }

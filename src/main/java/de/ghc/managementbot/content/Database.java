@@ -3,126 +3,147 @@ package de.ghc.managementbot.content;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.entity.User;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URLEncoder;
 
 public abstract class Database {
-  protected static final String url = "https://ghc-community.de";
-  private static final String postIP = url + "/api/addip.php";
-  private static final String getIP = url + "/api/jawasweißdenich";
-  private static final String registerUser = url + "/api/registeruser.php";
-  private static final String refresh = url + "/api/refreshaccount.php";
+  protected static final String url = "http://173.199.70.183";
+  private static final String postIP = "addip";
+  private static final String getIP = "getip";
+  private static final String registerUser = "registeruser";
+  private static final String refresh = "refreshuser";
   private static final String stats = url + "/api/stats.php";
-  private static final String expire = url + "/api/expireuser.php";
+  private static final String expire = "banuser";
 
-  private static HttpClient client = HttpClients.createDefault();
+  protected static synchronized final JSONObject addIPtoDB(IPEntry entry) {
 
-  protected static synchronized final String addIPtoDB(IPEntry entry) {
-    List<NameValuePair> urlparams = new ArrayList<>();
+    JSONObject variables = new JSONObject();
+    variables.put("token", Secure.DBToken);
+    variables.put("ip", entry.getIP());
+    variables.put("rep", entry.getRepopulation());
+    variables.put("desc", entry.getDescription());
+    variables.put("miners", entry.getMiners());
+    variables.put("clan", entry.getGuildTag());
+    variables.put("name", entry.getName());
+    variables.put("discorduser", entry.getAddedBy().getId());
+    variables.put("update", entry.getUpdate());
 
-    urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
-    urlparams.add(new BasicNameValuePair("ip", entry.getIP()));
-    urlparams.add(new BasicNameValuePair("rep", entry.getRepopulation() + ""));
-    urlparams.add(new BasicNameValuePair("desc", entry.getDescription()));
-    urlparams.add(new BasicNameValuePair("miners", entry.getMiners() + ""));
-    urlparams.add(new BasicNameValuePair("clan", entry.getGuildTag()));
-    urlparams.add(new BasicNameValuePair("name", entry.getName()));
-    urlparams.add(new BasicNameValuePair("discorduser", entry.getAddedBy().getId()));
-
-    return makePOSTRequestAndHandleException(postIP, urlparams);
+    return makeRequestAndHandleResponse(postIP, variables);
   }
 
-  protected static synchronized final String registerNewUserInDB(User user) {
-    client = HttpClients.createDefault();
-    HttpPost post = new HttpPost(registerUser);
-    List<NameValuePair> urlparams = new ArrayList<>();
+  protected static synchronized final JSONObject registerNewUserInDB(User user) {
+    JSONObject object = new JSONObject();
+    object.put("token", Secure.DBToken);
+    object.put("name", user.getUsername());
+    object.put("password", user.getPassword());
+    object.put("discorduser", user.getDiscordUser().getId());
 
-    urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
-    urlparams.add(new BasicNameValuePair("name", new String(user.getUsername().getBytes(Charset.forName("UTF-8")), Charset.forName("UTF-8"))));
-    urlparams.add(new BasicNameValuePair("password", user.getPassword()));
-    //urlparams.add(new BasicNameValuePair("email", user.getEMail())); //TODO wird nie gesetzt
-    urlparams.add(new BasicNameValuePair("discorduser", user.getDiscordUser().getId()));
-
-    return makePOSTRequestAndHandleException(registerUser, urlparams);
+    return makeRequestAndHandleResponse(registerUser, object);
   }
 
-  protected static synchronized final String refreshUser(net.dv8tion.jda.core.entities.User user) {
-    List<NameValuePair> urlparams = new ArrayList<>();
+  protected static synchronized final JSONObject refreshUser(net.dv8tion.jda.core.entities.User user) {
 
-    urlparams.add(new BasicNameValuePair("token", Secure.DBToken));
-    urlparams.add(new BasicNameValuePair("discorduser", user.getId()));
+    JSONObject object = new JSONObject();
+    object.put("token", Secure.DBToken);
+    object.put("discorduser", user.getId());
 
-    return makePOSTRequestAndHandleException(refresh, urlparams);
+    return makeRequestAndHandleResponse(refresh, object);
   }
 
   protected static synchronized final String getStats() {
-    return makeGETRequestAndHandleException(stats)
-            .replace("<br>", "\n ").replace("<title>Stats 1.0</title>", "").replace("<", "**").replace(">", "**");
+    try {
+      return makeRequest(new HttpGet(stats))
+              .replace("<br>", "\n ").replace("<title>Stats 1.0</title>", "").replace("<", "**").replace(">", "**");
+    } catch (IOException e) {
+      Content.sendException(e, Database.class);
+      return e.getLocalizedMessage();
+    }
   }
   protected static synchronized final JSONObject getStrings() {
-    return new JSONObject(makeGETRequestAndHandleException("http://jonas.frikz.de/GHC/botCommands.json"));
-  }
-
-  public static synchronized final String expireUser(net.dv8tion.jda.core.entities.User user) {
-    List<NameValuePair> params = new ArrayList<>();
-
-    params.add(new BasicNameValuePair("token", Secure.DBToken));
-    params.add(new BasicNameValuePair("discorduser", user.getId()));
-
-    return makePOSTRequestAndHandleException(expire, params);
-  }
-
-  private static synchronized final String makeGETRequest(String url) throws IOException {
-    HttpGet get = new HttpGet(url);
-    return makeRequest(get);
-  }
-
-  private static synchronized final String makeGETRequestAndHandleException(String url) {
     try {
-      return makeGETRequest(url);
+      return new JSONObject(makeRequest(new HttpGet(""/*"http://jonas.frikz.de/GHC/botCommands.json"*/)));
     } catch (IOException e) {
       Content.sendException(e, Database.class);
-      return e.getLocalizedMessage();
+      return new JSONObject();
     }
   }
 
-  private static synchronized final String makePOSTRequest(String url, List<NameValuePair> params) throws IOException {
-    HttpPost post = new HttpPost(url);
-    post.setEntity(new UrlEncodedFormEntity(params));
-    return makeRequest(post);
+  public static synchronized final JSONObject expireUser(net.dv8tion.jda.core.entities.User user) {
+    JSONObject object = new JSONObject();
+    object.put("token", Secure.DBToken);
+    object.put("discorduser", user.getId());
+
+    return makeRequestAndHandleResponse(expire, object);
   }
 
-  private static synchronized final String makePOSTRequestAndHandleException(String url, List<NameValuePair> params) {
-    try {
-      return makePOSTRequest(url, params);
-    } catch (IOException e) {
-      Content.sendException(e, Database.class);
-      return e.getLocalizedMessage();
+  protected static final IPEntry getIP(long IPID) {
+    JSONObject object = new JSONObject();
+    object.put("token", Secure.DBToken);
+    object.put("IPID", IPID);
+    return generateIpEntry(makeRequestAndHandleResponse(getIP, object));
+  }
+
+  private static final IPEntry generateIpEntry(JSONObject object) {
+    if (object == null)
+      return null;
+    if (!object.has("IPFunde"))
+      return null;
+    if (object.get("IPFunde") instanceof JSONObject) {
+      return generateIpEntry0(object.getJSONObject("IPFunde"));
+    } else if (object.get("IPFunde") instanceof JSONArray) {
+      return generateIpEntry0(object.getJSONArray("IPFunde").getJSONObject(0)); //TODO
     }
+    return null;
+  }
+
+  private static final IPEntry generateIpEntry0(JSONObject ip) {
+    IPEntry entry = new IPEntry(ip.getString("IP"));
+    entry.setName(ip.getString("Name"));
+    entry.setRepopulation(ip.getInt("Rep"));
+    entry.setMiners(ip.getInt("Miners"));
+    entry.setGuildTag(ip.getString("Clan"));
+    entry.setDescription(ip.getString("Desc"));
+    return entry;
   }
 
   private static synchronized final String makeRequest(HttpRequestBase request) throws IOException {
     HttpClient client = HttpClients.createDefault();
+    request.setHeader("User-Agent", "GHC-Bot");
     HttpResponse response = client.execute(request);
+    System.out.println(response.getStatusLine());
     BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
     StringBuilder site = new StringBuilder();
     for (String data; (data = reader.readLine()) != null;) {
       site.append(data);
     }
     return site.toString();
+  }
+
+  private static synchronized final JSONObject makeRequestAndHandleResponse(String function, JSONObject variables) {
+    try {
+      String object = URLEncoder.encode(variables.toString());
+      System.out.println(String.format("%s/index.php/apibot/%s/%s", url, function, object));
+      HttpGet get = new HttpGet(String.format("%s/index.php/apibot/%s/%s", url, function, object));
+      String request = makeRequest(get);
+      System.out.println(request);
+      try {
+        return new JSONObject(request);
+      }catch (JSONException e) {
+        return null;
+      }
+    } catch (IOException e) {
+      Content.sendException(e, Database.class);
+      return new JSONObject().put("error", true).put("msgName", e.getLocalizedMessage());
+    }
   }
 }

@@ -57,29 +57,34 @@ public class Content {
     }
 
     public static void addRole(Member member, Guild guild, Role role) {
+        if (member == null || guild == null || role == null)
+            return;
         try {
             guild.getController().addSingleRoleToMember(member, role).complete();
         } catch (PermissionException e) {
-            ghc.getTextChannelById(Data.Channel.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
+            getGhc().getTextChannelById(Data.Channel.botLog).sendMessageFormat("Failed to add role %s to Member %s on guild %s \n reason: %s", role.getName(), member.getEffectiveName(), guild.getName(), e.toString()).queue();
         }
     }
 
     public static boolean isModerator(Member member) {
-        if (member == null)
-            return false;
-        if (member.getGuild().getIdLong() != Data.Guild.GHC)
-            return false;
-        List<Role> roles = member.getRoles();
-        return roles.contains(getGhc().getRoleById(Data.Role.botMod));
+        return hasRole(member, Data.Role.botMod);
     }
 
     public static boolean isVerified(Member member) {
+       return hasRole(member, Data.Role.verified);
+    }
+
+    public static boolean isKontributor(Member member) {
+        return hasRole(member, Data.Role.kontributor);
+    }
+
+    private static boolean hasRole(Member member, long roleId) {
         if (member == null)
             return false;
         if (member.getGuild().getIdLong() != Data.Guild.GHC)
             return false;
         List<Role> roles = member.getRoles();
-        return roles.contains(getGhc().getRoleById(Data.Role.verified));
+        return roles.contains(getGhc().getRoleById(roleId));
     }
 
     public static Member getGHCMember(User user) {
@@ -102,7 +107,9 @@ public class Content {
     }
 
     public static void sendException(Throwable t, Class<?> at) {
-        getGhc().getTextChannelById(Data.Channel.botLog).sendMessageFormat("%s: %s: %s", at.getName(), t.getClass().getName(), t.getLocalizedMessage()).queue();
+        getGhc().getTextChannelById(Data.Channel.botLog).sendMessageFormat("%s: %s: %s", at.getSimpleName(), t.getClass().getSimpleName(), t.getLocalizedMessage()).queue();
+        if (t.getCause() != null)
+            sendException(t.getCause(), at);
     }
 
     public static boolean isYes(String msg) {

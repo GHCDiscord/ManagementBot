@@ -19,31 +19,38 @@ public class RegisterChannel implements Command {
     private static final List<String> TWITTER_STRINGS = Arrays.asList("!requesttwitterupdates", "!registertwitterupdates");
     private static final List<String> PLAY_STRINGS = Arrays.asList("!requestgplayupdates", "!registergplayupdates", "!requestplayupdates", "!registerplayupdates", "!requestgoogleplayupdates", "!registergoogleplayupdates");
 
+    private static final List<String> callers = new ArrayList<>();
+
+    static {
+        callers.addAll(TWITTER_STRINGS);
+        callers.addAll(TWITTER_STRINGS);
+        callers.addAll(PLAY_STRINGS);
+    }
+
     private Registrable registrable;
+
     public RegisterChannel(Registrable registrable) {
         this.registrable = registrable;
     }
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(final MessageReceivedEvent event) {
+        if (event.getGuild().getIdLong() != Data.Guild.GHC)
+            return;
             event.getMessage().getMentionedChannels().forEach(ch -> {
                 if (!registrable.getChannels().contains(ch)) {
                     registrable.addChannel(ch);
-                    Content.getJda().getTextChannelById(Data.Channel.saves).sendMessage(registrable.getToken() + Data.SPLITTER + ch.getId()).queue();
+                    event.getGuild().getTextChannelById(Data.Channel.saves).sendMessage(registrable.getToken() + Data.SPLITTER + ch.getId()).queue();
                 }
             });
     }
 
     @Override
     public List<String> getCallers() {
-        List<String> callers = new ArrayList<>(YOUTUBE_STRINGS);
-        callers.addAll(TWITTER_STRINGS);
-        callers.addAll(PLAY_STRINGS);
         return callers;
     }
 
     @Override
     public boolean isCalled(String msg) {
-        List<String> callers = getCallers();
         return callers.contains(msg.toLowerCase().split(" ")[0]);
     }
 

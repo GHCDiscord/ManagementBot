@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
 public abstract class Database {
-  protected static final String url = "http://173.199.70.183";
+  protected static final String url = "http://ghc-community.de";
   private static final String postIP = "addip";
   private static final String getIP = "getip";
   private static final String registerUser = "registeruser";

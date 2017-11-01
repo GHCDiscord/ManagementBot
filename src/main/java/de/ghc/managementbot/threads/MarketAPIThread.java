@@ -9,7 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,10 +27,6 @@ public class MarketAPIThread implements Runnable, Registrable {
     public MarketAPIThread() {
         oldVersion = getVersionNumber();
         instance = this;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getLastUpdateDate());
     }
 
     public static String getGameInfo() {
@@ -60,7 +56,7 @@ public class MarketAPIThread implements Runnable, Registrable {
     public static String getVersionNumber(String data) {
         if (data != null && data.contains("\"softwareVersion\"")) {
             int i = data.indexOf("\"softwareVersion\"");
-            return data.substring(i + 19, data.indexOf("</div> </div> <div class=\"meta-info\"> <div class=\"title\">Erforderliche Android-Version</div>"));
+            return data.substring(i + 19, i + 19 + 7);
         }
         return null;
     }

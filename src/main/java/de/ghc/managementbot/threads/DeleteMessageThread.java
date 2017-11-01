@@ -5,8 +5,8 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class DeleteMessageThread implements Runnable{
-    int duration;
-    Message message;
+    private final int duration;
+    private final Message message;
 
     public DeleteMessageThread(int duration, Message message) {
         this.duration = duration;
@@ -18,13 +18,11 @@ public class DeleteMessageThread implements Runnable{
     public void run() {
         try {
             synchronized (this) {
-                while (duration > 0) {
-                    this.wait(1000);
-                    duration--;
-                }
+                this.wait(1000 * duration);
             }
         } catch (InterruptedException e) {
-        }finally {
+            return;
+        } finally {
             try {
                 message.delete().queue();
             }catch (PermissionException e) {

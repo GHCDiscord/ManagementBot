@@ -9,13 +9,14 @@ import de.ghc.managementbot.entity.WebhookHandler;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MessageListener extends ListenerAdapter {
 
-  private static final List<Command> registeredCommands = new ArrayList<>(); //TODO Thread-save
+  private static final List<Command> registeredCommands = Arrays.asList(new AddUser(), new AllTutorials(), new CountryStats(),
+          new Guide(null), new Help(), new RefreshUser(), new RegisterChannel(null),
+          new Rules(), new ServerStats(), new Stats(), new TopCountry(), new TopGuilds(), new Verify(), new Version());
 
   public static void startCommand(MessageReceivedEvent event) {
     getCommand(event).onMessageReceived(event);
@@ -61,15 +62,8 @@ public class MessageListener extends ListenerAdapter {
               event.getChannel().getName(), event.getAuthor().getName(), msg);
     }
     if (event.getChannel().getIdLong() == Data.Channel.obeybot) {
-      WebhookHandler.hadleWebhook(event.getMessage());
+      WebhookHandler.handleWebhook(event.getMessage());
     }
     startCommand(event);
-  }
-
-  public final void registerCommads() {
-    registeredCommands.addAll(Arrays.asList(new AddRole(), new AddUser(), new AllTutorials(), new CountryStats(),
-            new DeleteRole(), new Guide(null), new Help(), new RefreshUser(), new RegisterChannel(null),
-            new Rules(), new ServerStats(), new Stats(), new TopCountry(), new TopGuilds(), new Verify(), new Version()
-    ));
   }
 }

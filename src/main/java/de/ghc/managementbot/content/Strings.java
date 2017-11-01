@@ -93,7 +93,9 @@ public abstract class Strings extends Database {
             }
             try {
                 Thread.sleep(3600000);
-            } catch (InterruptedException ignore) {}
+            } catch (InterruptedException e) {
+                return;
+            }
         }
     });
 

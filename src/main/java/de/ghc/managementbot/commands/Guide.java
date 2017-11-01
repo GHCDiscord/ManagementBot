@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.ghc.managementbot.content.Content.isModerator;
+import static de.ghc.managementbot.content.Content.isBotModerator;
 
 public class Guide implements Command {
 
@@ -27,7 +27,7 @@ public class Guide implements Command {
     public static final String language = " `If you don't know the german language and you are not invited please leave. We are talking german in all channels here.`\nEnglish Discord: http://discord.gg/r7uHe3H";
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (isModerator(event.getMember())) {
+        if (isBotModerator(event.getMember())) {
             MessageBuilder builder = new MessageBuilder();
             event.getMessage().getMentionedUsers().forEach(builder::append);
             event.getChannel().sendMessage(builder.append(guide).build()).queue();

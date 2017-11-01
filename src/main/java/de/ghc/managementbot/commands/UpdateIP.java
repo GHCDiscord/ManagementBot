@@ -29,18 +29,18 @@ public class UpdateIP extends AddIP implements Command {
         String msg = event.getMessage().getContent();
         new Thread(new DeleteMessageThread(60, event.getMessage())).start();
         if (Content.isYes(msg)) {
-            if (Content.isKontributor(event.getMember())) {
+            if (Content.isStaff(event.getMember())) {
                 newEntry.setUpdate(true);
                 addIPtoDB(newEntry);
             } else {
                 IPEntry oldEntry = getIP(IPID);
                 if (oldEntry != null)
-                    Content.getGhc().getTextChannelById(Data.Channel.zahlenschlacht).sendMessageFormat(
+                    event.getGuild().getTextChannelById(Data.Channel.zahlenschlacht).sendMessageFormat(
                             "IP-Upate:\nIP: %s -> %s\nName: %s -> %s\nMiner: %d -> %d\nReputation: %d -> %d\nGilde: %s -> %s\nBeschreibung: %s -> %s\nDaten von: %s ",
                             oldEntry.getIP(), newEntry.getIP(), oldEntry.getName(), newEntry.getName(), oldEntry.getMiners(), newEntry.getMiners(), oldEntry.getRepopulation(), newEntry.getRepopulation(), oldEntry.getGuildTag(), newEntry.getGuildTag(), oldEntry.getDescription(), newEntry.getDescription(), newEntry.getAddedBy().getName()
                     ).queue(m -> messageUpdateIp.put(m.getIdLong(), this));
                 else
-                    Content.getGhc().getTextChannelById(Data.Channel.zahlenschlacht).sendMessage(newEntry.toString()).queue();
+                    event.getGuild().getTextChannelById(Data.Channel.zahlenschlacht).sendMessage(newEntry.toString()).queue();
             }
         }
         deleteUserUpdateIP(event.getAuthor(), this);

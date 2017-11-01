@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.Arrays;
 import java.util.List;
 
-import static de.ghc.managementbot.content.Content.isModerator;
+import static de.ghc.managementbot.content.Content.isBotModerator;
 
 public class Rules implements Command {
     @Override
@@ -18,7 +18,7 @@ public class Rules implements Command {
             event.getMessage().delete().queue();
 
 
-        if (isModerator(event.getMember())) {
+        if (isBotModerator(event.getMember())) {
             List<User> mentionedUsers = event.getMessage().getMentionedUsers();
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);

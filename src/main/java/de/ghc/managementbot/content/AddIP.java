@@ -34,7 +34,7 @@ public abstract class AddIP extends Database {
     }
 
     protected void addEntryAndHandleResponse(IPEntry entry, MessageChannel channel, User author) {
-        if (Content.isKontributor(Content.getGHCMember(author)))
+        if (Content.isStaff(Content.getGHCMember(author)))
             entry.setUpdate(true);
         JSONObject result = addIPtoDB(entry);
         handleAddIPResponse(entry, result, channel, author);

@@ -12,7 +12,7 @@ public class AllTutorials implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         event.getMessage().delete().queue();
-        if (Content.isModerator(Content.getGHCMember(event.getAuthor())) || event.getMember() == null) {
+        if (Content.isBotModerator(Content.getGHCMember(event.getAuthor())) || event.getMember() == null) {
             event.getChannel().sendMessage(new EmbedBuilder().setTitle("Tutorials")
                     .addField("FAQ", "[hier](https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub \"FAQ\")", true)
                     .addField("Gilden", "[hier](http://forum.hackerz.online/viewtopic.php?f=12&t=78 \"Gilden\")", true)

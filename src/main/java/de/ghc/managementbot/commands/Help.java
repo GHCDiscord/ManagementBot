@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static de.ghc.managementbot.content.Content.getRandomColor;
-import static de.ghc.managementbot.content.Content.isModerator;
+import static de.ghc.managementbot.content.Content.isBotModerator;
 import static de.ghc.managementbot.content.Content.isVerified;
 
 public class Help implements Command {
@@ -76,7 +76,7 @@ public class Help implements Command {
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
         final boolean verified = isVerified(member);
-        final boolean moderator = isModerator(member);
+        final boolean moderator = isBotModerator(member);
         String[] command = event.getMessage().getContent().split(" ");
         List<User> mentionedUsers = event.getMessage().getMentionedUsers();
 
@@ -103,7 +103,7 @@ public class Help implements Command {
                     sendNewHelpMessage(user);
             } else if (moderator)
                 mentionedUsers.forEach(u -> {
-                    if (isModerator(Content.getGHCMember(u)))
+                    if (isBotModerator(Content.getGHCMember(u)))
                         sendModeratorHelpMessage(u);
                     else if (isVerified(Content.getGHCMember(u)))
                         sendNormalHelpMessage(u);

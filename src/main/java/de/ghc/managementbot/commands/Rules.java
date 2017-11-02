@@ -23,7 +23,7 @@ public class Rules implements Command {
             MessageBuilder builder = new MessageBuilder();
             mentionedUsers.forEach(builder::append);
             builder.append(" lies dir bitte die <#")
-                    .append(Data.Channel.regeln)
+                    .append(Data.Channel.de_regeln)
                     .append("> genau durch!");
             event.getTextChannel().sendMessage(builder.build()).queue();
         }

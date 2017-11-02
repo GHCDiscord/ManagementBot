@@ -49,7 +49,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if (isVerified(member) && this.channel != null && this.channel.getIdLong() == Data.Channel.hackersip ) {
+    if (isVerified(member) && this.channel != null && this.channel.getIdLong() == Data.Channel.de_hackersip) {
       switch (status) {
         case start:
           channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);

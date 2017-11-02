@@ -83,7 +83,7 @@ public abstract class AddIP extends Database {
     }
 
     public static final void sendAddedIP(Member addedBy) {
-        Content.getGhc().getTextChannelById(Data.Channel.hackersip).sendMessage(new MessageBuilder().append(addedBy).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
+        Content.getGhc().getTextChannelById(Data.Channel.de_hackersip).sendMessage(new MessageBuilder().append(addedBy).append(" hat eine IP zur Datenbank hinzugef\u00FCgt").build()).queue();
     }
 
     protected static int setName(int i, String[] command, IPEntry entry) {

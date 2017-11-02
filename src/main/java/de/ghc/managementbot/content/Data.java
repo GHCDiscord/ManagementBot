@@ -9,12 +9,22 @@ public abstract class Data {
     public static final class Channel {
         public static final long test_general = 280685448303476737L;
         public static final long saves = 364493795657515018L;
-        public static final long general = 270162736095297536L;
-        public static final long hackersip = 334056693954772992L;
-        public static final long regeln = 334056556465356810L;
         public static final long botLog = 334057646564966404L;
-        public static final long zahlenschlacht = 334057251872702464L;
         public static final long obeybot = 344500190792777730L;
+
+        public static final long glo_general = 363008034773139456L;
+        public static final long glo_rules = 363008414948786176L;
+
+        public static final long de_general = 270162736095297536L;
+        public static final long de_hackersip = 334056693954772992L;
+        public static final long de_regeln = 334056556465356810L;
+        @Deprecated
+        public static final long zahlenschlacht = 334057251872702464L;
+
+        public static final long en_general = 363002290694651904L;
+        public static final long en_rules = 363001278499913729L;
+        public static final long en_hackersip = 363007644258271233L;
+
 
     }
 

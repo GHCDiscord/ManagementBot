@@ -52,7 +52,7 @@ public class TwitterThread implements Runnable, Registrable {
                             lastTweet = status.getCreatedAt();
                             String content = status.getText();
                             if (content.contains("maintenance"))
-                                Content.getGhc().getTextChannelById(Data.Channel.general).sendMessage( new MessageBuilder().append(Content.getGhc().getPublicRole()).append(" Achtung: Wartungsarbeiten!").build()).queue();
+                                Content.getGhc().getTextChannelById(Data.Channel.de_general).sendMessage( new MessageBuilder().append(Content.getGhc().getPublicRole()).append(" Achtung: Wartungsarbeiten!").build()).queue();
                             for (TextChannel channel : channels)
                                 channel.sendMessage(new EmbedBuilder().setColor(new Color(53, 137, 255))
                                     .setAuthor(status.getUser().getScreenName(), status.getUser().getURL(), status.getUser().getProfileImageURL())

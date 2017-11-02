@@ -29,7 +29,7 @@ public class AddIPInRange extends AddIP implements Command {
         Member member = event.getMember();
         if (member == null)
             member = Content.getGHCMember(event.getAuthor());
-        if (Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().getIdLong() == Data.Channel.hackersip) {
+        if (Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().getIdLong() == Data.Channel.de_hackersip) {
             if (!done) {
                 String[] data = event.getMessage().getContent().split(" ");
                 entry = setupEntry(data);

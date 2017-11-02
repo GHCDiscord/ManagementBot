@@ -23,7 +23,7 @@ public class AddUser extends Database implements Command {
     if (member == null) {
       member = Content.getGHCMember(event.getAuthor());
     }
-    if ((event.getGuild() == null && isVerified(member)) || (event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.Channel.hackersip))) && isVerified(member)) {
+    if ((event.getGuild() == null && isVerified(member)) || (event.getTextChannel().equals(event.getGuild().getTextChannelById(Data.Channel.de_hackersip))) && isVerified(member)) {
       if (event.getChannel().getType() != ChannelType.PRIVATE) {
         new Thread(new DeleteMessageThread(3, event.getMessage())).start(); //direkt löschen?
       }

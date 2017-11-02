@@ -39,7 +39,7 @@ public class AddIPsWithParams extends AddIP implements Command {
           member = Content.getGHCMember(event.getAuthor());
         }
         if (checkIP(IP)) {
-          if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.Channel.hackersip)) {
+          if (!isVerified(member) || (event.getGuild() != null && event.getTextChannel().getIdLong() != Data.Channel.de_hackersip)) {
             deleteUserAddIP(user, this);
             return;
           }

@@ -20,7 +20,6 @@ public class ServerStatsThread extends Database implements Runnable {
     @Override
     public void run() {
         try {
-            synchronized (this) {
                 this.wait((hour * 60 * 60 * 1000) - DateTime.now().getMillisOfDay()); //startup
                 while (true) {
                     String string = getStats();
@@ -35,11 +34,10 @@ public class ServerStatsThread extends Database implements Runnable {
                             numbers.append(values[i]);
                         }
                         Content.getGhc().getTextChannelById(Data.Channel.de_hackersip).sendMessage(new EmbedBuilder().setTitle("IP-Updates", url).setDescription(url).setColor(Content.getRandomColor()).addField("Datum", dates.toString(), true).addField("Updated", numbers.toString(), true).setFooter("Stand: " + formatDate(), Content.GHCImageURL).build()).queue();
-                        this.wait(timeout);
+                        Thread.sleep(timeout);
                     } else
-                        this.wait(5000);
+                        Thread.sleep(5000);
                 }
-            }
         } catch (InterruptedException ignore) {}
     }
 }

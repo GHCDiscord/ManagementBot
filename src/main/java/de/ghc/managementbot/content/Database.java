@@ -74,7 +74,7 @@ public abstract class Database {
       return new JSONObject(makeRequest(new HttpGet(""/*"http://jonas.frikz.de/GHC/botCommands.json"*/)));
     } catch (IOException e) {
       Content.sendException(e, Database.class);
-      return new JSONObject();
+      return null;
     }
   }
 

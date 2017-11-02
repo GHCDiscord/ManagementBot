@@ -69,22 +69,15 @@ public class YouTubeThread implements Runnable, Registrable {
                         sendMessage("Livestream gestartet: ", result);
                     }
                 }
-
-                synchronized (this) {
-                    this.wait(60000);
-                }
             } catch (IOException e) {
                 Content.sendException(e, YouTubeThread.class);
-                synchronized (this) {
-                    try {
-                        this.wait(60000);
-                    } catch (InterruptedException e1) {
-                        return;
-                    }
-                }
+            }
+            try {
+                Thread.sleep(60000);
             } catch (InterruptedException ignore) {
                 return;
             }
+
         }
     }
 

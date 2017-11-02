@@ -17,9 +17,7 @@ public class DeleteMessageThread implements Runnable{
     @Override
     public void run() {
         try {
-            synchronized (this) {
-                this.wait(1000 * duration);
-            }
+            Thread.sleep(duration * 1000);
         } catch (InterruptedException e) {
             return;
         } finally {

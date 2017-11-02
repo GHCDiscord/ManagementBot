@@ -90,9 +90,8 @@ public class MarketAPIThread implements Runnable, Registrable {
     public void run() {
         while (true) {
             try {
-              synchronized (this) {
-                  this.wait(60000);
-              }
+              Thread.sleep(60000);
+
               String data = getGameInfo();
               String v = getVersionNumber(data);
               if (v != null && !v.equals(oldVersion)) {

@@ -31,7 +31,6 @@ public class TwitterThread implements Runnable, Registrable {
 
     @Override
     public void run() {
-        synchronized (this) {
             ConfigurationBuilder builder = new ConfigurationBuilder()
                     .setDebugEnabled(true)
                     .setOAuthConsumerKey(Secure.ConsumerKey)
@@ -41,7 +40,7 @@ public class TwitterThread implements Runnable, Registrable {
             twitter = new TwitterFactory(builder.build()).getInstance();
             while (true) {
                 try {
-                    this.wait(60000);
+                    Thread.sleep(60000);
                 } catch (InterruptedException e) {
                     return;
                 }
@@ -66,7 +65,6 @@ public class TwitterThread implements Runnable, Registrable {
                     Content.sendException(e, TwitterThread.class);
                 }
             }
-        }
     }
 
     @Override

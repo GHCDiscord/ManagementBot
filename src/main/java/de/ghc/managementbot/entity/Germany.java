@@ -1,6 +1,8 @@
 package de.ghc.managementbot.entity;
 
 import de.ghc.managementbot.content.Data;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 
 /*package*/ class Germany extends Country {
 
@@ -26,5 +28,25 @@ import de.ghc.managementbot.content.Data;
     @Override
     public long getVerifiedRole() {
         return Data.Role.de_verified;
+    }
+
+    @Override
+    public long getGeneralChannel() {
+        return Data.Channel.de_general;
+    }
+
+    @Override
+    public long getRulesChannel() {
+        return Data.Channel.de_regeln;
+    }
+
+    @Override
+    public long getHackersIpChannel() {
+        return Data.Channel.de_hackersip;
+    }
+
+    @Override
+    public void sendWelcomeMessage(Member member, Guild guild) {
+        guild.getTextChannelById(getGeneralChannel()).sendMessageFormat("Willkommen %s in der GHC. Bitte lese dir die <#%s> durch.", member.getAsMention(), getRulesChannel()).queue();
     }
 }

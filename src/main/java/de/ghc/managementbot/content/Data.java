@@ -43,10 +43,10 @@ public abstract class Data {
         public static final long en_staff = 334052509272375326L;
         public static final long vip = 334052510291460098L;
         public static final long BotNet = 334052511520522241L;
-        public static final long verified = 334053556158201860L;
+        public static final long de_verified = 334053556158201860L;
         public static final long muted = 270172445523181569L;
         public static final long botMod = 334349882238173184L;
-        public static final long de_verified = 363012919916494848L;
+        public static final long verified = 363012919916494848L;
         public static final long en_verifed = 363022324171276292L;
     }
 

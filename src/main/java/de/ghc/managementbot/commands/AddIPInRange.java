@@ -31,11 +31,11 @@ public class AddIPInRange extends AddIP implements Command {
             member = Content.getGHCMember(event.getAuthor());
         if (Content.isVerified(member) && event.getTextChannel() != null && event.getTextChannel().getIdLong() == Data.Channel.de_hackersip) {
             if (!done) {
-                String[] data = event.getMessage().getContent().split(" ");
+                String[] data = event.getMessage().getContentDisplay().split(" ");
                 entry = setupEntry(data);
                 if (entry != null) {
                     entry.setUser(user);
-                    event.getChannel().sendMessage("Stimmen diese Daten?\n" + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+                    event.getChannel().sendMessageFormat("Stimmen diese Daten?\n%s\nSchreibe 'Ja' zum best\u00E4tigen", entry.toString()).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
                     done = true;
                 } else {
                     deleteUserAddIP(user, this);
@@ -46,11 +46,11 @@ public class AddIPInRange extends AddIP implements Command {
                 }
             } else {
                 deleteUserAddIP(user, this);
-                String msg = event.getMessage().getContent();
+                String msg = event.getMessage().getContentDisplay();
                 if (Content.isYes(msg)) {
                     addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
                 } else {
-                    event.getChannel().sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
+                    event.getChannel().sendMessage("Eingabe abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
                 }
 
             }
@@ -68,7 +68,7 @@ public class AddIPInRange extends AddIP implements Command {
             if (data.length < i + 2)
                 return entry;
             try {
-                entry.setRepopulation(Integer.parseInt(data[++i]));
+                entry.setReputation(Integer.parseInt(data[++i]));
             } catch (NumberFormatException ignore) {
             }
             if (data.length < i + 2)

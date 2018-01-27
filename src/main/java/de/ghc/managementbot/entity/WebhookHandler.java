@@ -11,7 +11,7 @@ public class WebhookHandler {
     public static void handleWebhook(Message message) {
         if (!message.isWebhookMessage() || message.getGuild().getIdLong() != Data.Guild.GHC)
             return;
-        JSONObject object = new JSONObject(message.getContent());
+        JSONObject object = new JSONObject(message.getContentDisplay());
         if (!object.has("event"))
             return;
         if (object.getString("event").equals("addip")) {

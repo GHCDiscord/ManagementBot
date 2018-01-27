@@ -4,11 +4,11 @@ import net.dv8tion.jda.core.entities.User;
 
 import java.io.Serializable;
 
-public final class IPEntry implements Serializable {
+public class IPEntry implements Serializable {
     private String name;
     private final String IP;
     private int miners;
-    private int repopulation;
+    private int reputation;
     private String description;
     private User addedBy;
     private String guildTag;
@@ -21,7 +21,7 @@ public final class IPEntry implements Serializable {
         this.IP = IP;
         this.name = name;
         this.miners = 1;
-        this.repopulation = 0;
+        this.reputation = 0;
         this.description = "";
         this.addedBy = null;
         this.guildTag = "";
@@ -32,8 +32,8 @@ public final class IPEntry implements Serializable {
         return miners;
     }
 
-    public int getRepopulation() {
-        return repopulation;
+    public int getReputation() {
+        return reputation;
     }
 
     public String getDescription() {
@@ -68,8 +68,8 @@ public final class IPEntry implements Serializable {
         this.name = name;
     }
 
-    public void setRepopulation(int repopulation) {
-        this.repopulation = repopulation;
+    public void setReputation(int reputation) {
+        this.reputation = reputation;
     }
 
     public void setUser(User addedBy) {
@@ -90,6 +90,6 @@ public final class IPEntry implements Serializable {
 
     @Override
     public String toString() {
-        return "IP: " + getIP() + "\nName: " + getName() + "\nMiner: " + getMiners() + "\nReputation: " + getRepopulation() + "\nGilde: " + getGuildTag() + "\nBeschreibung: "+ getDescription();
+        return "IP: " + getIP() + "\nName: " + getName() + "\nMiner: " + getMiners() + "\nReputation: " + getReputation() + "\nGilde: " + getGuildTag() + "\nBeschreibung: "+ getDescription();
     }
 }

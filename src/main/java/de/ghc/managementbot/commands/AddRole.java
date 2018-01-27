@@ -21,7 +21,6 @@ public class AddRole extends CountryRoleManager implements Command {
 
     @Override
     public boolean isCalled(String msg) {
-        List<String> callers = getCallers();
-        return callers.contains(msg.toLowerCase().split(" ")[0]);
+        return isCalledFirstWord(msg);
     }
 }

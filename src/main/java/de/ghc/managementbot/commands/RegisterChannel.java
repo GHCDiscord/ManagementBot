@@ -51,12 +51,12 @@ public class RegisterChannel implements Command {
 
     @Override
     public boolean isCalled(String msg) {
-        return callers.contains(msg.toLowerCase().split(" ")[0]);
+        return isCalledFirstWord(msg);
     }
 
     @Override
     public Command createCommand(MessageReceivedEvent event) {
-        String msg = event.getMessage().getContent().split(" ")[0].toLowerCase();
+        String msg = event.getMessage().getContentDisplay().split(" ")[0].toLowerCase();
 
         if (YOUTUBE_STRINGS.contains(msg))
             return new RegisterChannel(YouTubeThread.getInstance());

@@ -24,7 +24,9 @@ public class Guide implements Command {
 
     public static final String taktik = " Genaue Erkl\u00E4rungen zu verschiedenen Taktiken und Spielweisen finest du unter https://forum.hackerz.online/viewtopic.php?f=10&t=334";
 
+    @Deprecated
     public static final String language = " `If you don't know the german language and you are not invited please leave. We are talking german in all channels here.`\nEnglish Discord: http://discord.gg/r7uHe3H";
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         if (isBotModerator(event.getMember())) {
@@ -42,13 +44,12 @@ public class Guide implements Command {
 
     @Override
     public boolean isCalled(String msg) {
-        List<String> callers = getCallers();
-        return callers.contains(msg.toLowerCase().split(" ")[0]);
+        return isCalledFirstWord(msg);
     }
 
     @Override
     public Command createCommand(MessageReceivedEvent event) {
-        String[] command = event.getMessage().getContent().split(" ");
+        String[] command = event.getMessage().getContentDisplay().split(" ");
         if (command[0].equalsIgnoreCase("!tut") || command[0].equalsIgnoreCase("!guide")) {
             return new Guide(Guide.faq);
         } else if (command[0].equalsIgnoreCase("!gilde") || command[0].equalsIgnoreCase("!guild") || command[0].equalsIgnoreCase("Guilds")) {

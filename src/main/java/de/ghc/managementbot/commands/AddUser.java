@@ -28,11 +28,10 @@ public class AddUser extends Database implements Command {
         new Thread(new DeleteMessageThread(3, event.getMessage())).start(); //direkt löschen?
       }
       event.getAuthor().openPrivateChannel().queue(DM -> DM.sendTyping().queue());
-      String[] usernamearr = event.getMessage().getContent().split(" ");
+      String[] usernamearr = event.getMessage().getContentDisplay().split(" ");
       if (usernamearr.length > 2) {
         event.getAuthor().openPrivateChannel().queue(DM -> {
           DM.sendMessage("Bei Nutzernamen in der Datenbank ist nur ein Wort erlaubt (keine Leerzeichen).\nDein Account wird nun mit dem ersten Wort deines Nutzernamens erstellt").queue();
-          //DM.sendMessage(Strings.getString(Strings.register_error_multipleWords)).queue();
         });
       } else if (usernamearr.length < 2) {
         event.getAuthor().openPrivateChannel().queue(DM -> {
@@ -55,8 +54,7 @@ public class AddUser extends Database implements Command {
       String password = user.getPassword();
       if (!response.getBoolean("error")) {
         event.getAuthor().openPrivateChannel().queue(DM -> {
-          DM.sendMessage(String.format("Dein Account wurde erfolgreich erstellt.\nNutzername: %s\nPasswort: %s\nDein Account ist nun 30 Tage g\u00FCltig. Danach musst du mit `!refresh` deinen Account reaktivieren.\nViel Spaß mit der IP-Datenbank unter %s", username, password, url)).queue();
-          //DM.sendMessage(Strings.getString(Strings.register_success_addedAccount).replace("$[name]", username).replace("$[password]", password).replace("$[url]", url)).queue();
+          DM.sendMessageFormat("Dein Account wurde erfolgreich erstellt.\nNutzername: %s\nPasswort: %s\nDein Account ist nun 30 Tage g\u00FCltig. Danach musst du mit `!refresh` deinen Account reaktivieren.\nViel Spaß mit der IP-Datenbank unter %s", username, password, url).queue();
         });
       } else if (response.has("msgDiscord") && response.getString("msgDiscord").equals("Discord User bereits gefunden!")) {
         event.getAuthor().openPrivateChannel().queue(DM -> {
@@ -65,11 +63,11 @@ public class AddUser extends Database implements Command {
         });
       } else if (response.has("msgName") && response.getString("msgName").equals("Spielername bereits vorhanden!")) {
         event.getAuthor().openPrivateChannel().queue(DM -> {
-            DM.sendMessage(String.format("Der Nutzername %s ist bereits vergeben! Bitte w\u00E4hle einen anderen Nutzernamen!", username)).queue(m -> new Thread(new DeleteMessageThread(120, m)).start());
+            DM.sendMessageFormat("Der Nutzername %s ist bereits vergeben! Bitte w\u00E4hle einen anderen Nutzernamen!", username).queue(m -> new Thread(new DeleteMessageThread(120, m)).start());
             //DM.sendMessage(Strings.getString(Strings.register_error_usernameIsAlreadyTaken).replace("$[name]", username)).queue(); //TODO replacement
         });
       } else {
-        event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessage("Es ist ein Fehler aufgetreten: " + getErrorMessage(response)).queue());
+        event.getAuthor().openPrivateChannel().queue(DM -> DM.sendMessageFormat("Es ist ein Fehler aufgetreten: %s", getErrorMessage(response)).queue());
       }
     } else {
       if (!isVerified(member)) {
@@ -99,7 +97,6 @@ public class AddUser extends Database implements Command {
 
   @Override
   public boolean isCalled(String msg) {
-    List<String> callers = getCallers();
-    return callers.contains(msg.toLowerCase().split(" ")[0]);
+    return isCalledFirstWord(msg);
   }
 }

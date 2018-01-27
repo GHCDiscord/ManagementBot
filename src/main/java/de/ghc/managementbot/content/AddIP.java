@@ -57,7 +57,7 @@ public abstract class AddIP extends Database {
                     //IP und Name existieren -> IP updaten
                     channel.sendMessage("Diese IP existiert bereits in der Datenbank. Sollen diese Daten aktualisiert werden?").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
                     deleteUserAddIP(entry.getAddedBy(), this);
-                    UpdateIP uip = new UpdateIP(entry, result.getLong("IPID"));
+                    UpdateIP uip = new UpdateIP(entry, generateIpEntry0(result.getJSONArray("IPID").getJSONObject(0)));
                     UpdateIP.addUserUpdateIP(entry.getAddedBy(), uip);
                 } else if (!result.has("msgName")) {
                     channel.sendMessage("Diese IP exitstiert bereits in der Datenbank, aber unter einem anderen Namen. Bitte wende dich an einen Kontributor!").queue();

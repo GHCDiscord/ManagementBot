@@ -47,6 +47,6 @@ import net.dv8tion.jda.core.entities.Member;
 
     @Override
     public void sendWelcomeMessage(Member member, Guild guild) {
-        guild.getTextChannelById(getGeneralChannel()).sendMessageFormat("Willkommen %s in der GHC. Bitte lese dir die <#%s> durch.", member.getAsMention(), getRulesChannel()).queue();
+        guild.getTextChannelById(getGeneralChannel()).sendMessageFormat("Willkommen %s in der GHC. Bitte lese dir auch die <#%s> durch.", member.getAsMention(), getRulesChannel()).queue();
     }
 }

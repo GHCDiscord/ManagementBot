@@ -77,7 +77,7 @@ public class Help implements Command {
             member = Content.getGHCMember(event.getAuthor());
         final boolean verified = isVerified(member);
         final boolean moderator = isBotModerator(member);
-        String[] command = event.getMessage().getContent().split(" ");
+        String[] command = event.getMessage().getContentDisplay().split(" ");
         List<User> mentionedUsers = event.getMessage().getMentionedUsers();
 
         if (user == null)
@@ -163,7 +163,6 @@ public class Help implements Command {
 
     @Override
     public boolean isCalled(String msg) {
-        List<String> callers = getCallers();
-        return callers.contains(msg.toLowerCase().split(" ")[0]);
+        return isCalledFirstWord(msg);
     }
 }

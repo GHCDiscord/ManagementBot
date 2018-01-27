@@ -13,7 +13,7 @@ public class StartupThread implements Runnable {
     @Override
     public void run() {
         ghc.getTextChannelById(Data.Channel.saves).getHistory().getRetrievedHistory().forEach(m -> {
-            String[] message = m.getContent().split(Data.SPLITTER);
+            String[] message = m.getContentDisplay().split(Data.SPLITTER);
             if (message.length == 2) {
                 switch (message[0]) {
                     case YouTubeThread.TOKEN:

@@ -43,7 +43,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
     if (!messages.contains(event.getMessage())) {
       messages.add(event.getMessage());
     }
-    String msg = event.getMessage().getContent();
+    String msg = event.getMessage().getContentDisplay();
     MessageChannel channel = event.getChannel(); //private Messages
     Member member = event.getMember();
     if (member == null) {
@@ -53,7 +53,6 @@ public class AddIPWithQuestions extends AddIP implements Command {
       switch (status) {
         case start:
           channel.sendMessage("Bitte nenne die IP: ").queue(messages::add);
-          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputIp)).queue(messages::add);
           status = Status.IP;
           break;
         case IP:
@@ -61,7 +60,6 @@ public class AddIPWithQuestions extends AddIP implements Command {
             entry = new IPEntry(msg);
             status = Status.name;
             channel.sendMessage("Bitte nenne den Namen: ").queue(messages::add);
-            //channel.sendMessage(Strings.getString(Strings.addIP_field_inputName)).queue(messages::add);
           } else {
             status = Status.unknown;
             onMessageReceived(event);
@@ -71,7 +69,6 @@ public class AddIPWithQuestions extends AddIP implements Command {
           entry.setName(msg);
           status = Status.miner;
           channel.sendMessage("Bitte nenne die Anzahl der Miner: ").queue(messages::add);
-          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputMinerCount)).queue(messages::add);
           break;
         case miner:
           try {
@@ -80,31 +77,27 @@ public class AddIPWithQuestions extends AddIP implements Command {
           }
           status = Status.reputation;
           channel.sendMessage("Bitte nenne jetzt die Rep: ").queue(messages::add);
-          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputReputation)).queue(messages::add);
           break;
         case reputation:
           try {
-            entry.setRepopulation(Integer.parseInt(msg));
+            entry.setReputation(Integer.parseInt(msg));
           } catch (NumberFormatException e) {
           }
           status = Status.guild;
           channel.sendMessage("Schreibe nun den Guild-Tag. Wenn er in keiner Gilde ist, schreibe n").queue(messages::add);
-          //channel.sendMessage(Strings.getString(Strings.addIP_field_inputGuildTag)).queue(messages::add);
           break;
         case guild:
           if (msg.length() == 3 || msg.length() == 4) {
             entry.setGuildTag(msg);
           }
-          channel.sendMessage("Stimmen diese Daten?\n" + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen.").queue(messages::add);
-          //channel.sendMessage(Strings.getString(Strings.addIP_confirm_correctDataQuestions).replace("$[name]", entry.getName()).replace("$[miner]", entry.getMiners() + "").replace("$[rep]", entry.getRepopulation() + "").replace("$[guild]", entry.getGuildTag())).queue(messages::add); //TODO
+          channel.sendMessageFormat("Stimmen diese Daten?\n%s\nSchreibe 'Ja' zum best\u00E4tigen.", entry.toString()).queue(messages::add);
           status = Status.accept;
           break;
         case accept:
-          if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
+          if (Content.isYes(msg))
             status = Status.accepted;
-          } else {
+          else
             status = Status.unknown;
-          }
           onMessageReceived(event);
           break;
         case accepted:
@@ -124,7 +117,7 @@ public class AddIPWithQuestions extends AddIP implements Command {
           break;
         case unknown:
           deleteUserAddIP(user, this);
-          channel.sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
+          channel.sendMessage("Eingabe abgebrochen").queue(m -> new Thread(new DeleteMessageThread(30, m)).start());
           if (this.channel != null)
             this.channel.deleteMessages(messages).queue();
           else

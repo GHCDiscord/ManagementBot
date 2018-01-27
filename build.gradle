@@ -1,17 +1,11 @@
 group 'de.ghc'
-version '3.1.3'
+version '3.1.4'
 
 buildscript {
     repositories {
         jcenter()
     }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
-    }
 }
-
-apply plugin: 'com.github.johnrengelman.shadow'
-
 apply plugin: 'java'
 apply plugin: 'idea'
 
@@ -29,12 +23,12 @@ repositories {
 }
 
 dependencies {
-    compile 'net.dv8tion:JDA:3.3.1_302'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+    compile 'net.dv8tion:JDA:3.5.0_331'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.4'
     compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.6'
-    compile 'com.google.api-client:google-api-client:1.22.0'
-    compile 'com.google.oauth-client:google-oauth-client-jetty:1.22.0'
-    compile 'com.google.apis:google-api-services-youtube:v3-rev183-1.22.0'
+    compile 'com.google.api-client:google-api-client:1.23.0'
+    compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    compile 'com.google.apis:google-api-services-youtube:v3-rev183-1.23.0'
     compile 'joda-time:joda-time:2.9.9'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'

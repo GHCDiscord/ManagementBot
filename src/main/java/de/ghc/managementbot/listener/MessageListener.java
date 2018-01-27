@@ -15,15 +15,15 @@ import java.util.List;
 public class MessageListener extends ListenerAdapter {
 
   private static final List<Command> registeredCommands = Arrays.asList(new AddUser(), new AllTutorials(), new CountryStats(),
-          new Guide(null), new Help(), new RefreshUser(), new RegisterChannel(null),
-          new Rules(), new ServerStats(), new Stats(), new TopCountry(), new TopGuilds(), new Verify(), new Version());
+          new Guide(null), new Help(), new RefreshUser(), new RegisterChannel(null), new Rules(),
+          new SearchIP(), new ServerStats(), new Stats(), new TopCountry(), new TopGuilds(), new Verify(), new Version());
 
   public static void startCommand(MessageReceivedEvent event) {
     getCommand(event).onMessageReceived(event);
   }
 
   private static Command getCommand(MessageReceivedEvent event) {
-    String msg = event.getMessage().getContent();
+    String msg = event.getMessage().getContentDisplay();
     String[] command = msg.split(" ");
 
 
@@ -53,7 +53,7 @@ public class MessageListener extends ListenerAdapter {
 
   @Override
   public void onMessageReceived(MessageReceivedEvent event) {
-    String msg = event.getMessage().getContent();
+    String msg = event.getMessage().getContentDisplay();
     //output
     if (event.getGuild() == null) {
       System.out.printf("[Priv][%s] %s: %s\n", event.getChannel().getName(), event.getAuthor().getName(), msg);

@@ -18,7 +18,7 @@ public class CountryStats extends Country implements Command {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         event.getChannel().sendTyping().queue();
-        JSONObject country = getCountry(event.getMessage().getContent().substring(7));
+        JSONObject country = getCountry(event.getMessage().getContentDisplay().substring(7));
         if (country != null) {
             String url = "http://hackerz.online/public/img/country/" + country.getString("CountryCode").toLowerCase() + ".png";
             EmbedBuilder builder = new EmbedBuilder().setColor(getImageColor(url))

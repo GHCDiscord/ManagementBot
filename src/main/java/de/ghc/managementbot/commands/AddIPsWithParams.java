@@ -30,7 +30,7 @@ public class AddIPsWithParams extends AddIP implements Command {
   @Override
   public void onMessageReceived(MessageReceivedEvent event) {
     new Thread(new DeleteMessageThread(30, event.getMessage())).start();
-    String[] command = event.getMessage().getContent().split(" ");
+    String[] command = event.getMessage().getContentDisplay().split(" ");
     if (!done) {
       try {
         String IP = command[1];
@@ -54,7 +54,7 @@ public class AddIPsWithParams extends AddIP implements Command {
               }
             } else if (command[i].equalsIgnoreCase("-r") || command[i].equalsIgnoreCase("-rep")) {
               try {
-                entry.setRepopulation(Integer.parseInt(command[++i]));
+                entry.setReputation(Integer.parseInt(command[++i]));
               } catch (NumberFormatException ignore) {
               }
             } else if (command[i].equalsIgnoreCase("-g")) {
@@ -83,15 +83,14 @@ public class AddIPsWithParams extends AddIP implements Command {
       }
       entry.setUser(event.getAuthor());
       done = true;
-      event.getChannel().sendMessage("Stimmen diese Daten?\nIP: " + entry.toString() + "\nSchreibe 'Ja' zum best\u00E4tigen").queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
+      event.getChannel().sendMessageFormat("Stimmen diese Daten?\n%s\nSchreibe 'Ja' zum best\u00E4tigen", entry.toString()).queue(m -> new Thread(new DeleteMessageThread(60, m)).start());
      } else {
       deleteUserAddIP(user, this);
-      String msg = event.getMessage().getContent();
-      if (msg.equalsIgnoreCase("ja") || msg.equalsIgnoreCase("Yes") || msg.equalsIgnoreCase("j") || msg.equalsIgnoreCase("y")) {
+      String msg = event.getMessage().getContentDisplay();
+      if (Content.isYes(msg)) {
         addEntryAndHandleResponse(entry, event.getChannel(), event.getAuthor());
       } else {
-        event.getChannel().sendMessage("abgebrochen").queue(m -> new Thread(new DeleteMessageThread(10, m)).start());
-        //TODO Add to Bot CI
+        event.getChannel().sendMessage("Eingabe abgebrochen").queue(m -> new Thread(new DeleteMessageThread(10, m)).start());
       }
     }
   }

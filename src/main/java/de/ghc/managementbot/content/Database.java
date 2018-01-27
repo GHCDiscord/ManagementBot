@@ -1,5 +1,6 @@
 package de.ghc.managementbot.content;
 
+import de.ghc.managementbot.entity.ErrorEntry;
 import de.ghc.managementbot.entity.IPEntry;
 import de.ghc.managementbot.entity.User;
 import org.apache.http.HttpResponse;
@@ -17,7 +18,7 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 
 public abstract class Database {
-  protected static final String url = "http://ghc-community.de";
+  protected static final String url = "https://ghc-community.de";
   private static final String postIP = "addip";
   private static final String getIP = "getip";
   private static final String registerUser = "registeruser";
@@ -30,7 +31,7 @@ public abstract class Database {
     JSONObject variables = new JSONObject();
     variables.put("token", Secure.DBToken);
     variables.put("ip", entry.getIP());
-    variables.put("rep", entry.getRepopulation());
+    variables.put("rep", entry.getReputation());
     variables.put("desc", entry.getDescription());
     variables.put("miners", entry.getMiners());
     variables.put("clan", entry.getGuildTag());
@@ -86,30 +87,31 @@ public abstract class Database {
     return makeRequestAndHandleResponse(expire, object);
   }
 
-  protected static final IPEntry getIP(long IPID) {
+  protected static final IPEntry getIP(String name) {
     JSONObject object = new JSONObject();
     object.put("token", Secure.DBToken);
-    object.put("IPID", IPID);
+    object.put("name", name);
     return generateIpEntry(makeRequestAndHandleResponse(getIP, object));
   }
 
   private static final IPEntry generateIpEntry(JSONObject object) {
     if (object == null)
       return null;
+    if (object.getBoolean("error"))
+        return new ErrorEntry(getErrorString(object));
     if (!object.has("IPFunde"))
-      return null;
-    if (object.get("IPFunde") instanceof JSONObject) {
+        return null;
+    if (object.get("IPFunde") instanceof JSONObject)
       return generateIpEntry0(object.getJSONObject("IPFunde"));
-    } else if (object.get("IPFunde") instanceof JSONArray) {
+    else if (object.get("IPFunde") instanceof JSONArray)
       return generateIpEntry0(object.getJSONArray("IPFunde").getJSONObject(0)); //TODO
-    }
     return null;
   }
 
-  private static final IPEntry generateIpEntry0(JSONObject ip) {
+  protected static final IPEntry generateIpEntry0(JSONObject ip) {
     IPEntry entry = new IPEntry(ip.getString("IP"));
     entry.setName(ip.getString("Name"));
-    entry.setRepopulation(ip.getInt("Rep"));
+    entry.setReputation(ip.getInt("Rep"));
     entry.setMiners(ip.getInt("Miners"));
     entry.setGuildTag(ip.getString("Clan"));
     entry.setDescription(ip.getString("Desc"));
@@ -146,4 +148,24 @@ public abstract class Database {
       return new JSONObject().put("error", true).put("msgName", e.getLocalizedMessage());
     }
   }
+
+  protected static final String getErrorString(JSONObject object) {
+      if (!object.has("error") || !object.getBoolean("error"))
+          return "";
+      String error = "";
+      if (object.has("msgToken"))
+          error = object.getString("msgToken") + "\n";
+      if (object.has("msgDiscord"))
+          error += object.getString("msgDiscord") + "\n";
+      if (object.has("msgIP"))
+          error += object.getString("msgIP") + "\n";
+      if (object.has("msgName"))
+          error += object.getString("msgName") + "\n";
+      if (object.has("msgPassword"))
+          error += object.getString("msgPassword") + "\n";
+      if (object.has("msgUser"))
+          error += object.getString("msgUser") + "\n";
+      return error;
+  }
+
 }

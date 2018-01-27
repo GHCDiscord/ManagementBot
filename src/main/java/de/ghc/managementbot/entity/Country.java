@@ -12,13 +12,14 @@ public abstract class Country {
     public static final Country ENGLAND = new England();
 
     public static void handleCountryReaction(MessageReactionAddEvent event) {
+        Country country;
         if (event.getMessageIdLong() == 363045230707998721L) { //letzte Nachricht in #glo_rules
             switch (event.getReactionEmote().getName()) {
                 case "\uD83C\uDDE9\uD83C\uDDEA": //DE
                 case "\uD83C\uDDE6\uD83C\uDDF9": //AT
                 case "\uD83C\uDDE8\uD83C\uDDED": //CH
                     //German
-                    Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRoleById(GERMANY.getVerifiedRole()));
+                    country = GERMANY;
                     break;
                 case "\uD83C\uDDFA\uD83C\uDDF8": //US
                 case "\uD83C\uDDE8\uD83C\uDDE6": //CA
@@ -30,13 +31,17 @@ public abstract class Country {
                 case "\uD83C\uDDEE\uD83C\uDDEA": //IE
                 case "\uD83C\uDDE6\uD83C\uDDEC": //AG
                     //English
-                    Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRoleById(ENGLAND.getVerifiedRole()));
+                    country = ENGLAND;
                     break;
                 default:
+                    country = null;
                     event.getUser().openPrivateChannel().queue(c -> c.sendMessage("This language is currently not supported. Please try another language. If you like to start a new country-area, please ask an admin.").queue());
                     break;
             }
-            event.getReaction().removeReaction(event.getUser()).queue();
+            if (country != null) {
+                Content.addRole(event.getMember(), event.getGuild(), event.getGuild().getRoleById(country.getVerifiedRole()));
+                country.sendWelcomeMessage(event.getMember(), event.getGuild());
+            } event.getReaction().removeReaction(event.getUser()).queue();
         }
     }
 

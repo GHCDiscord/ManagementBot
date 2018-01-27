@@ -17,28 +17,30 @@ import java.util.Map;
 
 public class UpdateIP extends AddIP implements Command {
     private final IPEntry newEntry;
-    private final long IPID;
+    private final IPEntry oldEntry;
 
-    public UpdateIP(IPEntry newEntry, long IPID) {
+    public UpdateIP(IPEntry newEntry, IPEntry oldEntry) {
         this.newEntry = newEntry;
-        this.IPID = IPID;
+        this.oldEntry = oldEntry;
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        String msg = event.getMessage().getContent();
+        String msg = event.getMessage().getContentDisplay();
         new Thread(new DeleteMessageThread(60, event.getMessage())).start();
         if (Content.isYes(msg)) {
             if (Content.isStaff(event.getMember())) {
                 newEntry.setUpdate(true);
                 addIPtoDB(newEntry);
             } else {
-                IPEntry oldEntry = getIP(IPID);
                 if (oldEntry != null)
                     event.getGuild().getTextChannelById(Data.Channel.zahlenschlacht).sendMessageFormat(
                             "IP-Upate:\nIP: %s -> %s\nName: %s -> %s\nMiner: %d -> %d\nReputation: %d -> %d\nGilde: %s -> %s\nBeschreibung: %s -> %s\nDaten von: %s ",
-                            oldEntry.getIP(), newEntry.getIP(), oldEntry.getName(), newEntry.getName(), oldEntry.getMiners(), newEntry.getMiners(), oldEntry.getRepopulation(), newEntry.getRepopulation(), oldEntry.getGuildTag(), newEntry.getGuildTag(), oldEntry.getDescription(), newEntry.getDescription(), newEntry.getAddedBy().getName()
-                    ).queue(m -> messageUpdateIp.put(m.getIdLong(), this));
+                            oldEntry.getIP(), newEntry.getIP(), oldEntry.getName(), newEntry.getName(), oldEntry.getMiners(), newEntry.getMiners(), oldEntry.getReputation(), newEntry.getReputation(), oldEntry.getGuildTag(), newEntry.getGuildTag(), oldEntry.getDescription(), newEntry.getDescription(), newEntry.getAddedBy().getName()
+                    ).queue(m -> {
+                        messageUpdateIp.put(m.getIdLong(), this);
+                        m.addReaction("\u2257").queue();
+                    });
                 else
                     event.getGuild().getTextChannelById(Data.Channel.zahlenschlacht).sendMessage(newEntry.toString()).queue();
             }
@@ -60,6 +62,16 @@ public class UpdateIP extends AddIP implements Command {
     @Override
     public List<String> getCallers() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public boolean isCalled(String msg) {
+        return false;
+    }
+
+    @Override
+    public boolean isCalled(MessageReceivedEvent event) {
+        return false;
     }
 
     @Override

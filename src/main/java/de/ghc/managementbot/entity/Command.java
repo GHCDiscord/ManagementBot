@@ -8,7 +8,7 @@ public interface Command {
     void onMessageReceived(MessageReceivedEvent event);
     List<String> getCallers();
     default boolean isCalled(MessageReceivedEvent event) {
-        return isCalled(event.getMessage().getContent());
+        return isCalled(event.getMessage().getContentDisplay());
     }
     default boolean isCalled(String msg) {
         List<String> callers = getCallers();
@@ -16,5 +16,9 @@ public interface Command {
     }
     default Command createCommand(MessageReceivedEvent event) {
         return this;
+    }
+    default boolean isCalledFirstWord(String msg) {
+        List<String> callers = getCallers();
+        return callers.contains(msg.toLowerCase().split(" ")[0]);
     }
 }

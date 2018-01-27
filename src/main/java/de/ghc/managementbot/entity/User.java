@@ -6,20 +6,18 @@ public class User {
 
     private String Username;
     private String Password;
-    private String EMail;
     private net.dv8tion.jda.core.entities.User discordUser;
 
     public User (String username) {
         Username = username;
         Password = generatePassword();
-        EMail = "";
     }
 
     private String generatePassword() {
         Random rand = new Random();
-        int lenght = 5 + rand.nextInt(6);
-        StringBuilder pw = new StringBuilder(lenght);
-        for (int i = 0; i < lenght; i++) {
+        int length = 5 + rand.nextInt(6);
+        StringBuilder pw = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
             int type = rand.nextInt(3);
             switch (type) {
                 case 0:
@@ -36,10 +34,6 @@ public class User {
         return pw.toString();
     }
 
-    public String getEMail() {
-        return EMail;
-    }
-
     public String getPassword() {
         return Password;
     }
@@ -54,9 +48,5 @@ public class User {
 
     public void setDiscordUser(net.dv8tion.jda.core.entities.User discordUser) {
         this.discordUser = discordUser;
-    }
-
-    public void setEMail(String EMail) {
-        this.EMail = EMail;
     }
 }

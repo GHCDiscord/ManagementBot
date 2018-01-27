@@ -14,9 +14,9 @@ public class AllTutorials implements Command {
         event.getMessage().delete().queue();
         if (Content.isBotModerator(Content.getGHCMember(event.getAuthor())) || event.getMember() == null) {
             event.getChannel().sendMessage(new EmbedBuilder().setTitle("Tutorials")
-                    .addField("FAQ", "[hier](https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub \"FAQ\")", true)
-                    .addField("Gilden", "[hier](http://forum.hackerz.online/viewtopic.php?f=12&t=78 \"Gilden\")", true)
-                    .addField("Taktiken", "[hier](https://forum.hackerz.online/viewtopic.php?f=10&t=334 \"Taktiken\")", true)
+                    .addField("FAQ", String.format("[%s], (%s \"%s\")","hier", "https://docs.google.com/document/d/18h_Ik023Ax9eGUxSCzVszhTask1y5ayP2TweVFNMdHE/pub",  "FAQ"), true)
+                    .addField("Gilden", String.format("[%s], (%s \"%s\")", "hier", "http://forum.hackerz.online/viewtopic.php?f=12&t=78", "Gilden"), true)
+                    .addField("Taktiken", String.format("[%s], (%s \"%s\")", "hier", "https://forum.hackerz.online/viewtopic.php?f=10&t=334", "Taktiken"), true)
                     .setColor(Content.getRandomColor())
                     .setFooter("", Content.GHCImageURL)
                     .build()).queue();

@@ -12,14 +12,13 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            JDA jda = new JDABuilder(AccountType.BOT).addEventListener(new MessageListener(), new LeaveListener()).setToken(Secure.DiscordToken).setGame(Game.of("Hackerz")).buildBlocking();
+            JDA jda = new JDABuilder(AccountType.BOT).addEventListener(new MessageListener(), new LeaveListener()).setToken(Secure.DiscordToken).setGame(Game.playing("Hackerz")).buildBlocking();
             Content.setGhc(jda.getGuildById(Data.Guild.GHC));
             //new Thread(new ServerStatsThread(23)).start();
             new Thread(new TwitterThread()).start();
@@ -27,7 +26,7 @@ public class Main {
             new Thread(new MarketAPIThread()).start();
             //new Thread(new StartupThread(jda)).start();
             //Strings.start();
-        } catch (LoginException | InterruptedException | RateLimitedException e) {
+        } catch (LoginException | InterruptedException  e) {
             e.printStackTrace();
         }
     }
